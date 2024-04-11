@@ -5,6 +5,7 @@ import javax.swing.*;
 public class Main {
     public static void main(String[] args)
     {
+        //Test
         //Creez fereastra cu numele Island Game, se inchide din X, nu se poate da resize
         JFrame window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
