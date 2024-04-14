@@ -156,10 +156,10 @@ public class MapGenerator {
         int width = map.length;
         int height = map[0].length;
 
-        boolean oceanTop = (y > 0 && map[x][y - 1] == OCEAN);
-        boolean oceanBottom = (y < height - 1 && map[x][y + 1] == OCEAN);
-        boolean oceanLeft = (x > 0 && map[x - 1][y] == OCEAN);
-        boolean oceanRight = (x < width - 1 && map[x + 1][y] == OCEAN);
+        boolean oceanLeft = (y > 0 && map[x][y - 1] == OCEAN);
+        boolean oceanRight = (y < height - 1 && map[x][y + 1] == OCEAN);
+        boolean oceanTop = (x > 0 && map[x - 1][y] == OCEAN);
+        boolean oceanBottom = (x < width - 1 && map[x + 1][y] == OCEAN);
 
         if (oceanTop && oceanLeft) {
             return CORNER_TOP_LEFT;
