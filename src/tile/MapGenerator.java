@@ -144,9 +144,9 @@ public class MapGenerator {
     private static void writeMapToFile(int[][] map) {
         try (BufferedWriter fileWriter = new BufferedWriter(new FileWriter("Mapa.txt"))) {
             // Write map to file
-            for (int i = 0; i < map.length; i++) {
+            for (int[] ints : map) {
                 for (int j = 0; j < map[0].length; j++) {
-                    fileWriter.write(map[i][j] + " ");
+                    fileWriter.write(ints[j] + " ");
                 }
                 fileWriter.write("\n");
             }

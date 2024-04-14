@@ -28,10 +28,11 @@ public class GamePanel extends JPanel implements Runnable {
 
     double FPS = 60;
 
-    TileManager tileM = new TileManager(this);
+    private TileManager tileM = new TileManager(this);
 
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
+    public CollisionCheck cCheck=new CollisionCheck(this);
     public Player player = new Player(this, keyH);
 
     public GamePanel() {
@@ -84,8 +85,8 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        if (tileM != null) { // Verificăm dacă tileM nu este null
-            tileM.draw(g2);
+        if (getTileM() != null) { // Verificăm dacă tileM nu este null
+            getTileM().draw(g2);
         } else {
             System.out.println("TileManager-ul nu a fost inițializat corespunzător.");
         }
@@ -97,5 +98,13 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         g2.dispose();
+    }
+
+    public TileManager getTileM() {
+        return tileM;
+    }
+
+    public void setTileM(TileManager tileM) {
+        this.tileM = tileM;
     }
 }

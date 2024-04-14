@@ -25,17 +25,19 @@ public class Player extends Entity {
         this.gp = gp;
         this.keyH = keyH;
 
-        screenX=gp.screenWidth/2-(gp.tileSize/2);
-        screenY=gp.screenHeight/2-(gp.tileSize/2);
+        screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
+        screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
 
-        int[] coordinates= TileManager.coordinates;
+        solidArea = new Rectangle(8, 27, 24, 18);
+
+        int[] coordinates = TileManager.coordinates;
         setDefaultValues(coordinates);
         getPlayerImage();
     }
 
     public void setDefaultValues(int[] coordinates) {
-        worldX = gp.tileSize*coordinates[0];
-        worldY = gp.tileSize*coordinates[1];
+        worldX = gp.tileSize * coordinates[0];
+        worldY = gp.tileSize * coordinates[1];
         speed = 4;
         direction = "down";
     }
@@ -52,22 +54,44 @@ public class Player extends Entity {
 
     public void update() {
         if (keyH.upPressed) {
-            worldY -= speed;
-            isWalking = true;
             direction = "up";
         } else if (keyH.downPressed) {
-            worldY += speed;
-            isWalking = true;
             direction = "down";
         } else if (keyH.leftPressed) {
-            worldX -= speed;
-            isWalking = true;
             direction = "left";
         } else if (keyH.rightPressed) {
-            worldX += speed;
-            isWalking = true;
             direction = "right";
+        }
+
+        // Verificare coliziuni
+        collisionOn = false;
+        gp.cCheck.checkTile(this);
+
+        // Daca nu exista coliziune, se poate misca caracterul
+        if (!collisionOn) {
+            switch (direction) {
+                case "up":
+                    isWalking = true;
+                    worldY -= speed;
+                    break;
+                case "down":
+                    worldY += speed;
+                    isWalking = true;
+                    break;
+                case "left":
+                    worldX -= speed;
+                    isWalking = true;
+                    break;
+                case "right":
+                    worldX += speed;
+                    isWalking = true;
+                    break;
+                default:
+                    isWalking = false;
+                    throw new IllegalStateException("Unexpected value: " + direction);
+            }
         } else {
+            // Daca exista coliziune, nu se mai misca caracterul
             isWalking = false;
         }
 
@@ -80,6 +104,7 @@ public class Player extends Entity {
                 spriteNum = 1;
         }
     }
+
 
     public void draw(Graphics2D g2) {
         //Cod optimizat de la 145 de linii de cod la doar 8
