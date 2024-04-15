@@ -18,6 +18,14 @@ public class MapGenerator {
     public static final int CORNER_BOTTOM_RIGHT = 30;
     public static final int OCEAN = 31;
     public static final int ISLAND = 15;
+    public static final int TOP_LEFT_RAMA = 25;
+    public static final int TOP_RAMA = 26;
+    public static final int TOP_RIGHT_RAMA = 27;
+    public static final int LEFT_RAMA = 39;
+    public static final int RIGHT_RAMA = 41;
+    public static final int BOTTOM_LEFT_RAMA = 53;
+    public static final int BOTTOM_RAMA = 54;
+    public static final int BOTTOM_RIGHT_RAMA = 55;
 
     public static int[][] generateMap(int width, int height) {
         if (width <= 0 || height <= 0) {
@@ -105,6 +113,32 @@ public class MapGenerator {
             }
         }
 
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                if (i == 0) {
+                    if (j == 0) {
+                        map[i][j] = TOP_LEFT_RAMA; // Coltul stânga sus
+                    } else if (j == height - 1) {
+                        map[i][j] = TOP_RIGHT_RAMA; // Coltul dreapta sus
+                    } else {
+                        map[i][j] = TOP_RAMA; // Marginea sus
+                    }
+                } else if (i == width - 1) {
+                    if (j == 0) {
+                        map[i][j] = BOTTOM_LEFT_RAMA; // Coltul stânga jos
+                    } else if (j == height - 1) {
+                        map[i][j] = BOTTOM_RIGHT_RAMA; // Coltul dreapta jos
+                    } else {
+                        map[i][j] = BOTTOM_RAMA; // Marginea jos
+                    }
+                } else if (j == 0) {
+                    map[i][j] = LEFT_RAMA; // Marginea stânga
+                } else if (j == height - 1) {
+                    map[i][j] = RIGHT_RAMA; // Marginea dreapta
+                }
+            }
+        }
+
         // Write map to file after generation
         writeMapToFile(map);
 
@@ -160,13 +194,16 @@ public class MapGenerator {
         int[] coordinates = new int[2];
 
         // Lista pentru a ține coordonatele tuturor tile-urilor de tip 15 (ISLAND)
-        List<int[]> islandTiles = new ArrayList<>();
+        List < int[] > islandTiles = new ArrayList < > ();
 
         // Căutăm toate tile-urile de tip 15 (ISLAND) și adăugăm coordonatele lor în listă
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[0].length; j++) {
                 if (map[i][j] == ISLAND) {
-                    islandTiles.add(new int[]{i, j});
+                    islandTiles.add(new int[] {
+                            i,
+                            j
+                    });
                 }
             }
         }

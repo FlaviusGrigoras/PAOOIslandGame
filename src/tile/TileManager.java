@@ -10,13 +10,13 @@ import java.io.IOException;
 
 public class TileManager {
     public static int[] coordinates;
-    private GamePanel gp;
+    private final GamePanel gp;
     private BufferedImage tileSheet;
-    private Tile[] tiles;
+    private final Tile[] tiles;
     private int[][] map;
 
-    private int tileWidth = 16;
-    private int numTilesX = 14; // Numărul de țigle pe axa X în spritesheet
+    private final int tileWidth = 16;
+    private final int numTilesX = 14;
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
@@ -78,6 +78,7 @@ public class TileManager {
     */
         int tileHeight = 16;
         for (int y = 0; y < tileSheet.getHeight() / tileHeight; y++) {
+            // Numărul de țigle pe axa X în spritesheet
             for (int x = 0; x < numTilesX; x++) {
                 BufferedImage subImage = tileSheet.getSubimage(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
                 tiles[tileIndex] = new Tile();
@@ -98,9 +99,8 @@ public class TileManager {
 
         if (tiles != null && map != null) { // Verificăm dacă tiles și map nu sunt null
             // Iterăm prin harta și desenăm fiecare țiglă în funcție de valorile din hartă
-            for (int i = 0; i < map.length; i++) { // Utilizăm map.length pentru a obține numărul de rânduri
-                for (int j = 0; j < map[i].length; j++) { // Utilizăm map[i].length pentru a obține numărul de coloane din fiecare rând
-                    int tileType = map[i][j];
+            for (int[] ints : map) { // Utilizăm map.length pentru a obține numărul de rânduri
+                for (int tileType : ints) { // Utilizăm map[i].length pentru a obține numărul de coloane din fiecare rând
                     if (tileType >= 0 && tileType < tiles.length) { // Verificăm dacă tileType este în limitele array-ului tiles
                         int worldX = worldCol * gp.tileSize;
                         int worldY = worldRow * gp.tileSize;

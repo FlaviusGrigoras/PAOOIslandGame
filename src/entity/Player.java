@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import tile.Tile;
 import tile.TileManager;
 
 import java.awt.*;
