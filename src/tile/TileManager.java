@@ -7,14 +7,13 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class TileManager {
     public static int[] coordinates;
     private final GamePanel gp;
     private BufferedImage tileSheet;
-    private final Tile[] tiles;
-    private int[][] map;
+    public final Tile[] tiles;
+    public int[][] map;
 
     private final int tileWidth = 16;
     private final int numTilesX = 14;
@@ -24,7 +23,7 @@ public class TileManager {
         tiles = new Tile[140]; // Numărul total de țigle din spritesheet, inclusiv noile tipuri de țigle
 
         try {
-            tileSheet = ImageIO.read(new File("res/tiles/TinyIslands2.png"));
+            tileSheet = ImageIO.read(new File("res/tiles/TinyIslands.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -67,7 +66,8 @@ public class TileManager {
     Golf in partea dreapta a insulei:
     tiles[3] + tiles[17]
 
-
+    tiles[5] = Copac
+    tiles[6] = Stanca
 
     Variatii apa ocean
     tiles[31] = Ocean simplu
@@ -87,6 +87,34 @@ public class TileManager {
                 tileIndex++;
             }
         }
+
+        tiles[31].collision=true;
+        tiles[32].collision=true;
+        tiles[33].collision=true;
+        tiles[34].collision=true;
+        tiles[35].collision=true;
+        tiles[36].collision=true;
+        tiles[5].collision=true;
+        tiles[6].collision=true;
+
+        tiles[0].collision=true;
+        tiles[1].collision=true;
+        tiles[2].collision=true;
+        tiles[14].collision=true;
+        tiles[16].collision=true;
+        tiles[28].collision=true;
+        tiles[29].collision=true;
+        tiles[30].collision=true;
+
+        tiles[25].collision=true;
+        tiles[26].collision=true;
+        tiles[27].collision=true;
+        tiles[39].collision=true;
+        tiles[41].collision=true;
+        tiles[53].collision=true;
+        tiles[54].collision=true;
+        tiles[55].collision=true;
+
     }
 
     public void generateMap() {
@@ -94,40 +122,47 @@ public class TileManager {
         coordinates = MapGenerator.chooseRandomIslandTile(map);
         System.out.println("Coordonatele tile-ului de tip insulă aleator selectat sunt: (" + coordinates[0] + ", " + coordinates[1] + "). Tile-ul are numarul: "+ map[coordinates[0]][coordinates[1]]);
     }
+
     public void draw(Graphics2D g2) {
         int tileSize = gp.tileSize;
         int worldCol = 0;
         int worldRow = 0;
 
         if (tiles != null && map != null) { // Verificăm dacă tiles și map nu sunt null
-            // Iterăm prin harta și desenăm fiecare țiglă în funcție de valorile din hartă
-            for (int[] ints : map) { // Utilizăm map.length pentru a obține numărul de rânduri
-                for (int tileType : ints) { // Utilizăm map[i].length pentru a obține numărul de coloane din fiecare rând
-                    if (tileType >= 0 && tileType < tiles.length) { // Verificăm dacă tileType este în limitele array-ului tiles
-                        int worldX = worldCol * gp.tileSize;
-                        int worldY = worldRow * gp.tileSize;
-                        int screenX = worldX - gp.player.worldX + gp.player.screenX;
-                        int screenY = worldY - gp.player.worldY + gp.player.screenY;
-                        //if (worldX > gp.player.worldX - gp.player.screenX && worldX < gp.player.worldX + gp.player.screenX && worldY > gp.player.worldY - gp.player.screenY && worldY < gp.player.worldY + gp.player.screenY)
-                        if (tiles[tileType] != null && tiles[tileType].image != null) { // Verificăm dacă tiles[tileType] și tiles[tileType].image nu sunt null
-                            g2.drawImage(tiles[tileType].image, screenX, screenY, tileSize, tileSize, null);
-                            worldCol++;
-                            if (worldCol == gp.maxWorldCol) {
-                                worldCol = 0;
-                                worldRow++;
+            while (worldRow < gp.maxWorldRow) {
+                worldCol = 0; // Resetează coloana la fiecare rând nou
+
+                while (worldCol < gp.maxWorldCol) {
+                    int tileNum = map[worldCol][worldRow];
+                    int worldX = worldCol * gp.tileSize;
+                    int worldY = worldRow * gp.tileSize;
+                    int screenX = worldX - gp.player.worldX + gp.player.screenX;
+                    int screenY = worldY - gp.player.worldY + gp.player.screenY;
+
+                    if (screenX + tileSize > 0 && screenX < gp.getWidth() &&
+                            screenY + tileSize > 0 && screenY < gp.getHeight()) {
+
+                        if (tileNum >= 0 && tileNum < tiles.length) {
+                            if (tiles[tileNum] != null && tiles[tileNum].image != null) {
+                                g2.drawImage(tiles[tileNum].image, screenX, screenY, tileSize, tileSize, null);
+                            } else {
+                                System.out.println("Imaginea pentru țigla " + tileNum + " lipsește.");
                             }
                         } else {
-                            System.out.println("Imaginea pentru țigla " + tileType + " lipsește.");
+                            System.out.println("Tipul țiglei " + tileNum + " nu este valid.");
                         }
-                    } else {
-                        System.out.println("Tipul țiglei " + tileType + " nu este valid.");
                     }
+                    worldCol++;
                 }
+                worldRow++;
             }
         } else {
             System.out.println("Tiles sau map nu au fost inițializate corespunzător.");
         }
     }
+
+
+
 
 
 }

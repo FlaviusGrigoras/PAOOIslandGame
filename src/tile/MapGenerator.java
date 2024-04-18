@@ -9,22 +9,22 @@ import java.util.Random;
 
 public class MapGenerator {
     public static final int CORNER_TOP_LEFT = 0;
-    public static final int EDGE_TOP = 1;
-    public static final int CORNER_TOP_RIGHT = 2;
-    public static final int EDGE_LEFT = 14;
-    public static final int EDGE_RIGHT = 16;
-    public static final int CORNER_BOTTOM_LEFT = 28;
-    public static final int EDGE_BOTTOM = 29;
+    public static final int EDGE_TOP = 14;
+    public static final int CORNER_TOP_RIGHT = 28;
+    public static final int EDGE_LEFT = 1;
+    public static final int EDGE_RIGHT = 29;
+    public static final int CORNER_BOTTOM_LEFT = 2;
+    public static final int EDGE_BOTTOM = 16;
     public static final int CORNER_BOTTOM_RIGHT = 30;
     public static final int OCEAN = 31;
     public static final int ISLAND = 15;
     public static final int TOP_LEFT_RAMA = 25;
-    public static final int TOP_RAMA = 26;
-    public static final int TOP_RIGHT_RAMA = 27;
-    public static final int LEFT_RAMA = 39;
-    public static final int RIGHT_RAMA = 41;
-    public static final int BOTTOM_LEFT_RAMA = 53;
-    public static final int BOTTOM_RAMA = 54;
+    public static final int TOP_RAMA = 39;
+    public static final int TOP_RIGHT_RAMA = 53;
+    public static final int LEFT_RAMA = 26;
+    public static final int RIGHT_RAMA = 54;
+    public static final int BOTTOM_LEFT_RAMA = 27;
+    public static final int BOTTOM_RAMA = 41;
     public static final int BOTTOM_RIGHT_RAMA = 55;
 
     public static int[][] generateMap(int width, int height) {
