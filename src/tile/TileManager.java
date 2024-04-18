@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class TileManager {
     public static int[] coordinates;
@@ -23,7 +24,7 @@ public class TileManager {
         tiles = new Tile[140]; // Numărul total de țigle din spritesheet, inclusiv noile tipuri de țigle
 
         try {
-            tileSheet = ImageIO.read(new File("res/tiles/TinyIslands.png"));
+            tileSheet = ImageIO.read(new File("res/tiles/TinyIslands2.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -91,6 +92,7 @@ public class TileManager {
     public void generateMap() {
         map = MapGenerator.generateMap(gp.maxWorldCol, gp.maxWorldRow);
         coordinates = MapGenerator.chooseRandomIslandTile(map);
+        System.out.println("Coordonatele tile-ului de tip insulă aleator selectat sunt: (" + coordinates[0] + ", " + coordinates[1] + "). Tile-ul are numarul: "+ map[coordinates[0]][coordinates[1]]);
     }
     public void draw(Graphics2D g2) {
         int tileSize = gp.tileSize;

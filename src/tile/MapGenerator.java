@@ -112,6 +112,18 @@ public class MapGenerator {
                 }
             }
         }
+        for (int i = islandStartX; i < islandStartX + islandWidth; i++) {
+            for (int j = islandStartY; j < islandStartY + islandHeight; j++) {
+                if (i < width && j < height && map[i][j] == ISLAND) {
+                    double randomValue = random.nextDouble();
+                    if (randomValue < 0.1) {
+                        map[i][j] = 5; // Tree tile with 20% chance
+                    } else if (randomValue < 0.13) {
+                        map[i][j] = 6; // Rock tile with 3% chance
+                    }
+                }
+            }
+        }
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -178,9 +190,9 @@ public class MapGenerator {
     private static void writeMapToFile(int[][] map) {
         try (BufferedWriter fileWriter = new BufferedWriter(new FileWriter("Mapa.txt"))) {
             // Write map to file
-            for (int i = 0; i < map.length; i++) {
+            for (int[] ints: map) {
                 for (int j = 0; j < map[0].length; j++) {
-                    fileWriter.write(map[i][j] + " ");
+                    fileWriter.write(ints[j] + " ");
                 }
                 fileWriter.write("\n");
             }
@@ -199,7 +211,7 @@ public class MapGenerator {
         // Căutăm toate tile-urile de tip 15 (ISLAND) și adăugăm coordonatele lor în listă
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[0].length; j++) {
-                if (map[i][j] == ISLAND) {
+                if (map[i][j] == 15) { // Verificare dacă tile-ul este de tip insulă (15)
                     islandTiles.add(new int[] {
                             i,
                             j
@@ -210,13 +222,13 @@ public class MapGenerator {
 
         // Alegem aleatoriu un tile de tip 15 (ISLAND)
         if (!islandTiles.isEmpty()) {
-            int[] randomIslandTile = islandTiles.get(random.nextInt(islandTiles.size()));
+            int randomIndex = random.nextInt(islandTiles.size());
+            int[] randomIslandTile = islandTiles.get(randomIndex);
             coordinates[0] = randomIslandTile[0]; // X
             coordinates[1] = randomIslandTile[1]; // Y
         } else {
-            // Dacă nu există tile-uri de tip 15 (ISLAND), returnăm {-1, -1}
-            coordinates[0] = -1;
-            coordinates[1] = -1;
+            // Dacă nu există tile-uri de tip 15 (ISLAND), apelăm recursiv funcția
+            return chooseRandomIslandTile(map);
         }
 
         return coordinates;
