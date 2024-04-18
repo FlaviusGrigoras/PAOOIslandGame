@@ -18,8 +18,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenHeight = tileSize * maxScreenRow;
 
     // World settings
-    public final int maxWorldCol=25;
-    public final int maxWorldRow=25;
+    public final int maxWorldCol=255;
+    public final int maxWorldRow=255;
 
     double FPS = 60;
 
@@ -31,7 +31,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.BLUE);
+        this.setBackground(new Color(0x689cfc));
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);

@@ -85,11 +85,11 @@ public class Player extends Entity {
     public void draw(Graphics2D g2) {
         //Cod optimizat de la 145 de linii de cod la doar 8
         BufferedImage spriteSheet = isWalking ? walkSprite : idleSprite;
-        int yOffset = direction.equals("up") ? 72 : (direction.equals("down") ? 0 : (direction.equals("left") ? 24 : 48));
+        int yOffset = direction.equals("up") ? 48 : (direction.equals("down") ? 0 : (direction.equals("left") ? 16 : 32));
 
         if (isWalking || spriteNum == 1 || spriteNum == 2 || spriteNum == 3 || spriteNum == 4) {
             int xOffset = (spriteNum - 1) * 16;
-            g2.drawImage(spriteSheet.getSubimage(xOffset, yOffset, 16, 24), screenX, screenY, gp.tileSize, gp.tileSize, null);
+            g2.drawImage(spriteSheet.getSubimage(xOffset, yOffset, 16, 16), screenX, screenY, gp.tileSize, gp.tileSize, null);
         }
     }
 
