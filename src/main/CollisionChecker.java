@@ -94,11 +94,6 @@ public class CollisionChecker {
         int entityTopRow = entityTopWorldY / gp.tileSize;
         int entityBottomRow = entityBottomWorldY / gp.tileSize;
 
-        // Variabile pentru coordonatele și numărul tile-ului de coliziune
-        int collisionTileX = -1;
-        int collisionTileY = -1;
-        int collisionTileNum = -1;
-
         // Verificăm coliziunile pentru fiecare direcție de mișcare
         switch (entity.direction) {
             case "up":
@@ -113,9 +108,6 @@ public class CollisionChecker {
                     // Dacă da, setăm indicatorul de coliziune al entității pe true
                     entity.collisionOn = true;
                     // Salvăm coordonatele și numărul țiglei de coliziune
-                    collisionTileX = entityLeftCol;
-                    collisionTileY = entityTopRow;
-                    collisionTileNum = tileNumTopLeft;
                 }
                 break;
             case "down":
@@ -125,9 +117,6 @@ public class CollisionChecker {
                 int tileNumBottomRight = gp.tileM.map[entityRightCol][entityBottomRow];
                 if (gp.tileM.tiles[tileNumBottomLeft].collision || gp.tileM.tiles[tileNumBottomRight].collision) {
                     entity.collisionOn = true;
-                    collisionTileX = entityLeftCol;
-                    collisionTileY = entityBottomRow;
-                    collisionTileNum = tileNumBottomLeft;
                 }
                 break;
             case "left":
@@ -136,9 +125,6 @@ public class CollisionChecker {
                 int tileNumLeftBottom = gp.tileM.map[entityLeftCol][entityBottomRow];
                 if (gp.tileM.tiles[tileNumLeftTop].collision || gp.tileM.tiles[tileNumLeftBottom].collision) {
                     entity.collisionOn = true;
-                    collisionTileX = entityLeftCol;
-                    collisionTileY = entityTopRow;
-                    collisionTileNum = tileNumLeftTop;
                 }
                 break;
             case "right":
@@ -147,20 +133,10 @@ public class CollisionChecker {
                 int tileNumRightBottom = gp.tileM.map[entityRightCol][entityBottomRow];
                 if (gp.tileM.tiles[tileNumRightTop].collision || gp.tileM.tiles[tileNumRightBottom].collision) {
                     entity.collisionOn = true;
-                    collisionTileX = entityRightCol;
-                    collisionTileY = entityTopRow;
-                    collisionTileNum = tileNumRightTop;
                 }
                 break;
             default:
                 throw new IllegalStateException("Direcție neașteptată: " + entity.direction);
-        }
-
-        // Dacă am detectat o coliziune, afișăm mesajul de debug
-        if (entity.collisionOn) {
-            if (gp.tileM.tiles[collisionTileNum].collision) {
-                System.out.println("Coliziune detectată. Oprire mișcare. Coordonatele tile-ului: (" + collisionTileX + ", " + collisionTileY + "). Numărul tile-ului: " + collisionTileNum + ". Coordonatele caracterului: (" + entity.worldX/gp.tileSize + ", " + entity.worldY/gp.tileSize + ")");
-            }
         }
     }
 }

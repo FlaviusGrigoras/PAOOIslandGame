@@ -53,46 +53,60 @@ public class Player extends Entity {
     }
 
     public void update() {
-        // Verifică tastatura și stabilește direcția de mișcare
-
-        collisionOn = false;
-        gp.cChecker.checkTile(this);
-
+        // Determine if the player is walking and the direction
         if (keyH.upPressed) {
-            if (!collisionOn || !gp.tileM.tiles[gp.tileM.map[worldX / gp.tileSize][worldY / gp.tileSize - 1]].collision)
-                worldY -= speed;
             isWalking = true;
             direction = "up";
         } else if (keyH.downPressed) {
-            if (!collisionOn || !gp.tileM.tiles[gp.tileM.map[worldX / gp.tileSize][worldY / gp.tileSize + 1]].collision)
-                worldY += speed;
             isWalking = true;
             direction = "down";
         } else if (keyH.leftPressed) {
-            if (!collisionOn || !gp.tileM.tiles[gp.tileM.map[worldX / gp.tileSize - 1][worldY / gp.tileSize]].collision)
-                worldX -= speed;
             isWalking = true;
             direction = "left";
         } else if (keyH.rightPressed) {
-            if (!collisionOn || !gp.tileM.tiles[gp.tileM.map[worldX / gp.tileSize + 1][worldY / gp.tileSize]].collision)
-                worldX += speed;
             isWalking = true;
             direction = "right";
         } else {
-            // Dacă nu se apasă nicio tastă de direcție, oprește mișcarea
             isWalking = false;
         }
 
-        // Incrementare spriteCounter
+        // Check for collisions
+        collisionOn = false;
+        gp.cChecker.checkTile(this);
+
+        // If no collision, move the player based on the direction
+        if (!collisionOn) {
+            switch (direction) {
+                case "up":
+                    if(isWalking)
+                        worldY -= speed;
+                    break;
+                case "down":
+                    if(isWalking)
+                        worldY += speed;
+                    break;
+                case "left":
+                    if(isWalking)
+                        worldX -= speed;
+                    break;
+                case "right":
+                    if(isWalking)
+                        worldX += speed;
+                    break;
+            }
+        }
+        // Increment spriteCounter
         spriteCounter++;
         if (spriteCounter > 12) {
-            spriteCounter = 0; // Reset spriteCounter aici
+            spriteCounter = 0; // Reset spriteCounter here
             if (spriteNum < 4)
                 spriteNum++;
             else
                 spriteNum = 1;
         }
     }
+
+
 
 
     public void draw(Graphics2D g2) {
