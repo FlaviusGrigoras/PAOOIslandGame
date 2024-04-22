@@ -20,6 +20,7 @@ public class Main {
         window.setVisible(true);
         //Finalizare creare fereastra
 
+        gamePanel.setupGame();
         gamePanel.startGameThread();
     }
 }

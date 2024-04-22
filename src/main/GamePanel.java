@@ -1,10 +1,13 @@
 package main;
 
 import entity.Player;
+import object.SuperObject;
 import tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class GamePanel extends JPanel implements Runnable {
     // Setări fereastră
@@ -12,14 +15,14 @@ public class GamePanel extends JPanel implements Runnable {
     public final int scale = 3; // Scalez la 48px48x pentru o vizibilitate mai bună
 
     public final int tileSize = originalTileSize * scale;
-    public final int maxScreenCol = 600/tileSize;
+    public final int maxScreenCol = 400/tileSize;
     public final int maxScreenRow = 400/tileSize;
     public final int screenWidth = tileSize * maxScreenCol;
     public final int screenHeight = tileSize * maxScreenRow;
 
     // Setări lume
-    public final int maxWorldCol = 255;
-    public final int maxWorldRow = 255;
+    public final int maxWorldCol = 20;
+    public final int maxWorldRow = 20;
     public final int worldWidth=tileSize*maxWorldCol;
     public final int worldHeight=tileSize*maxWorldRow;
 
@@ -30,7 +33,10 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
     public CollisionChecker cChecker = new CollisionChecker(this);
+    public AssetSetter aSetter=new AssetSetter(this);
     public Player player = new Player(this, keyH);
+    public SuperObject[] obj =new SuperObject[10];
+
 
     // Variabile pentru afișarea coordonatelor jucătorului
     private int playerX;
@@ -47,6 +53,9 @@ public class GamePanel extends JPanel implements Runnable {
         playerX = player.screenX;
         playerY = player.screenY;
     }
+
+    public void setupGame(){
+    aSetter.setObject();}
 
     public void startGameThread() {
         gameThread = new Thread(this);
@@ -95,11 +104,16 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
+        //TILE
         if (tileM != null) { // Verifică dacă tileM nu este null
             tileM.draw(g2);
         } else {
             System.out.println("TileManager-ul nu a fost inițializat corespunzător.");
         }
+
+
+        //OBJECT
+        Arrays.stream(obj).filter(Objects::nonNull).forEach(superObject -> superObject.draw(g2, this));
 
         if (player != null) { // Verifică dacă player nu este null
             player.draw(g2);
