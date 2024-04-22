@@ -3,7 +3,7 @@ package main;
 import object.OBJ_Coin;
 import object.OBJ_Iron;
 import object.OBJ_Stone;
-import object.OBJ_WoodPlanks;
+import object.OBJ_Wood;
 
 public class AssetSetter {
     GamePanel gp;
@@ -21,7 +21,7 @@ public class AssetSetter {
         gp.obj[1].worldX=9*gp.tileSize;
         gp.obj[1].worldY=8*gp.tileSize;
 
-        gp.obj[2]=new OBJ_WoodPlanks();
+        gp.obj[2]=new OBJ_Wood();
         gp.obj[2].worldX=10*gp.tileSize;
         gp.obj[2].worldY=8*gp.tileSize;
 

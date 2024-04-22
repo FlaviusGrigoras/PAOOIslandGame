@@ -20,6 +20,10 @@ public class Player extends Entity {
 
     public BufferedImage idleSprite, walkSprite;
     public boolean isWalking = false;
+    public int hasCoin=0;
+    int hasIron=0;
+    int hasStone=0;
+    int hasWood=0;
 
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
@@ -29,6 +33,8 @@ public class Player extends Entity {
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
 
         solidArea = new Rectangle(9, 18, 30, 30);
+        solidAreaDefaultX=solidArea.x;
+        solidAreaDefaultY=solidArea.y;
 
         int[] coordinates = TileManager.coordinates;
         setDefaultValues(coordinates);
@@ -70,9 +76,13 @@ public class Player extends Entity {
             isWalking = false;
         }
 
-        // Check for collisions
+        // Check for collision
         collisionOn = false;
         gp.cChecker.checkTile(this);
+
+        // Check for object collision
+        int objIndex=gp.cChecker.checkObject(this, true);
+        pickUpObject(objIndex);
 
         // If no collision, move the player based on the direction
         if (!collisionOn) {
@@ -106,8 +116,32 @@ public class Player extends Entity {
         }
     }
 
+    public void pickUpObject(int i){
+        if(i != 999)
+        {
+            String objectName=gp.obj[i].name;
 
-
+            switch (objectName)
+            {
+                case "Coin":
+                    hasCoin++;
+                    gp.obj[i]=null;
+                    break;
+                case "Iron":
+                    hasIron++;
+                    gp.obj[i]=null;
+                    break;
+                case "Stone":
+                    hasStone++;
+                    gp.obj[i]=null;
+                    break;
+                case "Wood":
+                    hasWood++;
+                    gp.obj[i]=null;
+                    break;
+            }
+        }
+    }
 
     public void draw(Graphics2D g2) {
         //Cod optimizat de la 145 de linii de cod la doar 8

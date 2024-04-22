@@ -9,7 +9,7 @@ public class OBJ_Coin extends SuperObject {
         name = "Coin";
         try {
             // Încărcăm fișierul de imagine folosind getResourceAsStream()
-            InputStream inputStream = getClass().getResourceAsStream("objects/Coin.png");
+                InputStream inputStream = getClass().getResourceAsStream("objects/Coin.png");
             if (inputStream != null) {
                 image = ImageIO.read(inputStream);
             } else {
@@ -20,5 +20,10 @@ public class OBJ_Coin extends SuperObject {
             // Tratează cazul în care apare o excepție în timpul încărcării imaginii
             e.printStackTrace();
         }
+        collision=true;
+        solidArea.x=9*3;
+        solidArea.y=8*3;
+        solidArea.width=7*3;
+        solidArea.height=8*3;
     }
 }

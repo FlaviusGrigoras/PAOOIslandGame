@@ -15,8 +15,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int scale = 3; // Scalez la 48px48x pentru o vizibilitate mai bună
 
     public final int tileSize = originalTileSize * scale;
-    public final int maxScreenCol = 400/tileSize;
-    public final int maxScreenRow = 400/tileSize;
+    public final int maxScreenCol = 800/tileSize;
+    public final int maxScreenRow = 800/tileSize;
     public final int screenWidth = tileSize * maxScreenCol;
     public final int screenHeight = tileSize * maxScreenRow;
 
@@ -34,6 +34,7 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter=new AssetSetter(this);
+    public UI ui=new UI(this);
     public Player player = new Player(this, keyH);
     public SuperObject[] obj =new SuperObject[10];
 
@@ -115,12 +116,18 @@ public class GamePanel extends JPanel implements Runnable {
         //OBJECT
         Arrays.stream(obj).filter(Objects::nonNull).forEach(superObject -> superObject.draw(g2, this));
 
+
+        // PLAYER
         if (player != null) { // Verifică dacă player nu este null
             player.draw(g2);
         } else {
             System.out.println("Jucătorul nu a fost inițializat corespunzător.");
         }
 
+        //UI
+        ui.draw(g2);
+
+        /*
         // Afișează coordonatele jucătorului și numărul de tile în colțul ecranului
         g2.setColor(Color.WHITE);
         g2.drawString("X: " + playerX/tileSize + ", Y: " + playerY/tileSize, 10, 20);
@@ -129,6 +136,8 @@ public class GamePanel extends JPanel implements Runnable {
         int tileNum = tileM.map[playerX / tileSize][playerY / tileSize];
         g2.drawString("Tile: " + tileNum, 10, 40); // Afișează numărul de tile
         g2.dispose();
+        */
+
     }
 
 }
