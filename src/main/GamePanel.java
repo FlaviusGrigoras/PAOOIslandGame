@@ -21,8 +21,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenHeight = tileSize * maxScreenRow;
 
     // Setări lume
-    public final int maxWorldCol = 20;
-    public final int maxWorldRow = 20;
+    public final int maxWorldCol = 35;
+    public final int maxWorldRow = 35;
     public final int worldWidth=tileSize*maxWorldCol;
     public final int worldHeight=tileSize*maxWorldRow;
 
@@ -133,7 +133,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         //UI
-        ui.draw(g2);
+        //ui.draw(g2);
 
         //Debug
         if(keyH.checkDrawTime==true)
@@ -147,7 +147,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
 
-        /*
+
         // Afișează coordonatele jucătorului și numărul de tile în colțul ecranului
         g2.setColor(Color.WHITE);
         g2.drawString("X: " + playerX/tileSize + ", Y: " + playerY/tileSize, 10, 20);
@@ -156,7 +156,7 @@ public class GamePanel extends JPanel implements Runnable {
         int tileNum = tileM.map[playerX / tileSize][playerY / tileSize];
         g2.drawString("Tile: " + tileNum, 10, 40); // Afișează numărul de tile
         g2.dispose();
-        */
+
 
     }
 

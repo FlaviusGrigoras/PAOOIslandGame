@@ -1,17 +1,17 @@
 package object;
 
 import javax.imageio.ImageIO;
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class OBJ_Coin extends SuperObject {
     public OBJ_Coin() {
         name = "Coin";
         try {
-            // Încărcăm fișierul de imagine folosind getResourceAsStream()
-                InputStream inputStream = getClass().getResourceAsStream("objects/Coin.png");
-            if (inputStream != null) {
-                image = ImageIO.read(inputStream);
+            // Încărcăm fișierul de imagine folosind ImageIO.read(new File(String))
+            File file = new File("res/objects/Coin.png");
+            if (file.exists()) {
+                image = ImageIO.read(file);
             } else {
                 // Tratează cazul în care fișierul de imagine nu poate fi găsit
                 System.err.println("Fișierul de imagine Coin.png nu a putut fi găsit.");
@@ -21,9 +21,9 @@ public class OBJ_Coin extends SuperObject {
             e.printStackTrace();
         }
         collision=true;
-        solidArea.x=9*3;
-        solidArea.y=8*3;
-        solidArea.width=7*3;
-        solidArea.height=8*3;
+        solidArea.x=8*3;
+        solidArea.y=5*3;
+        solidArea.width=8*3;
+        solidArea.height=11*3;
     }
 }

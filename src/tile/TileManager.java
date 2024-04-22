@@ -1,12 +1,14 @@
 package tile;
 
 import main.GamePanel;
+import main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class TileManager {
     public static int[] coordinates;
@@ -22,105 +24,70 @@ public class TileManager {
         this.gp = gp;
         tiles = new Tile[140]; // Numărul total de țigle din spritesheet, inclusiv noile tipuri de țigle
 
-        try {
-            tileSheet = ImageIO.read(new File("res/tiles/TinyIslands.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        getTilesFromSheet();
+        getTileImage();
         generateMap();
-    }
-
-    private void getTilesFromSheet() {
-        int tileIndex = 0;
-
-        // Tăiem țiglele din spritesheet și le atribuim în array-ul de țigle
-    /*
-    Insula inconjurata de ocean
-    tiles[0] = Colt. Ocean in stanga si sus
-    tiles[1] = Margine. Ocean doar sus
-    tiles[2] = Colt. Ocean in dreapta si sus
-
-    tiles[14] = Margine. Ocean doar in stanga
-    tiles[15] = Pamant fara ocean
-    tiles[16] = Margine. Ocean doar in dreapta
-
-    tiles[28] = Colt. Ocean in stanga si jos
-    tiles[29] = Margine. Ocean doar in sus
-    tiles[30] = Colt. Ocean in dreapta si jos
-
-    Lac inconjurat de pamant
-    tiles[3] = Lac cu pamant stanga si sus complet
-    tiles[4] = Lac cu pamant dreapta si sus complet
-
-    tiles[17] = Lac cu pamant stanga si jos complet
-    tiles[18] = Lac cu pamant dreapta si jos complet
-
-    Golf in partea de sus a insulei:
-    tiles[17] + tiles[18]
-    Gold in partea de jos a insulei:
-    tiles[3] + tiles[4]
-    Golf in partea stanga a insulei:
-    tiles[4] + tiles[18]
-    Golf in partea dreapta a insulei:
-    tiles[3] + tiles[17]
-
-    tiles[5] = Copac
-    tiles[6] = Stanca
-
-    Variatii apa ocean
-    tiles[31] = Ocean simplu
-    tiles[32] = Ocean simplu variatie 2
-    tiles[33] = Ocean simplu variatie 3
-    tiles[34] = Ocean simplu variatie 4
-    tiles[35] = Ocean simplu variatie 5
-    tiles[36] = Ocean simplu variatie 6
-    */
-        int tileHeight = 16;
-        for (int y = 0; y < tileSheet.getHeight() / tileHeight; y++) {
-            // Numărul de țigle pe axa X în spritesheet
-            for (int x = 0; x < numTilesX; x++) {
-                BufferedImage subImage = tileSheet.getSubimage(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
-                tiles[tileIndex] = new Tile();
-                tiles[tileIndex].image = subImage;
-                tileIndex++;
-            }
-        }
-
-        tiles[31].collision=true;
-        tiles[32].collision=true;
-        tiles[33].collision=true;
-        tiles[34].collision=true;
-        tiles[35].collision=true;
-        tiles[36].collision=true;
-        tiles[5].collision=true;
-        tiles[6].collision=true;
-
-        tiles[0].collision=true;
-        tiles[1].collision=true;
-        tiles[2].collision=true;
-        tiles[14].collision=true;
-        tiles[16].collision=true;
-        tiles[28].collision=true;
-        tiles[29].collision=true;
-        tiles[30].collision=true;
-
-        tiles[25].collision=true;
-        tiles[26].collision=true;
-        tiles[27].collision=true;
-        tiles[39].collision=true;
-        tiles[41].collision=true;
-        tiles[53].collision=true;
-        tiles[54].collision=true;
-        tiles[55].collision=true;
-
     }
 
     public void generateMap() {
         map = MapGenerator.generateMap(gp.maxWorldCol, gp.maxWorldRow);
         coordinates = MapGenerator.chooseRandomIslandTile(map);
-        System.out.println("Coordonatele tile-ului de tip insulă aleator selectat sunt: (" + coordinates[0] + ", " + coordinates[1] + "). Tile-ul are numarul: "+ map[coordinates[0]][coordinates[1]]);
+        System.out.println("Coordonatele tile-ului de tip insulă aleator selectat sunt: (" + coordinates[0] + ", " + coordinates[1] + "). Tile-ul are numarul: " + map[coordinates[0]][coordinates[1]]);
+    }
+
+    private void getTileImage() {
+        setup(0, "CORNER_TOP_LEFT", "island", true);
+        setup(1, "EDGE_TOP", "island", true);
+        setup(2, "CORNER_TOP_RIGHT", "island", true);
+
+        setup(3, "EDGE_LEFT", "island", true);
+        setup(4, "ISLAND", "island", false);
+        setup(5, "EDGE_RIGHT", "island", true);
+
+        setup(6, "CORNER_BOTTOM_LEFT", "island", true);
+        setup(7, "EDGE_BOTTOM", "island", true);
+        setup(8, "CORNER_BOTTOM_RIGHT", "island", true);
+
+        setup(9, "OCEAN", "ocean", true);
+        setup(10, "OCEAN_1", "ocean", true);
+        setup(11, "OCEAN_2", "ocean", true);
+        setup(12, "OCEAN_3", "ocean", true);
+        setup(13, "OCEAN_4", "ocean", true);
+        setup(14, "OCEAN_5", "ocean", true);
+
+        setup(15, "TOP_LEFT_RAMA", "rama", true);
+        setup(16, "TOP_RAMA", "rama", true);
+        setup(17, "TOP_RIGHT_RAMA", "rama", true);
+
+        setup(18, "LEFT_RAMA", "rama", true);
+        setup(19, "RIGHT_RAMA", "rama", true);
+
+        setup(20, "BOTTOM_LEFT_RAMA", "rama", true);
+        setup(21, "BOTTOM_RAMA", "rama", true);
+        setup(22, "BOTTOM_RIGHT_RAMA", "rama", true);
+
+        setup(23, "TREE", "interactive", true);
+        setup(24, "TREE_1", "interactive", true);
+
+        setup(25, "ROCK", "interactive", true);
+        setup(26, "ROCK_1", "interactive", true);
+
+        setup(27, "TOP_LEFT_LAKE", "lake", true);
+        setup(28, "TOP_RIGHT_LAKE", "lake", true);
+
+        setup(29, "BOTTOM_LEFT_LAKE", "lake", true);
+        setup(30, "BOTTOM_RIGHT_LAKE", "lake", true);
+    }
+    public void setup(int index, String imageName, String tileType, boolean collision) {
+        UtilityTool uTool = new UtilityTool();
+        try {
+            tiles[index] = new Tile();
+            tiles[index].image = ImageIO.read(new File("res/tiles/" + tileType + "/" + imageName + ".png"));
+            tiles[index].image = uTool.scaleImage(tiles[index].image, gp.tileSize, gp.tileSize);
+            tiles[index].collision = collision;
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
     }
 
     public void draw(Graphics2D g2) {
@@ -160,9 +127,4 @@ public class TileManager {
             System.out.println("Tiles sau map nu au fost inițializate corespunzător.");
         }
     }
-
-
-
-
-
 }

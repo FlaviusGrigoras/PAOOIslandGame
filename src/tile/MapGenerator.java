@@ -9,23 +9,32 @@ import java.util.Random;
 
 public class MapGenerator {
     public static final int CORNER_TOP_LEFT = 0;
-    public static final int EDGE_TOP = 14;
-    public static final int CORNER_TOP_RIGHT = 28;
+    public static final int EDGE_TOP = 3;
+    public static final int CORNER_TOP_RIGHT = 6;
+
     public static final int EDGE_LEFT = 1;
-    public static final int EDGE_RIGHT = 29;
+    public static final int ISLAND = 4;
+    public static final int EDGE_RIGHT = 7;
+
     public static final int CORNER_BOTTOM_LEFT = 2;
-    public static final int EDGE_BOTTOM = 16;
-    public static final int CORNER_BOTTOM_RIGHT = 30;
-    public static final int OCEAN = 31;
-    public static final int ISLAND = 15;
-    public static final int TOP_LEFT_RAMA = 25;
-    public static final int TOP_RAMA = 39;
-    public static final int TOP_RIGHT_RAMA = 53;
-    public static final int LEFT_RAMA = 26;
-    public static final int RIGHT_RAMA = 54;
-    public static final int BOTTOM_LEFT_RAMA = 27;
-    public static final int BOTTOM_RAMA = 41;
-    public static final int BOTTOM_RIGHT_RAMA = 55;
+    public static final int EDGE_BOTTOM = 5;
+    public static final int CORNER_BOTTOM_RIGHT = 8;
+
+    public static final int OCEAN = 9;
+
+    public static final int TOP_LEFT_RAMA = 15;
+    public static final int TOP_RAMA = 18;
+    public static final int TOP_RIGHT_RAMA = 20;
+
+    public static final int LEFT_RAMA = 16;
+    public static final int RIGHT_RAMA = 21;
+
+    public static final int BOTTOM_LEFT_RAMA = 17;
+    public static final int BOTTOM_RAMA = 19;
+    public static final int BOTTOM_RIGHT_RAMA = 22;
+
+    public static final int TREE=23;
+    public static final int ROCK=25;
 
     public static int[][] generateMap(int width, int height) {
         if (width <= 0 || height <= 0) {
@@ -43,7 +52,7 @@ public class MapGenerator {
                     if (randomValue == 0) {
                         randomValue = 1; // or any other positive integer
                     }
-                    map[i][j] = randomValue + 32; // Random other water tiles
+                    map[i][j] = randomValue + OCEAN+1; // Random other water tiles
                 } else {
                     map[i][j] = OCEAN;
                 }
@@ -117,9 +126,9 @@ public class MapGenerator {
                 if (i < width && j < height && map[i][j] == ISLAND) {
                     double randomValue = random.nextDouble();
                     if (randomValue < 0.1) {
-                        map[i][j] = 5; // Tree tile with 20% chance
+                        map[i][j] = TREE; // Tree tile with 20% chance
                     } else if (randomValue < 0.13) {
-                        map[i][j] = 6; // Rock tile with 3% chance
+                        map[i][j] = ROCK; // Rock tile with 3% chance
                     }
                 }
             }
@@ -205,13 +214,13 @@ public class MapGenerator {
         Random random = new Random();
         int[] coordinates = new int[2];
 
-        // Lista pentru a ține coordonatele tuturor tile-urilor de tip 15 (ISLAND)
+        // Lista pentru a ține coordonatele tuturor tile-urilor de tip 4 (ISLAND)
         List < int[] > islandTiles = new ArrayList < > ();
 
         // Căutăm toate tile-urile de tip 15 (ISLAND) și adăugăm coordonatele lor în listă
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[0].length; j++) {
-                if (map[i][j] == 15) { // Verificare dacă tile-ul este de tip insulă (15)
+                if (map[i][j] == ISLAND) { // Verificare dacă tile-ul este de tip insulă (15)
                     islandTiles.add(new int[] {
                             i,
                             j
