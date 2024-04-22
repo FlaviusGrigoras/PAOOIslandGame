@@ -105,6 +105,14 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
+        //Debug
+        double drawStart=0;
+        if(keyH.checkDrawTime==true)
+        {
+            drawStart=System.nanoTime();
+        }
+
+
         //TILE
         if (tileM != null) { // Verifică dacă tileM nu este null
             tileM.draw(g2);
@@ -126,6 +134,18 @@ public class GamePanel extends JPanel implements Runnable {
 
         //UI
         ui.draw(g2);
+
+        //Debug
+        if(keyH.checkDrawTime==true)
+        {
+            double drawEnd = System.nanoTime();
+            double passed = (drawEnd - drawStart) / 1_000_000.0; // Convert to milliseconds
+            String passedFormatted = String.format("%.2f", passed); // Format to 2 decimal places
+            g2.setColor(Color.WHITE);
+            g2.drawString("Draw Time: " + passedFormatted + "ms", 10, 400);
+            System.out.println("Draw Time: " + passedFormatted + "ms");
+        }
+
 
         /*
         // Afișează coordonatele jucătorului și numărul de tile în colțul ecranului
