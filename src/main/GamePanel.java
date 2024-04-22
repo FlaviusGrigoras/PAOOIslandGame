@@ -15,14 +15,14 @@ public class GamePanel extends JPanel implements Runnable {
     public final int scale = 3; // Scalez la 48px48x pentru o vizibilitate mai bună
 
     public final int tileSize = originalTileSize * scale;
-    public final int maxScreenCol = 800/tileSize;
-    public final int maxScreenRow = 800/tileSize;
+    public final int maxScreenCol = 1920/tileSize;
+    public final int maxScreenRow = 1080/tileSize;
     public final int screenWidth = tileSize * maxScreenCol;
     public final int screenHeight = tileSize * maxScreenRow;
 
     // Setări lume
-    public final int maxWorldCol = 35;
-    public final int maxWorldRow = 35;
+    public final int maxWorldCol = 255;
+    public final int maxWorldRow = 255;
     public final int worldWidth=tileSize*maxWorldCol;
     public final int worldHeight=tileSize*maxWorldRow;
 
@@ -136,13 +136,13 @@ public class GamePanel extends JPanel implements Runnable {
         //ui.draw(g2);
 
         //Debug
-        if(keyH.checkDrawTime==true)
+        if(keyH.checkDrawTime)
         {
             double drawEnd = System.nanoTime();
             double passed = (drawEnd - drawStart) / 1_000_000.0; // Convert to milliseconds
             String passedFormatted = String.format("%.2f", passed); // Format to 2 decimal places
             g2.setColor(Color.WHITE);
-            g2.drawString("Draw Time: " + passedFormatted + "ms", 10, 400);
+            g2.drawString("Draw Time: " + passedFormatted + "ms", 10, 60);
             System.out.println("Draw Time: " + passedFormatted + "ms");
         }
 

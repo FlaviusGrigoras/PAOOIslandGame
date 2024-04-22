@@ -111,7 +111,7 @@ public class TileManager {
 
                         if (tileNum >= 0 && tileNum < tiles.length) {
                             if (tiles[tileNum] != null && tiles[tileNum].image != null) {
-                                g2.drawImage(tiles[tileNum].image, screenX, screenY, tileSize, tileSize, null);
+                                g2.drawImage(tiles[tileNum].image, screenX, screenY, null);
                             } else {
                                 System.out.println("Imaginea pentru țigla " + tileNum + " lipsește.");
                             }

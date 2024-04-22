@@ -1,11 +1,14 @@
 package object;
 
+import main.GamePanel;
+
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 
 public class OBJ_Coin extends SuperObject {
-    public OBJ_Coin() {
+    GamePanel gp;
+    public OBJ_Coin(GamePanel gp) {
         name = "Coin";
         try {
             // Încărcăm fișierul de imagine folosind ImageIO.read(new File(String))
@@ -16,6 +19,7 @@ public class OBJ_Coin extends SuperObject {
                 // Tratează cazul în care fișierul de imagine nu poate fi găsit
                 System.err.println("Fișierul de imagine Coin.png nu a putut fi găsit.");
             }
+            uTool.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch (IOException e) {
             // Tratează cazul în care apare o excepție în timpul încărcării imaginii
             e.printStackTrace();

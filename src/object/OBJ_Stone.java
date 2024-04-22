@@ -8,7 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class OBJ_Stone extends SuperObject {
-    public OBJ_Stone() {
+    GamePanel gp;
+    public OBJ_Stone(GamePanel gp) {
         name = "Stone";
         try {
             // Încărcăm fișierul de imagine folosind ImageIO.read(new File(String))
@@ -19,6 +20,7 @@ public class OBJ_Stone extends SuperObject {
                 // Tratează cazul în care fișierul de imagine nu poate fi găsit
                 System.err.println("Fișierul de imagine Stone.png nu a putut fi găsit.");
             }
+            uTool.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch (IOException e) {
             // Tratează cazul în care apare o excepție în timpul încărcării imaginii
             e.printStackTrace();

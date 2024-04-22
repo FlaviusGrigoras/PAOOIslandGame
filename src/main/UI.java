@@ -14,7 +14,7 @@ public class UI {
         this.gp=gp;
 
         arial_40=new Font("Arial", Font.PLAIN, 40);
-        OBJ_Coin coin=new OBJ_Coin();
+        OBJ_Coin coin=new OBJ_Coin(gp);
         coinImage=coin.image;
     }
 
