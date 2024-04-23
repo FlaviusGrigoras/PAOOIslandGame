@@ -12,7 +12,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Player extends Entity {
-    GamePanel gp;
     KeyHandler keyH;
 
     public final int screenX;
@@ -20,12 +19,13 @@ public class Player extends Entity {
 
     public BufferedImage idleSprite, walkSprite;
     public boolean isWalking = false;
-    public int hasCoin=0;
-    int hasIron=0;
-    int hasStone=0;
-    int hasWood=0;
+    public int hasCoin = 0;
+    int hasIron = 0;
+    int hasStone = 0;
+    int hasWood = 0;
 
     public Player(GamePanel gp, KeyHandler keyH) {
+        super(gp);
         this.gp = gp;
         this.keyH = keyH;
 
@@ -33,10 +33,10 @@ public class Player extends Entity {
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
 
         solidArea = new Rectangle(9, 18, 30, 30);
-        solidAreaDefaultX=solidArea.x;
-        solidAreaDefaultY=solidArea.y;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
 
-        int[] coordinates = TileManager.coordinates;
+        int[] coordinates = TileManager.PlayerCoordinates;
         setDefaultValues(coordinates);
         getPlayerImage();
     }
@@ -81,26 +81,31 @@ public class Player extends Entity {
         gp.cChecker.checkTile(this);
 
         // Check for object collision
-        int objIndex=gp.cChecker.checkObject(this, true);
+        int objIndex = gp.cChecker.checkObject(this, true);
         pickUpObject(objIndex);
+
+        // Check npc collision
+
+        int npcIndex=gp.cChecker.checkEntity(this, gp.npc);
+        interactNPC(npcIndex);
 
         // If no collision, move the player based on the direction
         if (!collisionOn) {
             switch (direction) {
                 case "up":
-                    if(isWalking)
+                    if (isWalking)
                         worldY -= speed;
                     break;
                 case "down":
-                    if(isWalking)
+                    if (isWalking)
                         worldY += speed;
                     break;
                 case "left":
-                    if(isWalking)
+                    if (isWalking)
                         worldX -= speed;
                     break;
                 case "right":
-                    if(isWalking)
+                    if (isWalking)
                         worldX += speed;
                     break;
             }
@@ -116,28 +121,33 @@ public class Player extends Entity {
         }
     }
 
-    public void pickUpObject(int i){
-        if(i != 999)
+    private void interactNPC(int i) {
+        if(i!=999)
         {
-            String objectName=gp.obj[i].name;
+            System.out.println("You are hitting NPC");
+        }
+    }
 
-            switch (objectName)
-            {
+    public void pickUpObject(int i) {
+        if (i != 999) {
+            String objectName = gp.obj[i].name;
+
+            switch (objectName) {
                 case "Coin":
                     hasCoin++;
-                    gp.obj[i]=null;
+                    gp.obj[i] = null;
                     break;
                 case "Iron":
                     hasIron++;
-                    gp.obj[i]=null;
+                    gp.obj[i] = null;
                     break;
                 case "Stone":
                     hasStone++;
-                    gp.obj[i]=null;
+                    gp.obj[i] = null;
                     break;
                 case "Wood":
                     hasWood++;
-                    gp.obj[i]=null;
+                    gp.obj[i] = null;
                     break;
             }
         }

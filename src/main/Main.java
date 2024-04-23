@@ -3,8 +3,7 @@ package main;
 import javax.swing.*;
 
 public class Main {
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         //Test 2
         //Creez fereastra cu numele Island Game, se inchide din X, nu se poate da resize
         JFrame window = new JFrame();
@@ -12,7 +11,7 @@ public class Main {
         window.setResizable(false);
         window.setTitle("Island Game");
 
-        GamePanel gamePanel=new GamePanel();
+        GamePanel gamePanel = new GamePanel();
         window.add(gamePanel);
         window.pack();
 

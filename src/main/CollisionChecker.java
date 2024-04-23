@@ -137,4 +137,100 @@ public class CollisionChecker {
         }
         return index;
     }
+
+    //NPC - Monster Collision
+    public int checkEntity(Entity entity, Entity[] target) {
+        int index = 999;
+        Rectangle entitySolidAreaCopy = new Rectangle(entity.solidArea);
+        Rectangle objectSolidAreaCopy;
+
+        for (int i = 0; i < target.length; i++) {
+            if (target[i] != null) {
+                objectSolidAreaCopy = new Rectangle(target[i].solidArea);
+
+                // Get entity's solid area position
+                entitySolidAreaCopy.x = entity.worldX + entity.solidArea.x;
+                entitySolidAreaCopy.y = entity.worldY + entity.solidArea.y;
+
+                // Get the object's solid area position
+                objectSolidAreaCopy.x = target[i].worldX + target[i].solidArea.x;
+                objectSolidAreaCopy.y = target[i].worldY + target[i].solidArea.y;
+
+                switch (entity.direction) {
+                    case "up":
+                        entitySolidAreaCopy.y -= entity.speed;
+                        if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
+                            entity.collisionOn = true;
+                            index = i;
+                        }
+                        break;
+                    case "down":
+                        entitySolidAreaCopy.y += entity.speed;
+                        if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
+                            entity.collisionOn = true;
+                            index = i;
+                        }
+                        break;
+                    case "left":
+                        entitySolidAreaCopy.x -= entity.speed;
+                        if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
+                            entity.collisionOn = true;
+                            index = i;
+                        }
+                        break;
+                    case "right":
+                        entitySolidAreaCopy.x += entity.speed;
+                        if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
+                            entity.collisionOn = true;
+                            index = i;
+                        }
+                        break;
+                }
+            }
+        }
+        return index;
+    }
+
+    public void checkPlayer(Entity entity)
+    {
+        Rectangle entitySolidAreaCopy = new Rectangle(entity.solidArea);
+        Rectangle objectSolidAreaCopy;
+
+        objectSolidAreaCopy = new Rectangle(gp.player.solidArea);
+
+        // Get entity's solid area position
+        entitySolidAreaCopy.x = entity.worldX + entity.solidArea.x;
+        entitySolidAreaCopy.y = entity.worldY + entity.solidArea.y;
+
+        // Get the object's solid area position
+        objectSolidAreaCopy.x = gp.player.worldX + gp.player.solidArea.x;
+        objectSolidAreaCopy.y = gp.player.worldY + gp.player.solidArea.y;
+
+        switch (entity.direction) {
+            case "up":
+                entitySolidAreaCopy.y -= entity.speed;
+                if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
+                    entity.collisionOn = true;
+                }
+                break;
+            case "down":
+                entitySolidAreaCopy.y += entity.speed;
+                if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
+                    entity.collisionOn = true;
+                }
+                break;
+            case "left":
+                entitySolidAreaCopy.x -= entity.speed;
+                if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
+                    entity.collisionOn = true;
+                }
+                break;
+            case "right":
+                entitySolidAreaCopy.x += entity.speed;
+                if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
+                    entity.collisionOn = true;
+                }
+                break;
+        }
+    }
 }

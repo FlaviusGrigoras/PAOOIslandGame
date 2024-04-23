@@ -5,20 +5,15 @@ import main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 
 public class TileManager {
-    public static int[] coordinates;
+    public static int[] PlayerCoordinates;
+    public static int[] NPC1Coordinates;
     private final GamePanel gp;
-    private BufferedImage tileSheet;
     public final Tile[] tiles;
     public int[][] map;
-
-    private final int tileWidth = 16;
-    private final int numTilesX = 14;
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
@@ -30,8 +25,13 @@ public class TileManager {
 
     public void generateMap() {
         map = MapGenerator.generateMap(gp.maxWorldCol, gp.maxWorldRow);
-        coordinates = MapGenerator.chooseRandomIslandTile(map);
-        System.out.println("Coordonatele tile-ului de tip insulă aleator selectat sunt: (" + coordinates[0] + ", " + coordinates[1] + "). Tile-ul are numarul: " + map[coordinates[0]][coordinates[1]]);
+        PlayerCoordinates = MapGenerator.chooseRandomIslandTile(map);
+        System.out.println("Coordonatele tile-ului de tip insulă aleator selectat pentru Player sunt: (" + PlayerCoordinates[0] + ", " + PlayerCoordinates[1] + "). Tile-ul are numarul: " + map[PlayerCoordinates[0]][PlayerCoordinates[1]]);
+
+        NPC1Coordinates = MapGenerator.chooseRandomIslandTile(map);
+        System.out.println("Coordonatele tile-ului de tip insulă aleator selectat pentru NPC sunt: (" + NPC1Coordinates[0] + ", " + NPC1Coordinates[1] + "). Tile-ul are numarul: " + map[NPC1Coordinates[0]][NPC1Coordinates[1]]);
+
+
     }
 
     private void getTileImage() {
@@ -77,6 +77,7 @@ public class TileManager {
         setup(29, "BOTTOM_LEFT_LAKE", "lake", true);
         setup(30, "BOTTOM_RIGHT_LAKE", "lake", true);
     }
+
     public void setup(int index, String imageName, String tileType, boolean collision) {
         UtilityTool uTool = new UtilityTool();
         try {
@@ -92,7 +93,7 @@ public class TileManager {
 
     public void draw(Graphics2D g2) {
         int tileSize = gp.tileSize;
-        int worldCol = 0;
+        int worldCol;
         int worldRow = 0;
 
         if (tiles != null && map != null) { // Verificăm dacă tiles și map nu sunt null

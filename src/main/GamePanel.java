@@ -1,5 +1,6 @@
 package main;
 
+import entity.Entity;
 import entity.Player;
 import object.SuperObject;
 import tile.TileManager;
@@ -15,33 +16,43 @@ public class GamePanel extends JPanel implements Runnable {
     public final int scale = 3; // Scalez la 48px48x pentru o vizibilitate mai bună
 
     public final int tileSize = originalTileSize * scale;
-    public final int maxScreenCol = 1920/tileSize;
-    public final int maxScreenRow = 1080/tileSize;
+    public final int maxScreenCol = 600 / tileSize;
+    public final int maxScreenRow = 400 / tileSize;
     public final int screenWidth = tileSize * maxScreenCol;
     public final int screenHeight = tileSize * maxScreenRow;
 
     // Setări lume
-    public final int maxWorldCol = 255;
-    public final int maxWorldRow = 255;
-    public final int worldWidth=tileSize*maxWorldCol;
-    public final int worldHeight=tileSize*maxWorldRow;
+    public final int maxWorldCol = 25;
+    public final int maxWorldRow = 25;
+    public final int worldWidth = tileSize * maxWorldCol;
+    public final int worldHeight = tileSize * maxWorldRow;
 
     double FPS = 60;
+    int Real_FPS;
+    Font serif = new Font("Serif", Font.BOLD, 14);
 
     public TileManager tileM = new TileManager(this);
 
-    KeyHandler keyH = new KeyHandler();
+    KeyHandler keyH = new KeyHandler(this);
     Thread gameThread;
     public CollisionChecker cChecker = new CollisionChecker(this);
-    public AssetSetter aSetter=new AssetSetter(this);
-    public UI ui=new UI(this);
-    public Player player = new Player(this, keyH);
-    public SuperObject[] obj =new SuperObject[10];
+    public AssetSetter aSetter = new AssetSetter(this);
+    public UI ui = new UI(this);
 
+    //Entity and object
+    public Player player = new Player(this, keyH);
+    public SuperObject[] obj = new SuperObject[10];
+    public Entity[] npc = new Entity[10];
+
+    //Game state
+
+    public int gameState;
+    public final int playState = 1;
+    public final int pauseState = 2;
 
     // Variabile pentru afișarea coordonatelor jucătorului
-    private int playerX;
-    private int playerY;
+    int playerX;
+    int playerY;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -55,8 +66,11 @@ public class GamePanel extends JPanel implements Runnable {
         playerY = player.screenY;
     }
 
-    public void setupGame(){
-    aSetter.setObject();}
+    public void setupGame() {
+        aSetter.setObject();
+        aSetter.setNPC();
+        gameState = playState;
+    }
 
     public void startGameThread() {
         gameThread = new Thread(this);
@@ -86,6 +100,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
             if (timer >= 1000000000) {
                 System.out.println("FPS: " + drawCount);
+                Real_FPS = drawCount;
                 drawCount = 0;
                 timer = 0;
             }
@@ -94,7 +109,18 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        player.update();
+        if (gameState == playState) {
+            //Player
+            player.update();
+            //NPC
+            for (int i = 0; i < npc.length; i++)
+                if (npc[i] != null) {
+                    npc[i].update();
+                }
+        }
+        if (gameState == pauseState) {
+            //Nothing
+        }
 
         // Actualizează coordonatele jucătorului
         playerX = player.worldX;
@@ -106,12 +132,10 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D) g;
 
         //Debug
-        double drawStart=0;
-        if(keyH.checkDrawTime==true)
-        {
-            drawStart=System.nanoTime();
+        double drawStart = 0;
+        if (keyH.DebugMode) {
+            drawStart = System.nanoTime();
         }
-
 
         //TILE
         if (tileM != null) { // Verifică dacă tileM nu este null
@@ -120,10 +144,14 @@ public class GamePanel extends JPanel implements Runnable {
             System.out.println("TileManager-ul nu a fost inițializat corespunzător.");
         }
 
-
         //OBJECT
         Arrays.stream(obj).filter(Objects::nonNull).forEach(superObject -> superObject.draw(g2, this));
 
+        // NPC
+
+        for (Entity entity : npc)
+            if (entity != null)
+                entity.draw(g2);
 
         // PLAYER
         if (player != null) { // Verifică dacă player nu este null
@@ -132,32 +160,23 @@ public class GamePanel extends JPanel implements Runnable {
             System.out.println("Jucătorul nu a fost inițializat corespunzător.");
         }
 
-        //UI
-        //ui.draw(g2);
-
         //Debug
-        if(keyH.checkDrawTime)
-        {
+        if (keyH.DebugMode) {
             double drawEnd = System.nanoTime();
             double passed = (drawEnd - drawStart) / 1_000_000.0; // Convert to milliseconds
             String passedFormatted = String.format("%.2f", passed); // Format to 2 decimal places
-            g2.setColor(Color.WHITE);
-            g2.drawString("Draw Time: " + passedFormatted + "ms", 10, 60);
+            g2.setColor(Color.white);
+            g2.setFont(serif);
+            g2.drawString("Draw Time: " + passedFormatted + "ms", 10, 80);
             System.out.println("Draw Time: " + passedFormatted + "ms");
+
+            g2.setFont(serif);
+            g2.setColor(Color.white);
+            int tileNum = tileM.map[playerX / tileSize][playerY / tileSize];
+            g2.drawString("Tile: " + tileNum, 10, 60); // Afișează numărul de tile
         }
 
-
-
-        // Afișează coordonatele jucătorului și numărul de tile în colțul ecranului
-        g2.setColor(Color.WHITE);
-        g2.drawString("X: " + playerX/tileSize + ", Y: " + playerY/tileSize, 10, 20);
-
-        // Obține numărul de tile din harta jocului folosind coordonatele jucătorului
-        int tileNum = tileM.map[playerX / tileSize][playerY / tileSize];
-        g2.drawString("Tile: " + tileNum, 10, 40); // Afișează numărul de tile
-        g2.dispose();
-
-
+        //UI
+        ui.draw(g2);
     }
-
 }

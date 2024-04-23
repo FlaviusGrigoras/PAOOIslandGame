@@ -33,8 +33,8 @@ public class MapGenerator {
     public static final int BOTTOM_RAMA = 19;
     public static final int BOTTOM_RIGHT_RAMA = 22;
 
-    public static final int TREE=23;
-    public static final int ROCK=25;
+    public static final int TREE = 23;
+    public static final int ROCK = 25;
 
     public static int[][] generateMap(int width, int height) {
         if (width <= 0 || height <= 0) {
@@ -52,7 +52,7 @@ public class MapGenerator {
                     if (randomValue == 0) {
                         randomValue = 1; // or any other positive integer
                     }
-                    map[i][j] = randomValue + OCEAN+1; // Random other water tiles
+                    map[i][j] = randomValue + OCEAN + 1; // Random other water tiles
                 } else {
                     map[i][j] = OCEAN;
                 }
@@ -199,7 +199,7 @@ public class MapGenerator {
     private static void writeMapToFile(int[][] map) {
         try (BufferedWriter fileWriter = new BufferedWriter(new FileWriter("Mapa.txt"))) {
             // Write map to file
-            for (int[] ints: map) {
+            for (int[] ints : map) {
                 for (int j = 0; j < map[0].length; j++) {
                     fileWriter.write(ints[j] + " ");
                 }
@@ -215,13 +215,13 @@ public class MapGenerator {
         int[] coordinates = new int[2];
 
         // Lista pentru a ține coordonatele tuturor tile-urilor de tip 4 (ISLAND)
-        List < int[] > islandTiles = new ArrayList < > ();
+        List<int[]> islandTiles = new ArrayList<>();
 
         // Căutăm toate tile-urile de tip 15 (ISLAND) și adăugăm coordonatele lor în listă
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[0].length; j++) {
                 if (map[i][j] == ISLAND) { // Verificare dacă tile-ul este de tip insulă (15)
-                    islandTiles.add(new int[] {
+                    islandTiles.add(new int[]{
                             i,
                             j
                     });

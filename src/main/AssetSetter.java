@@ -1,33 +1,27 @@
 package main;
 
+import entity.NPC_Villager;
 import object.OBJ_Coin;
 import object.OBJ_Iron;
 import object.OBJ_Stone;
 import object.OBJ_Wood;
+import tile.TileManager;
 
 public class AssetSetter {
     GamePanel gp;
-    public AssetSetter(GamePanel gp)
-    {
-        this.gp=gp;
+
+    public AssetSetter(GamePanel gp) {
+        this.gp = gp;
     }
-    public void setObject()
-    {
-        gp.obj[0]=new OBJ_Coin(gp);
-        gp.obj[0].worldX=8*gp.tileSize;
-        gp.obj[0].worldY=8*gp.tileSize;
 
-        gp.obj[1]=new OBJ_Iron(gp);
-        gp.obj[1].worldX=9*gp.tileSize;
-        gp.obj[1].worldY=8*gp.tileSize;
+    public void setObject() {
 
-        gp.obj[2]=new OBJ_Wood(gp);
-        gp.obj[2].worldX=10*gp.tileSize;
-        gp.obj[2].worldY=8*gp.tileSize;
+    }
 
-        gp.obj[3]=new OBJ_Stone(gp);
-        gp.obj[3].worldX=11*gp.tileSize;
-        gp.obj[3].worldY=8*gp.tileSize;
-
+    public void setNPC() {
+        int[] coordinates = TileManager.NPC1Coordinates;
+        gp.npc[0] = new NPC_Villager(gp);
+        gp.npc[0].worldX = coordinates[0] * gp.tileSize;
+        gp.npc[0].worldY = coordinates[1] * gp.tileSize;
     }
 }

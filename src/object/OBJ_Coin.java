@@ -8,6 +8,7 @@ import java.io.IOException;
 
 public class OBJ_Coin extends SuperObject {
     GamePanel gp;
+
     public OBJ_Coin(GamePanel gp) {
         name = "Coin";
         try {
@@ -24,10 +25,10 @@ public class OBJ_Coin extends SuperObject {
             // Tratează cazul în care apare o excepție în timpul încărcării imaginii
             e.printStackTrace();
         }
-        collision=true;
-        solidArea.x=8*3;
-        solidArea.y=5*3;
-        solidArea.width=8*3;
-        solidArea.height=11*3;
+        collision = true;
+        solidArea.x = 8 * 3;
+        solidArea.y = 5 * 3;
+        solidArea.width = 8 * 3;
+        solidArea.height = 11 * 3;
     }
 }
