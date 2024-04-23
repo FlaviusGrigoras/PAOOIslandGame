@@ -12,6 +12,7 @@ public class NPC_Villager extends Entity {
         speed = 1;
 
         getImage();
+        setDialogue();
     }
 
     public void getImage() {
@@ -60,6 +61,13 @@ public class NPC_Villager extends Entity {
         i_right[3] = setup("npc", "Villager", "Idle", "right_4");
     }
 
+    public void setDialogue() {
+        dialogues[0] = "Salut, călătorule!";
+        dialogues[1] = "De unde ai răsărit? Nu îmi \namintesc să te fi văzut pe aici înainte!";
+        dialogues[2] = "Fii precaut...când se lasă \nnoaptea, apar entități misterioase care \nnu sunt întotdeauna prietenoase.";
+        dialogues[3] = "Construiește-ți o barcă cât\nmai repede \nși părăsește acest loc!";
+    }
+
     @Override
     public void setAction() {
         actionLockCounter++;
@@ -82,5 +90,9 @@ public class NPC_Villager extends Entity {
 
             actionLockCounter = 0;
         }
+    }
+
+    public void speak() {
+        super.speak();
     }
 }
