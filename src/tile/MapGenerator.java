@@ -197,7 +197,7 @@ public class MapGenerator {
     }
 
     private static void writeMapToFile(int[][] map) {
-        try (BufferedWriter fileWriter = new BufferedWriter(new FileWriter("Mapa.txt"))) {
+        try (BufferedWriter fileWriter = new BufferedWriter(new FileWriter("src/tile/Mapa.txt"))) {
             // Write map to file
             for (int[] ints : map) {
                 for (int j = 0; j < map[0].length; j++) {

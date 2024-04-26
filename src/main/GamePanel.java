@@ -16,16 +16,14 @@ public class GamePanel extends JPanel implements Runnable {
     public final int scale = 3; // Scalez la 48px48x pentru o vizibilitate mai bună
 
     public final int tileSize = originalTileSize * scale;
-    public final int maxScreenCol = 600 / tileSize;
-    public final int maxScreenRow = 400 / tileSize;
+    public final int maxScreenCol = 800 / tileSize;
+    public final int maxScreenRow = 600 / tileSize;
     public final int screenWidth = tileSize * maxScreenCol;
     public final int screenHeight = tileSize * maxScreenRow;
 
     // Setări lume
     public final int maxWorldCol = 25;
     public final int maxWorldRow = 25;
-    public final int worldWidth = tileSize * maxWorldCol;
-    public final int worldHeight = tileSize * maxWorldRow;
 
     double FPS = 60;
     int Real_FPS;
@@ -47,9 +45,10 @@ public class GamePanel extends JPanel implements Runnable {
     //Game state
 
     public int gameState;
+    public final int titleState = 0;
     public final int playState = 1;
     public final int pauseState = 2;
-    public final int dialogState=3;
+    public final int dialogState = 3;
 
     // Variabile pentru afișarea coordonatelor jucătorului
     int playerX;
@@ -61,16 +60,12 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
-
-        // Inițializează coordonatele jucătorului
-        playerX = player.screenX;
-        playerY = player.screenY;
     }
 
     public void setupGame() {
         aSetter.setObject();
         aSetter.setNPC();
-        gameState = playState;
+        gameState = titleState;
     }
 
     public void startGameThread() {
@@ -110,13 +105,13 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        if (gameState == playState) {
+        if (gameState == playState && player != null) {
             //Player
             player.update();
             //NPC
-            for (int i = 0; i < npc.length; i++)
-                if (npc[i] != null) {
-                    npc[i].update();
+            for (Entity entity : npc)
+                if (entity != null) {
+                    entity.update();
                 }
         }
         if (gameState == pauseState) {
@@ -138,27 +133,34 @@ public class GamePanel extends JPanel implements Runnable {
             drawStart = System.nanoTime();
         }
 
-        //TILE
-        if (tileM != null) { // Verifică dacă tileM nu este null
-            tileM.draw(g2);
-        } else {
-            System.out.println("TileManager-ul nu a fost inițializat corespunzător.");
+        //TITLE SCREEN
+        if (gameState == titleState) {
+            ui.draw(g2);
         }
+        //Others
+        else {
+            //TILE
+            if (tileM != null) { // Verifică dacă tileM nu este null
+                tileM.draw(g2);
+            } else {
+                System.out.println("TileManager-ul nu a fost inițializat corespunzător.");
+            }
 
-        //OBJECT
-        Arrays.stream(obj).filter(Objects::nonNull).forEach(superObject -> superObject.draw(g2, this));
+            //OBJECT
+            Arrays.stream(obj).filter(Objects::nonNull).forEach(superObject -> superObject.draw(g2, this));
 
-        // NPC
+            // NPC
 
-        for (Entity entity : npc)
-            if (entity != null)
-                entity.draw(g2);
+            for (Entity entity : npc)
+                if (entity != null)
+                    entity.draw(g2);
 
-        // PLAYER
-        if (player != null) { // Verifică dacă player nu este null
-            player.draw(g2);
-        } else {
-            System.out.println("Jucătorul nu a fost inițializat corespunzător.");
+            // PLAYER
+            if (player != null) { // Verifică dacă player nu este null
+                player.draw(g2);
+            } else {
+                System.out.println("Jucătorul nu a fost inițializat corespunzător.");
+            }
         }
 
         //Debug

@@ -38,7 +38,7 @@ public class Player extends Entity {
 
         int[] coordinates = TileManager.PlayerCoordinates;
         setDefaultValues(coordinates);
-        getPlayerImage();
+        getPlayerImage(1);
     }
 
     public void setDefaultValues(int[] coordinates) {
@@ -49,10 +49,10 @@ public class Player extends Entity {
         direction = "down";
     }
 
-    public void getPlayerImage() {
+    public void getPlayerImage(int characterNumber) {
         try {
-            idleSprite = ImageIO.read(new File("res/player/Kid01_idle.png"));
-            walkSprite = ImageIO.read(new File("res/player/Kid01_walk.png"));
+            idleSprite = ImageIO.read(new File("res/player/Kid" + characterNumber + "_idle.png"));
+            walkSprite = ImageIO.read(new File("res/player/Kid" + characterNumber + "_walk.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -86,7 +86,7 @@ public class Player extends Entity {
 
         // Check npc collision
 
-        int npcIndex=gp.cChecker.checkEntity(this, gp.npc);
+        int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
         interactNPC(npcIndex);
 
         // If no collision, move the player based on the direction
@@ -122,15 +122,13 @@ public class Player extends Entity {
     }
 
     private void interactNPC(int i) {
-        if(i!=999)
-        {
-            if(gp.keyH.enterPressed)
-            {
-                gp.gameState=gp.dialogState;
+        if (i != 999) {
+            if (gp.keyH.enterPressed) {
+                gp.gameState = gp.dialogState;
                 gp.npc[i].speak();
             }
         }
-        gp.keyH.enterPressed=false;
+        gp.keyH.enterPressed = false;
     }
 
     public void pickUpObject(int i) {
