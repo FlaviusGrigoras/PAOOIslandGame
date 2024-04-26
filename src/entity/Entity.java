@@ -33,8 +33,12 @@ public class Entity {
     public boolean collisionOn = false;
     public int actionLockCounter = 0;
     public boolean isWalking = false;
-    String dialogues[] = new String[20];
+    String[] dialogues = new String[20];
     int dialogueIndex = 0;
+
+    // CHARACTER STATUS
+    public int maxLife;
+    public int life;
 
     public Entity(GamePanel gp) {
         this.gp = gp;
@@ -108,7 +112,7 @@ public class Entity {
         BufferedImage image = null;
         try {
             image = ImageIO.read(new File("res/" + CharacterType + '/' + CharacterType2 + '/' + StatusPath + "/" + imageName + ".png"));
-            //image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch (IOException e) {
             e.printStackTrace();
         }

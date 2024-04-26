@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.IOException;
 
 public class OBJ_Coin extends SuperObject {
-    GamePanel gp;
 
     public OBJ_Coin(GamePanel gp) {
         name = "Coin";
