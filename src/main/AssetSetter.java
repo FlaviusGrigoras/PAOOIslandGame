@@ -19,9 +19,13 @@ public class AssetSetter {
     }
 
     public void setNPC() {
-        int[] coordinates = TileManager.NPC1Coordinates;
-        gp.npc[0] = new NPC_Villager(gp);
-        gp.npc[0].worldX = coordinates[0] * gp.tileSize;
-        gp.npc[0].worldY = coordinates[1] * gp.tileSize;
+        if (gp != null && gp.npc != null) {
+            int[] coordinates = TileManager.NPC1Coordinates;
+            gp.npc[0] = new NPC_Villager(gp);
+            gp.npc[0].worldX = coordinates[0] * gp.tileSize;
+            gp.npc[0].worldY = coordinates[1] * gp.tileSize;
+        }
     }
+
+
 }

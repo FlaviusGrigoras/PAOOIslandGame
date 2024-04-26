@@ -61,15 +61,19 @@ public class KeyHandler implements KeyListener {
                 if (code == KeyEvent.VK_ENTER) {
                     if (gp.ui.commandNum == 0) {
                         //De adaugat lucruri specifice
+                        gp.initializeCharacter(1);
                         gp.gameState = gp.playState;
                         //gp.playMusic(0);
                     }
+                    //Character Selection
                     if (gp.ui.commandNum == 1) {
                         //De adaugat lucruri specifice
+                        gp.initializeCharacter(2);
                         gp.gameState = gp.playState;
                     }
                     if (gp.ui.commandNum == 2) {
                         gp.ui.titleScreenState = 0;
+
                     }
                 }
             }

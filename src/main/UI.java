@@ -130,7 +130,6 @@ public class UI {
             g2.drawString(text, x, y);
             if (commandNum == 0) {
                 g2.drawString(">", x = gp.tileSize, y);
-                characterNumber = 1;
             }
 
             text = "Girl";
@@ -139,7 +138,6 @@ public class UI {
             g2.drawString(text, x, y);
             if (commandNum == 1) {
                 g2.drawString(">", x = gp.tileSize, y);
-                characterNumber = 2;
             }
 
             text = "Cancel";

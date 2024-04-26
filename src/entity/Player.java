@@ -24,7 +24,7 @@ public class Player extends Entity {
     int hasStone = 0;
     int hasWood = 0;
 
-    public Player(GamePanel gp, KeyHandler keyH) {
+    public Player(GamePanel gp, KeyHandler keyH, int characterNumber) {
         super(gp);
         this.gp = gp;
         this.keyH = keyH;
@@ -38,7 +38,7 @@ public class Player extends Entity {
 
         int[] coordinates = TileManager.PlayerCoordinates;
         setDefaultValues(coordinates);
-        getPlayerImage(1);
+        getPlayerImage(characterNumber);
     }
 
     public void setDefaultValues(int[] coordinates) {

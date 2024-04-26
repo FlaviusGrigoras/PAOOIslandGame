@@ -38,9 +38,9 @@ public class GamePanel extends JPanel implements Runnable {
     public UI ui = new UI(this);
 
     //Entity and object
-    public Player player = new Player(this, keyH);
-    public SuperObject[] obj = new SuperObject[10];
-    public Entity[] npc = new Entity[10];
+    public Player player;
+    public SuperObject[] obj;
+    public Entity[] npc;
 
     //Game state
 
@@ -71,6 +71,12 @@ public class GamePanel extends JPanel implements Runnable {
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
+    }
+
+    public void initializeCharacter(int characterNumber) {
+        player = new Player(this, keyH, characterNumber);
+        obj = new SuperObject[10];
+        npc = new Entity[10];
     }
 
     @Override
@@ -113,44 +119,42 @@ public class GamePanel extends JPanel implements Runnable {
                 if (entity != null) {
                     entity.update();
                 }
+            // Actualizează coordonatele jucătorului
+            playerX = player.worldX;
+            playerY = player.worldY;
         }
         if (gameState == pauseState) {
             //Nothing
         }
-
-        // Actualizează coordonatele jucătorului
-        playerX = player.worldX;
-        playerY = player.worldY;
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        //Debug
+        // Debug
         double drawStart = 0;
         if (keyH.DebugMode) {
             drawStart = System.nanoTime();
         }
 
-        //TITLE SCREEN
+        // TITLE SCREEN
         if (gameState == titleState) {
             ui.draw(g2);
         }
-        //Others
+        // Others
         else {
-            //TILE
+            // TILE
             if (tileM != null) { // Verifică dacă tileM nu este null
                 tileM.draw(g2);
             } else {
                 System.out.println("TileManager-ul nu a fost inițializat corespunzător.");
             }
 
-            //OBJECT
+            // OBJECT
             Arrays.stream(obj).filter(Objects::nonNull).forEach(superObject -> superObject.draw(g2, this));
 
             // NPC
-
             for (Entity entity : npc)
                 if (entity != null)
                     entity.draw(g2);
@@ -163,7 +167,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
-        //Debug
+        // Debug
         if (keyH.DebugMode) {
             double drawEnd = System.nanoTime();
             double passed = (drawEnd - drawStart) / 1_000_000.0; // Convert to milliseconds
@@ -179,7 +183,7 @@ public class GamePanel extends JPanel implements Runnable {
             g2.drawString("Tile: " + tileNum, 10, 60); // Afișează numărul de tile
         }
 
-        //UI
+        // UI
         ui.draw(g2);
     }
 }
