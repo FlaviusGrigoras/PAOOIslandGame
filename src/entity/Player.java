@@ -93,6 +93,10 @@ public class Player extends Entity {
         int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
         interactNPC(npcIndex);
 
+        // Check event
+        gp.eHandler.checkEvent();
+
+
         // If no collision, move the player based on the direction
         if (!collisionOn) {
             switch (direction) {
