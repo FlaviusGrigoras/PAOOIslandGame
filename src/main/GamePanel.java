@@ -40,7 +40,7 @@ public class GamePanel extends JPanel implements Runnable {
     //Entity and object
     public Player player;
     public SuperObject[] obj;
-    public Entity[] npc;
+    public Entity[] npc = new Entity[10];
 
     //Game state
 
@@ -76,7 +76,6 @@ public class GamePanel extends JPanel implements Runnable {
     public void initializeCharacter(int characterNumber) {
         player = new Player(this, keyH, characterNumber);
         obj = new SuperObject[10];
-        npc = new Entity[10];
     }
 
     @Override
