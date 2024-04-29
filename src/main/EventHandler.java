@@ -24,12 +24,26 @@ public class EventHandler {
         if (hit(10, 10, "right")) {
             damagePit(gp.dialogState);
         }
+        if(hit(23,12,"up")==true)
+        {
+            healingPool(gp.dialogState);
+        }
     }
 
     public void damagePit(int gameState) {
         gp.gameState = gameState;
         gp.ui.currentDialogue = "You fall into a pit!";
         gp.player.life -= 1;
+    }
+
+    public void healingPool(int gameState) {
+        if (gp.keyH.enterPressed == true) {
+            gp.gameState = gameState;
+            gp.ui.currentDialogue = "Ai sorbit din apele cristaline ale lacului fermecat.\n" +
+                    "Viața ți-a fost restabilită în totalitate.\n.";
+            gp.player.life=gp.player.maxLife;
+        }
+        gp.keyH.enterPressed=false;
     }
 
     public boolean hit(int eventCol, int eventRow, String reqDirection) {

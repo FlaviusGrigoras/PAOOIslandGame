@@ -95,6 +95,7 @@ public class Player extends Entity {
 
         // Check event
         gp.eHandler.checkEvent();
+        gp.keyH.enterPressed = false;
 
 
         // If no collision, move the player based on the direction
@@ -136,7 +137,6 @@ public class Player extends Entity {
                 gp.npc[i].speak();
             }
         }
-        gp.keyH.enterPressed = false;
     }
 
     public void pickUpObject(int i) {

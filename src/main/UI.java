@@ -230,7 +230,7 @@ public class UI {
     public void drawCoordinates(Font font, Color color) {
         g2.setFont(font);
         g2.setColor(color);
-        g2.drawString("X: " + gp.playerX / gp.tileSize + ", Y: " + gp.playerY / gp.tileSize, 10, 20);
+        g2.drawString("X: " + (gp.playerX / gp.tileSize + 1) + ", Y: " + (gp.playerY / gp.tileSize + 1), 10, 20);
     }
 
     public void drawFPS(Font font, Color color) {
