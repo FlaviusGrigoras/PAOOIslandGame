@@ -25,13 +25,6 @@ public class TileManager {
 
     public void generateMap() {
         map = MapGenerator.generateMap(gp.maxWorldCol, gp.maxWorldRow);
-        PlayerCoordinates = MapGenerator.chooseRandomIslandTile(map);
-        System.out.println("Coordonatele tile-ului de tip insulă aleator selectat pentru Player sunt: (" + PlayerCoordinates[0] + ", " + PlayerCoordinates[1] + "). Tile-ul are numarul: " + map[PlayerCoordinates[0]][PlayerCoordinates[1]]);
-
-        NPC1Coordinates = MapGenerator.chooseRandomIslandTile(map);
-        System.out.println("Coordonatele tile-ului de tip insulă aleator selectat pentru NPC sunt: (" + NPC1Coordinates[0] + ", " + NPC1Coordinates[1] + "). Tile-ul are numarul: " + map[NPC1Coordinates[0]][NPC1Coordinates[1]]);
-
-
     }
 
     private void getTileImage() {

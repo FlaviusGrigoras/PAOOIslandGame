@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import tile.MapGenerator;
 import tile.TileManager;
 
 import java.awt.*;
@@ -28,6 +29,7 @@ public class Player extends Entity {
         super(gp);
         this.gp = gp;
         this.keyH = keyH;
+        int[] coordinates = new int[2];
 
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
@@ -36,8 +38,22 @@ public class Player extends Entity {
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
-        int[] coordinates = TileManager.PlayerCoordinates;
+        TileManager TileM = new TileManager(gp);
+        coordinates = MapGenerator.chooseRandomIslandTile(TileM.map);
+        int x = coordinates[0];
+        int y = coordinates[1];
+
+        while (TileM.map[x + 1][y + 1] != 4) {
+            coordinates = MapGenerator.chooseRandomIslandTile(TileM.map);
+            x = coordinates[0];
+            y = coordinates[1];
+            System.out.println("x= " + x + "y= " + y + "Tile= " + TileM.map[x][x]);
+        }
+
+        System.out.println("Coordonatele tile-ului de tip insulă aleator selectat pentru Player sunt: (" + (coordinates[0] + 1) + ", " + (coordinates[1] + 1) + "). Tile-ul are numarul: " + TileM.map[coordinates[0]][coordinates[1]]);
+
         setDefaultValues(coordinates);
+
         getPlayerImage(characterNumber);
     }
 
