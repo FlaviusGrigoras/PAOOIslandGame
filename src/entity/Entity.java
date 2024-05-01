@@ -25,7 +25,11 @@ public class Entity {
     public BufferedImage[] i_left = new BufferedImage[4];
     public BufferedImage[] i_right = new BufferedImage[4];
 
-    public String direction;
+    public BufferedImage image, image2, image3;
+    public String name;
+    public boolean collision = false;
+
+    public String direction = "down";
     public int spriteCounter = 0;
     public int spriteNum = 0; // Am început de la 0 pentru a corespunde indexului în vectori
     public Rectangle solidArea = new Rectangle(9, 18, 30, 30);
@@ -112,6 +116,18 @@ public class Entity {
         BufferedImage image = null;
         try {
             image = ImageIO.read(new File("res/" + CharacterType + '/' + CharacterType2 + '/' + StatusPath + "/" + imageName + ".png"));
+            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
+    }
+
+    public BufferedImage setup(String ObjectName) {
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(new File("res/objects/" + ObjectName + ".png"));
             image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch (IOException e) {
             e.printStackTrace();

@@ -2,13 +2,11 @@ package main;
 
 import entity.Entity;
 import entity.Player;
-import object.SuperObject;
 import tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.*;
 
 public class GamePanel extends JPanel implements Runnable {
     // Setări fereastră
@@ -36,12 +34,13 @@ public class GamePanel extends JPanel implements Runnable {
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
     public UI ui = new UI(this);
-    public EventHandler eHandler=new EventHandler(this);
+    public EventHandler eHandler = new EventHandler(this);
 
     //Entity and object
     public Player player;
-    public SuperObject[] obj = new SuperObject[10];
+    public Entity[] obj = new Entity[10];
     public Entity[] npc = new Entity[10];
+    ArrayList<Entity> entityList = new ArrayList<>();
 
     //Game state
 
@@ -150,20 +149,40 @@ public class GamePanel extends JPanel implements Runnable {
                 System.out.println("TileManager-ul nu a fost inițializat corespunzător.");
             }
 
-            // OBJECT
-            Arrays.stream(obj).filter(Objects::nonNull).forEach(superObject -> superObject.draw(g2, this));
+            // ADD ENTITIES TO THE LIST
+            entityList.add(player);
+            for (int i = 0; i < npc.length; i++) {
+                if (npc[i] != null) {
+                    entityList.add(npc[i]);
 
-            // NPC
-            for (Entity entity : npc)
-                if (entity != null)
-                    entity.draw(g2);
-
-            // PLAYER
-            if (player != null) { // Verifică dacă player nu este null
-                player.draw(g2);
-            } else {
-                System.out.println("Jucătorul nu a fost inițializat corespunzător.");
+                }
             }
+            for (int i = 0; i < obj.length; i++) {
+                if (obj[i] != null) {
+                    entityList.add(obj[i]);
+                }
+            }
+
+            //SORT
+            Collections.sort(entityList, new Comparator<Entity>() {
+                @Override
+                public int compare(Entity e1, Entity e2) {
+                    int result = Integer.compare(e1.worldY, e2.worldY);
+                    return result;
+                }
+            });
+
+            // DRAW ENTITIES
+            for (int i = 0; i < entityList.size(); i++) {
+                entityList.get(i).draw(g2);
+            }
+
+            //EMPTY ENTITY LIST
+            for (int i = 0; i < entityList.size(); i++) {
+                entityList.remove(i);
+            }
+
+            ui.draw(g2);
         }
 
         // Debug
