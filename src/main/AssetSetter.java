@@ -1,6 +1,7 @@
 package main;
 
 import entity.NPC_Villager;
+import monster.MON_GreenSlime;
 import object.OBJ_Coin;
 import object.OBJ_Iron;
 import object.OBJ_Stone;
@@ -62,16 +63,28 @@ public class AssetSetter {
         if (gp != null && gp.npc != null) {
             int[] coordinates = getRandomCoordinates();
             createNPC(0, "Villager", coordinates[0], coordinates[1]);
-
-            coordinates = getRandomCoordinates();
-            createNPC(1, "Villager", coordinates[0], coordinates[1]);
-
-            coordinates = getRandomCoordinates();
-            createNPC(2, "Villager", coordinates[0], coordinates[1]);
-
-            coordinates = getRandomCoordinates();
-            createNPC(3, "Villager", coordinates[0], coordinates[1]);
         }
+    }
+
+    public void setMonster() {
+        int[] coordinates = getRandomCoordinates();
+        createMonster(0, "greenslime", coordinates[0], coordinates[1]);
+
+        coordinates = getRandomCoordinates();
+        createMonster(1, "greenslime", coordinates[0], coordinates[1]);
+    }
+
+    public void createMonster(int index, String Type, int x, int y) {
+        switch (Type) {
+            case "greenslime":
+                gp.monster[index] = new MON_GreenSlime(gp);
+                break;
+            case "Default":
+                System.out.println("Not an Monster!");
+                break;
+        }
+        gp.monster[index].worldX = x * gp.tileSize;
+        gp.monster[index].worldY = y * gp.tileSize;
     }
 
 

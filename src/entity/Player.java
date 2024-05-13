@@ -109,6 +109,10 @@ public class Player extends Entity {
         int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
         interactNPC(npcIndex);
 
+        //Check monster Collision
+        int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+        contactMonster(monsterIndex);
+
         // Check event
         gp.eHandler.checkEvent();
         gp.keyH.enterPressed = false;
@@ -143,6 +147,23 @@ public class Player extends Entity {
                 spriteNum++;
             else
                 spriteNum = 1;
+        }
+        //Outside key if statement
+        if (invincible) {
+            invincibleCounter++;
+            if (invincibleCounter > 60) {
+                invincible = false;
+                invincibleCounter = 0;
+            }
+        }
+    }
+
+    public void contactMonster(int i) {
+        if (i != 999) {
+            if (!invincible) {
+                life -= 1;
+                invincible = true;
+            }
         }
     }
 
@@ -185,9 +206,20 @@ public class Player extends Entity {
         BufferedImage spriteSheet = isWalking ? walkSprite : idleSprite;
         int yOffset = direction.equals("up") ? 48 : (direction.equals("down") ? 0 : (direction.equals("left") ? 16 : 32));
 
+        if (invincible) {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+        }
+
         if (isWalking || spriteNum == 1 || spriteNum == 2 || spriteNum == 3 || spriteNum == 4) {
             int xOffset = (spriteNum - 1) * 16;
             g2.drawImage(spriteSheet.getSubimage(xOffset, yOffset, 16, 16), screenX, screenY, gp.tileSize, gp.tileSize, null);
         }
+
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+
+        //DEBUG
+        //g2.setFont(new Font("Arial", Font.PLAIN, 26));
+        //g2.setColor(Color.white);
+        //g2.drawString("Invicible:" + invincibleCounter, 10, 400);
     }
 }

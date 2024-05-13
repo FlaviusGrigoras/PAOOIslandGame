@@ -29,6 +29,11 @@ public class Entity {
     public String name;
     public boolean collision = false;
 
+    public boolean invincible = false;
+    public int invincibleCounter = 0;
+
+    public int type; // 0=player, 1= npc, 2=monster
+
     public String direction = "down";
     public int spriteCounter = 0;
     public int spriteNum = 0; // Am început de la 0 pentru a corespunde indexului în vectori
@@ -81,7 +86,17 @@ public class Entity {
         collisionOn = false;
         gp.cChecker.checkTile(this);
         gp.cChecker.checkObject(this, false);
-        gp.cChecker.checkPlayer(this);
+        gp.cChecker.checkEntity(this, gp.npc);
+        gp.cChecker.checkEntity(this, gp.monster);
+        boolean contactPlayer = gp.cChecker.checkPlayer(this);
+
+        if (this.type == 2 && contactPlayer) {
+            if (!gp.player.invincible) {
+                //Damage
+                gp.player.life -= 1;
+                gp.player.invincible = true;
+            }
+        }
 
         if (!collisionOn) {
             if (isWalking) {
@@ -122,6 +137,19 @@ public class Entity {
         }
         return image;
     }
+
+    public BufferedImage setup(String CharacterType, String CharacterType2, String imageName) {
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(new File("res/" + CharacterType + '/' + CharacterType2 + "/" + imageName + ".png"));
+            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
+    }
+
 
     public BufferedImage setup(String ObjectName) {
         UtilityTool uTool = new UtilityTool();

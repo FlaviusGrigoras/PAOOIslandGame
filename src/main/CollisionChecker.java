@@ -160,29 +160,37 @@ public class CollisionChecker {
                     case "up":
                         entitySolidAreaCopy.y -= entity.speed;
                         if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
-                            entity.collisionOn = true;
-                            index = i;
+                            if (target[i] != entity) {
+                                entity.collisionOn = true;
+                                index = i;
+                            }
                         }
                         break;
                     case "down":
                         entitySolidAreaCopy.y += entity.speed;
                         if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
-                            entity.collisionOn = true;
-                            index = i;
+                            if (target[i] != entity) {
+                                entity.collisionOn = true;
+                                index = i;
+                            }
                         }
                         break;
                     case "left":
                         entitySolidAreaCopy.x -= entity.speed;
                         if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
-                            entity.collisionOn = true;
-                            index = i;
+                            if (target[i] != entity) {
+                                entity.collisionOn = true;
+                                index = i;
+                            }
                         }
                         break;
                     case "right":
                         entitySolidAreaCopy.x += entity.speed;
                         if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
-                            entity.collisionOn = true;
-                            index = i;
+                            if (target[i] != entity) {
+                                entity.collisionOn = true;
+                                index = i;
+                            }
                         }
                         break;
                 }
@@ -191,8 +199,8 @@ public class CollisionChecker {
         return index;
     }
 
-    public void checkPlayer(Entity entity)
-    {
+    public boolean checkPlayer(Entity entity) {
+        boolean contactPlayer = false;
         Rectangle entitySolidAreaCopy = new Rectangle(entity.solidArea);
         Rectangle objectSolidAreaCopy;
 
@@ -209,28 +217,21 @@ public class CollisionChecker {
         switch (entity.direction) {
             case "up":
                 entitySolidAreaCopy.y -= entity.speed;
-                if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
-                    entity.collisionOn = true;
-                }
                 break;
             case "down":
                 entitySolidAreaCopy.y += entity.speed;
-                if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
-                    entity.collisionOn = true;
-                }
                 break;
             case "left":
                 entitySolidAreaCopy.x -= entity.speed;
-                if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
-                    entity.collisionOn = true;
-                }
                 break;
             case "right":
                 entitySolidAreaCopy.x += entity.speed;
-                if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
-                    entity.collisionOn = true;
-                }
                 break;
         }
+        if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
+            entity.collisionOn = true;
+            contactPlayer=true;
+        }
+        return contactPlayer;
     }
 }
