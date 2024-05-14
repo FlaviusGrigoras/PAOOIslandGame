@@ -165,14 +165,14 @@ public class GamePanel extends JPanel implements Runnable {
 
                 }
             }
-            for (int i = 0; i < obj.length; i++) {
-                if (obj[i] != null) {
-                    entityList.add(obj[i]);
+            for (Entity value : obj) {
+                if (value != null) {
+                    entityList.add(value);
                 }
             }
-            for (int i = 0; i < monster.length; i++) {
-                if (monster[i] != null) {
-                    entityList.add(monster[i]);
+            for (Entity entity : monster) {
+                if (entity != null) {
+                    entityList.add(entity);
                 }
             }
 
@@ -191,9 +191,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             //EMPTY ENTITY LIST
-            for (int i = 0; i < entityList.size(); i++) {
-                entityList.remove(i);
-            }
+            entityList.clear();
         }
 
         // Debug
