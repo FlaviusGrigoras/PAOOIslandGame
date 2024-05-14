@@ -80,7 +80,7 @@ public class KeyHandler implements KeyListener {
         }
 
         //PlayState
-        if (gp.gameState == gp.playState) {
+        else if (gp.gameState == gp.playState) {
             if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                 upPressed = true;
             }

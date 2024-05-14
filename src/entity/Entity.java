@@ -25,9 +25,17 @@ public class Entity {
     public BufferedImage[] i_left = new BufferedImage[4];
     public BufferedImage[] i_right = new BufferedImage[4];
 
+    // Imaginile pentru atac
+    public BufferedImage[] a_up = new BufferedImage[4];
+    public BufferedImage[] a_down = new BufferedImage[4];
+    public BufferedImage[] a_left = new BufferedImage[4];
+    public BufferedImage[] a_right = new BufferedImage[4];
+
     public BufferedImage image, image2, image3;
     public String name;
     public boolean collision = false;
+
+    public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
 
     public boolean invincible = false;
     public int invincibleCounter = 0;
@@ -48,6 +56,8 @@ public class Entity {
     // CHARACTER STATUS
     public int maxLife;
     public int life;
+
+    boolean attacking = false;
 
     public Entity(GamePanel gp) {
         this.gp = gp;
@@ -124,6 +134,39 @@ public class Entity {
             spriteNum = (spriteNum + 1) % 4; // Schimbarea imaginii conform spriteNum
         }
 
+        // Verificarea stării de invincibilitate și resetarea acesteia după un interval de timp
+        if (invincible) {
+            invincibleCounter++;
+            if (invincibleCounter > 40) { // Aproximativ 1 secundă la 40 de cadre pe secundă
+                invincible = false;
+                invincibleCounter = 0;
+            }
+        }
+
+    }
+
+    public BufferedImage setup(String CharacterType, String CharacterType2, String StatusPath, String imageName, int width, int height) {
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(new File("res/" + CharacterType + '/' + CharacterType2 + '/' + StatusPath + "/" + imageName + ".png"));
+            image = uTool.scaleImage(image, width, height);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
+    }
+
+    public BufferedImage setup(String CharacterType, String CharacterType2, String StatusPath, String Weapon, String imageName, int width, int height) {
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(new File("res/" + CharacterType + '/' + CharacterType2 + '/' + StatusPath + "/" + Weapon + "/" + imageName + ".png"));
+            image = uTool.scaleImage(image, width, height);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
     }
 
     public BufferedImage setup(String CharacterType, String CharacterType2, String StatusPath, String imageName) {
@@ -203,8 +246,10 @@ public class Entity {
                     }
                     break;
             }
-
+            if (invincible)
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
             g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         }
     }
 }

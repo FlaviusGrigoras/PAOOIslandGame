@@ -7,18 +7,12 @@ import tile.TileManager;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 public class Player extends Entity {
     KeyHandler keyH;
 
     public final int screenX;
     public final int screenY;
-
-    public BufferedImage idleSprite, walkSprite;
     public boolean isWalking = false;
     public int hasCoin = 0;
     int hasIron = 0;
@@ -30,6 +24,7 @@ public class Player extends Entity {
         this.gp = gp;
         this.keyH = keyH;
         int[] coordinates = new int[2];
+        attacking = false;
 
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
         screenY = gp.screenHeight / 2 - (gp.tileSize / 2);
@@ -37,6 +32,9 @@ public class Player extends Entity {
         solidArea = new Rectangle(9, 18, 30, 30);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
+
+        attackArea.width = 36;
+        attackArea.height = 36;
 
         TileManager TileM = new TileManager(gp);
         coordinates = MapGenerator.chooseRandomIslandTile(TileM.map);
@@ -53,8 +51,8 @@ public class Player extends Entity {
         System.out.println("Coordonatele tile-ului de tip insulă aleator selectat pentru Player sunt: (" + (coordinates[0] + 1) + ", " + (coordinates[1] + 1) + "). Tile-ul are numarul: " + TileM.map[coordinates[0]][coordinates[1]]);
 
         setDefaultValues(coordinates);
-
-        getPlayerImage(characterNumber);
+        getPlayerImage();
+        getPlayerAttackImage("Fist");
     }
 
     public void setDefaultValues(int[] coordinates) {
@@ -69,17 +67,12 @@ public class Player extends Entity {
         life = maxLife;
     }
 
-    public void getPlayerImage(int characterNumber) {
-        try {
-            idleSprite = ImageIO.read(new File("res/player/Kid" + characterNumber + "_idle.png"));
-            walkSprite = ImageIO.read(new File("res/player/Kid" + characterNumber + "_walk.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void update() {
-        // Determine if the player is walking and the direction
+        // Verifică dacă jucătorul atacă și execută animația corespunzătoare
+        if (attacking) {
+            attacking();
+        }
+        // Verifică dacă jucătorul se mișcă și determină direcția
         if (keyH.upPressed) {
             isWalking = true;
             direction = "up";
@@ -96,68 +89,139 @@ public class Player extends Entity {
             isWalking = false;
         }
 
-        // Check for collision
+        // Verifică coliziunile
         collisionOn = false;
         gp.cChecker.checkTile(this);
 
-
-        // Check for object collision
+        // Verifică coliziunile cu obiectele
         int objIndex = gp.cChecker.checkObject(this, true);
         pickUpObject(objIndex);
 
-        // Check npc collision
-
+        // Verifică coliziunile cu NPC-urile
         int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
         interactNPC(npcIndex);
 
-        //Check monster Collision
+        // Verifică coliziunile cu monștrii
         int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
         contactMonster(monsterIndex);
 
-        // Check event
+        // Verifică evenimentele
         gp.eHandler.checkEvent();
+
+        // Resetarea stării enterPressed pentru tastă
         gp.keyH.enterPressed = false;
 
-
-        // If no collision, move the player based on the direction
-        if (!collisionOn) {
+        // Dacă nu există coliziuni, mișcă jucătorul în funcție de direcție și viteză
+        if (!collisionOn && isWalking) {
             switch (direction) {
                 case "up":
-                    if (isWalking)
-                        worldY -= speed;
+                    worldY -= speed;
                     break;
                 case "down":
-                    if (isWalking)
-                        worldY += speed;
+                    worldY += speed;
                     break;
                 case "left":
-                    if (isWalking)
-                        worldX -= speed;
+                    worldX -= speed;
                     break;
                 case "right":
-                    if (isWalking)
-                        worldX += speed;
+                    worldX += speed;
                     break;
             }
         }
-        // Increment spriteCounter
-        spriteCounter++;
-        if (spriteCounter > 12) {
-            spriteCounter = 0; // Reset spriteCounter here
-            if (spriteNum < 4)
-                spriteNum++;
-            else
-                spriteNum = 1;
+
+        if (!attacking) {
+            // Incrementarea spriteCounter pentru animație
+            spriteCounter++;
+            if (spriteCounter > 12) {
+                spriteCounter = 0;
+                if (spriteNum < 4)
+                    spriteNum++;
+                else
+                    spriteNum = 1;
+            }
         }
-        //Outside key if statement
+
+        // Verificarea stării de invincibilitate și resetarea acesteia după un interval de timp
         if (invincible) {
             invincibleCounter++;
-            if (invincibleCounter > 60) {
+            if (invincibleCounter > 60) { // Aproximativ 1 secundă la 60 de cadre pe secundă
                 invincible = false;
                 invincibleCounter = 0;
             }
         }
     }
+
+
+    public void attacking() {
+        spriteCounter++;
+        if (spriteCounter <= 10) {
+            spriteNum = 1;
+        }
+        if (spriteCounter > 10 && spriteCounter <= 15) {
+            spriteNum = 2;
+        }
+        if (spriteCounter > 15 && spriteCounter <= 18) {
+            spriteNum = 3;
+        }
+        if (spriteCounter > 18 && spriteCounter <= 24) {
+            spriteNum = 4;
+
+            //Save current worldX, worldY, solidArea
+            int currentWorldX = worldX;
+            int currentWorldY = worldY;
+            int solidAreaWidth = solidArea.width;
+            int solidAreaHeight = solidArea.height;
+
+            //Adjust player worldX/Y for the attackArea
+            switch (direction) {
+                case "up":
+                    worldY -= attackArea.height;
+                    break;
+                case "down":
+                    worldY += attackArea.height;
+                    break;
+                case "left":
+                    worldX -= attackArea.width;
+                    break;
+                case "right":
+                    worldX += attackArea.width;
+                    break;
+            }
+            //attackArea becomes solidArea
+            solidArea.width = attackArea.width;
+            solidArea.height = attackArea.height;
+
+            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
+            damageMonster(monsterIndex);
+
+            //Dupa verificarea coliziunii, resetare la valorile originale
+            worldX = currentWorldX;
+            worldY = currentWorldY;
+            solidArea.width = solidAreaWidth;
+            solidArea.height = solidAreaHeight;
+        }
+        if (spriteCounter > 24) {
+            spriteNum = 1;
+            spriteCounter = 0;
+            attacking = false;
+        }
+
+    }
+
+
+    public void damageMonster(int i) {
+        if (i != 999) {
+            if (!gp.monster[i].invincible) {
+                gp.monster[i].life -= 1;
+                gp.monster[i].invincible = true;
+
+                if (gp.monster[i].life <= 0) {
+                    gp.monster[i] = null;
+                }
+            }
+        }
+    }
+
 
     public void contactMonster(int i) {
         if (i != 999) {
@@ -169,13 +233,16 @@ public class Player extends Entity {
     }
 
     private void interactNPC(int i) {
-        if (i != 999) {
-            if (gp.keyH.enterPressed) {
+        if (gp.keyH.enterPressed) {
+            if (i != 999) {
                 gp.gameState = gp.dialogState;
                 gp.npc[i].speak();
+            } else if (!attacking) {
+                attacking = true;
             }
         }
     }
+
 
     public void pickUpObject(int i) {
         if (i != 999) {
@@ -202,25 +269,265 @@ public class Player extends Entity {
         }
     }
 
-    public void draw(Graphics2D g2) {
-        //Cod optimizat de la 145 de linii de cod la doar 8
-        BufferedImage spriteSheet = isWalking ? walkSprite : idleSprite;
-        int yOffset = direction.equals("up") ? 48 : (direction.equals("down") ? 0 : (direction.equals("left") ? 16 : 32));
+    public void getPlayerImage() {
+// Pentru directia 'up'
+        w_up[0] = setup("player", "Kid1", "Walk", "up_1", gp.tileSize, gp.tileSize);
+        w_up[1] = setup("player", "Kid1", "Walk", "up_2", gp.tileSize, gp.tileSize);
+        w_up[2] = setup("player", "Kid1", "Walk", "up_3", gp.tileSize, gp.tileSize);
+        w_up[3] = setup("player", "Kid1", "Walk", "up_4", gp.tileSize, gp.tileSize);
 
+        i_up[0] = setup("player", "Kid1", "Idle", "up_1", gp.tileSize, gp.tileSize);
+        i_up[1] = setup("player", "Kid1", "Idle", "up_2", gp.tileSize, gp.tileSize);
+        i_up[2] = setup("player", "Kid1", "Idle", "up_3", gp.tileSize, gp.tileSize);
+        i_up[3] = setup("player", "Kid1", "Idle", "up_4", gp.tileSize, gp.tileSize);
+
+// Pentru directia 'down'
+        w_down[0] = setup("player", "Kid1", "Walk", "down_1", gp.tileSize, gp.tileSize);
+        w_down[1] = setup("player", "Kid1", "Walk", "down_2", gp.tileSize, gp.tileSize);
+        w_down[2] = setup("player", "Kid1", "Walk", "down_3", gp.tileSize, gp.tileSize);
+        w_down[3] = setup("player", "Kid1", "Walk", "down_4", gp.tileSize, gp.tileSize);
+
+        i_down[0] = setup("player", "Kid1", "Idle", "down_1", gp.tileSize, gp.tileSize);
+        i_down[1] = setup("player", "Kid1", "Idle", "down_2", gp.tileSize, gp.tileSize);
+        i_down[2] = setup("player", "Kid1", "Idle", "down_3", gp.tileSize, gp.tileSize);
+        i_down[3] = setup("player", "Kid1", "Idle", "down_4", gp.tileSize, gp.tileSize);
+
+// Pentru directia 'left'
+        w_left[0] = setup("player", "Kid1", "Walk", "left_1", gp.tileSize, gp.tileSize);
+        w_left[1] = setup("player", "Kid1", "Walk", "left_2", gp.tileSize, gp.tileSize);
+        w_left[2] = setup("player", "Kid1", "Walk", "left_3", gp.tileSize, gp.tileSize);
+        w_left[3] = setup("player", "Kid1", "Walk", "left_4", gp.tileSize, gp.tileSize);
+
+        i_left[0] = setup("player", "Kid1", "Idle", "left_1", gp.tileSize, gp.tileSize);
+        i_left[1] = setup("player", "Kid1", "Idle", "left_2", gp.tileSize, gp.tileSize);
+        i_left[2] = setup("player", "Kid1", "Idle", "left_3", gp.tileSize, gp.tileSize);
+        i_left[3] = setup("player", "Kid1", "Idle", "left_4", gp.tileSize, gp.tileSize);
+
+// Pentru directia 'right'
+        w_right[0] = setup("player", "Kid1", "Walk", "right_1", gp.tileSize, gp.tileSize);
+        w_right[1] = setup("player", "Kid1", "Walk", "right_2", gp.tileSize, gp.tileSize);
+        w_right[2] = setup("player", "Kid1", "Walk", "right_3", gp.tileSize, gp.tileSize);
+        w_right[3] = setup("player", "Kid1", "Walk", "right_4", gp.tileSize, gp.tileSize);
+
+        i_right[0] = setup("player", "Kid1", "Idle", "right_1", gp.tileSize, gp.tileSize);
+        i_right[1] = setup("player", "Kid1", "Idle", "right_2", gp.tileSize, gp.tileSize);
+        i_right[2] = setup("player", "Kid1", "Idle", "right_3", gp.tileSize, gp.tileSize);
+        i_right[3] = setup("player", "Kid1", "Idle", "right_4", gp.tileSize, gp.tileSize);
+
+
+    }
+
+    public void getPlayerAttackImage(String Weapon) {
+        // Attack UP
+        a_up[0] = setup("player", "Kid1", "Attack", Weapon, "up_1", gp.tileSize, gp.tileSize * 2);
+        a_up[1] = setup("player", "Kid1", "Attack", Weapon, "up_2", gp.tileSize, gp.tileSize * 2);
+        a_up[2] = setup("player", "Kid1", "Attack", Weapon, "up_3", gp.tileSize, gp.tileSize * 2);
+        a_up[3] = setup("player", "Kid1", "Attack", Weapon, "up_4", gp.tileSize, gp.tileSize * 2);
+
+// Attack DOWN
+        a_down[0] = setup("player", "Kid1", "Attack", Weapon, "down_1", gp.tileSize, gp.tileSize * 2);
+        a_down[1] = setup("player", "Kid1", "Attack", Weapon, "down_2", gp.tileSize, gp.tileSize * 2);
+        a_down[2] = setup("player", "Kid1", "Attack", Weapon, "down_3", gp.tileSize, gp.tileSize * 2);
+        a_down[3] = setup("player", "Kid1", "Attack", Weapon, "down_4", gp.tileSize, gp.tileSize * 2);
+
+// Attack LEFT
+        a_left[0] = setup("player", "Kid1", "Attack", Weapon, "left_1", gp.tileSize * 2, gp.tileSize);
+        a_left[1] = setup("player", "Kid1", "Attack", Weapon, "left_2", gp.tileSize * 2, gp.tileSize);
+        a_left[2] = setup("player", "Kid1", "Attack", Weapon, "left_3", gp.tileSize * 2, gp.tileSize);
+        a_left[3] = setup("player", "Kid1", "Attack", Weapon, "left_4", gp.tileSize * 2, gp.tileSize);
+
+// Attack RIGHT
+        a_right[0] = setup("player", "Kid1", "Attack", Weapon, "right_1", gp.tileSize * 2, gp.tileSize);
+        a_right[1] = setup("player", "Kid1", "Attack", Weapon, "right_2", gp.tileSize * 2, gp.tileSize);
+        a_right[2] = setup("player", "Kid1", "Attack", Weapon, "right_3", gp.tileSize * 2, gp.tileSize);
+        a_right[3] = setup("player", "Kid1", "Attack", Weapon, "right_4", gp.tileSize * 2, gp.tileSize);
+
+
+    }
+
+    public void draw(Graphics2D g2) {
+        BufferedImage image = null;
+        int tempScreenX = screenX;
+        int tempScreenY = screenY;
+        switch (direction) {
+            case "up":
+                if (attacking) {
+                    tempScreenY = screenY - gp.tileSize;
+                    if (spriteNum == 1) {
+                        image = a_up[0];
+                    }
+                    if (spriteNum == 2) {
+                        image = a_up[1];
+                    }
+                    if (spriteNum == 3) {
+                        image = a_up[2];
+                    }
+                    if (spriteNum == 4) {
+                        image = a_up[3];
+                    }
+                } else if (isWalking) {
+                    if (spriteNum == 1) {
+                        image = w_up[0];
+                    }
+                    if (spriteNum == 2) {
+                        image = w_up[1];
+                    }
+                    if (spriteNum == 3) {
+                        image = w_up[2];
+                    }
+                    if (spriteNum == 4) {
+                        image = w_up[3];
+                    }
+                } else {
+                    if (spriteNum == 1) {
+                        image = i_up[0];
+                    }
+                    if (spriteNum == 2) {
+                        image = i_up[1];
+                    }
+                    if (spriteNum == 3) {
+                        image = i_up[2];
+                    }
+                    if (spriteNum == 4) {
+                        image = i_up[3];
+                    }
+                }
+                break;
+            case "down":
+                if (attacking) {
+                    if (spriteNum == 1) {
+                        image = a_down[0];
+                    }
+                    if (spriteNum == 2) {
+                        image = a_down[1];
+                    }
+                    if (spriteNum == 3) {
+                        image = a_down[2];
+                    }
+                    if (spriteNum == 4) {
+                        image = a_down[3];
+                    }
+                } else if (isWalking) {
+                    if (spriteNum == 1) {
+                        image = w_down[0];
+                    }
+                    if (spriteNum == 2) {
+                        image = w_down[1];
+                    }
+                    if (spriteNum == 3) {
+                        image = w_down[2];
+                    }
+                    if (spriteNum == 4) {
+                        image = w_down[3];
+                    }
+                } else {
+                    if (spriteNum == 1) {
+                        image = i_down[0];
+                    }
+                    if (spriteNum == 2) {
+                        image = i_down[1];
+                    }
+                    if (spriteNum == 3) {
+                        image = i_down[2];
+                    }
+                    if (spriteNum == 4) {
+                        image = i_down[3];
+                    }
+                }
+                break;
+            case "left":
+                if (attacking) {
+                    tempScreenX = screenX - gp.tileSize;
+                    if (spriteNum == 1) {
+                        image = a_left[0];
+                    }
+                    if (spriteNum == 2) {
+                        image = a_left[1];
+                    }
+                    if (spriteNum == 3) {
+                        image = a_left[2];
+                    }
+                    if (spriteNum == 4) {
+                        image = a_left[3];
+                    }
+                } else if (isWalking) {
+                    if (spriteNum == 1) {
+                        image = w_left[0];
+                    }
+                    if (spriteNum == 2) {
+                        image = w_left[1];
+                    }
+                    if (spriteNum == 3) {
+                        image = w_left[2];
+                    }
+                    if (spriteNum == 4) {
+                        image = w_left[3];
+                    }
+                } else {
+                    if (spriteNum == 1) {
+                        image = i_left[0];
+                    }
+                    if (spriteNum == 2) {
+                        image = i_left[1];
+                    }
+                    if (spriteNum == 3) {
+                        image = i_left[2];
+                    }
+                    if (spriteNum == 4) {
+                        image = i_left[3];
+                    }
+                }
+                break;
+            case "right":
+                if (attacking) {
+                    if (spriteNum == 1) {
+                        image = a_right[0];
+                    }
+                    if (spriteNum == 2) {
+                        image = a_right[1];
+                    }
+                    if (spriteNum == 3) {
+                        image = a_right[2];
+                    }
+                    if (spriteNum == 4) {
+                        image = a_right[3];
+                    }
+                } else if (isWalking) {
+                    if (spriteNum == 1) {
+                        image = w_right[0];
+                    }
+                    if (spriteNum == 2) {
+                        image = w_right[1];
+                    }
+                    if (spriteNum == 3) {
+                        image = w_right[2];
+                    }
+                    if (spriteNum == 4) {
+                        image = w_right[3];
+                    }
+                } else {
+                    if (spriteNum == 1) {
+                        image = i_right[0];
+                    }
+                    if (spriteNum == 2) {
+                        image = i_right[1];
+                    }
+                    if (spriteNum == 3) {
+                        image = i_right[2];
+                    }
+                    if (spriteNum == 4) {
+                        image = i_right[3];
+                    }
+                }
+                break;
+            default:
+                // Caz implicit pentru orice altă direcție necunoscută
+                break;
+        }
         if (invincible) {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
         }
-
-        if (isWalking || spriteNum == 1 || spriteNum == 2 || spriteNum == 3 || spriteNum == 4) {
-            int xOffset = (spriteNum - 1) * 16;
-            g2.drawImage(spriteSheet.getSubimage(xOffset, yOffset, 16, 16), screenX, screenY, gp.tileSize, gp.tileSize, null);
-        }
-
+        g2.drawImage(image, tempScreenX, tempScreenY, null);
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-
-        //DEBUG
-        //g2.setFont(new Font("Arial", Font.PLAIN, 26));
-        //g2.setColor(Color.white);
-        //g2.drawString("Invicible:" + invincibleCounter, 10, 400);
     }
 }
