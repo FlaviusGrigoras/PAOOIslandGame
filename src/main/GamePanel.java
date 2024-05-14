@@ -36,6 +36,9 @@ public class GamePanel extends JPanel implements Runnable {
     public UI ui = new UI(this);
     public EventHandler eHandler = new EventHandler(this);
 
+    //SOUND
+    Sound sound = new Sound();
+
     //Entity and object
     public Player player;
     public Entity[] obj = new Entity[10];
@@ -68,6 +71,8 @@ public class GamePanel extends JPanel implements Runnable {
         aSetter.setNPC();
         aSetter.setMonster();
         gameState = titleState;
+
+        playMusic(0);
     }
 
     public void startGameThread() {
@@ -120,9 +125,13 @@ public class GamePanel extends JPanel implements Runnable {
                     entity.update();
                 }
             //MONSTER
-            for (Entity entity : monster) {
-                if (entity != null) {
-                    entity.update();
+            for (int i = 0; i < monster.length; i++) {
+                if (monster[i] != null) {
+                    if (monster[i].alive) {
+                        monster[i].update();
+                    } else {
+                        monster[i] = null;
+                    }
                 }
             }
             // Actualizează coordonatele jucătorului
@@ -212,5 +221,20 @@ public class GamePanel extends JPanel implements Runnable {
 
         // UI
         ui.draw(g2);
+    }
+
+    public void playMusic(int i)
+    {
+        sound.setFile(i);
+        sound.play();
+        sound.loop();
+    }
+
+    public void stopMusic(){
+        sound.stop();
+    }
+    public void playSE(int i){
+        sound.setFile(i);
+        sound.play();
     }
 }
