@@ -52,7 +52,7 @@ public class Player extends Entity {
 
         setDefaultValues(coordinates);
         getPlayerImage();
-        getPlayerAttackImage("Fist");
+        getPlayerAttackImage("Pistol");
     }
 
     public void setDefaultValues(int[] coordinates) {
@@ -215,6 +215,7 @@ public class Player extends Entity {
                 gp.playSE(2);
                 gp.monster[i].life -= 1;
                 gp.monster[i].invincible = true;
+                gp.monster[i].damageReaction();
 
                 if (gp.monster[i].life <= 0) {
                     gp.monster[i].dying=true;

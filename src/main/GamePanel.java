@@ -72,7 +72,8 @@ public class GamePanel extends JPanel implements Runnable {
         aSetter.setMonster();
         gameState = titleState;
 
-        playMusic(0);
+
+        playMusic(0, -20.0f);
     }
 
     public void startGameThread() {
@@ -223,17 +224,24 @@ public class GamePanel extends JPanel implements Runnable {
         ui.draw(g2);
     }
 
-    public void playMusic(int i)
-    {
+    public void playMusic(int i) {
         sound.setFile(i);
         sound.play();
         sound.loop();
     }
 
-    public void stopMusic(){
+    public void playMusic(int i, float volume) {
+        sound.setFile(i);
+        sound.setVolume(volume);
+        sound.play();
+        sound.loop();
+    }
+
+    public void stopMusic() {
         sound.stop();
     }
-    public void playSE(int i){
+
+    public void playSE(int i) {
         sound.setFile(i);
         sound.play();
     }

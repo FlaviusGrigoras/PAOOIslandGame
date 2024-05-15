@@ -3,7 +3,7 @@ package main;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import java.io.InputStream;
+import javax.sound.sampled.FloatControl;
 import java.net.URL;
 
 public class Sound {
@@ -17,7 +17,7 @@ public class Sound {
             soundURL[2] = getClass().getResource("sounds/hitmonster.wav");
             soundURL[3] = getClass().getResource("sounds/receivedamage.wav");
             soundURL[4] = getClass().getResource("sounds/swingweapon.wav");
-           // soundURL[5] = getClass().getResource("sounds/coin.wav");
+            // soundURL[5] = getClass().getResource("sounds/coin.wav");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -58,6 +58,15 @@ public class Sound {
             clip.stop();
         } else {
             System.out.println("Clipul este null. Asigura-te că ai apelat metoda setFile() înainte de stop().");
+        }
+    }
+
+    public void setVolume(float volume) {
+        if (clip != null) {
+            FloatControl volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            volumeControl.setValue(volume);
+        } else {
+            System.out.println("Clipul este null. Asigura-te că ai apelat metoda setFile() înainte de setVolume().");
         }
     }
 }
