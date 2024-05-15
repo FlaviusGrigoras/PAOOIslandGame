@@ -12,7 +12,6 @@ import java.io.IOException;
 public class Entity {
     GamePanel gp;
     public int worldX, worldY;
-    public int speed;
     // Imaginile pentru mers
     public BufferedImage[] w_up = new BufferedImage[4];
     public BufferedImage[] w_down = new BufferedImage[4];
@@ -32,33 +31,45 @@ public class Entity {
     public BufferedImage[] a_right = new BufferedImage[4];
 
     public BufferedImage image, image2, image3;
-    public String name;
     public boolean collision = false;
     boolean hpBarOn = false;
+    public boolean invincible = false;
 
     public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
 
-    public boolean invincible = false;
+    //COUNTER
+    public int actionLockCounter = 0;
+    public int spriteCounter = 0;
     public int invincibleCounter = 0;
     int dyingCounter = 0;
     int hpBarCounter = 0;
 
+    //Character Attributes
     public int type; // 0=player, 1= npc, 2=monster
+    public String name;
+    public int speed;
+    public int maxLife;
+    public int life;
+    public int level;
+    public int strength;
+    public int dexterity;
+    public int attack, defense, exp, nextLevelExp, coin;
+    public Entity currentWeapon;
+    public Entity currentShield;
+
+    //ITEM ATTRIBUTES
+    public int attackValue;
+    public int defenseValue;
 
     public String direction = "down";
-    public int spriteCounter = 0;
+
     public int spriteNum = 0; // Am început de la 0 pentru a corespunde indexului în vectori
     public Rectangle solidArea = new Rectangle(9, 18, 30, 30);
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
-    public int actionLockCounter = 0;
     public boolean isWalking = false;
     String[] dialogues = new String[20];
     int dialogueIndex = 0;
-
-    // CHARACTER STATUS
-    public int maxLife;
-    public int life;
 
     boolean attacking = false;
     public boolean alive = true;
@@ -72,7 +83,7 @@ public class Entity {
 
     }
 
-    public void damageReaction(){
+    public void damageReaction() {
 
     }
 
@@ -276,7 +287,7 @@ public class Entity {
 
             if (invincible) {
                 hpBarOn = true;
-                hpBarCounter=0;
+                hpBarCounter = 0;
                 changeAlpha(g2, 0.4F);
             }
             if (dying)

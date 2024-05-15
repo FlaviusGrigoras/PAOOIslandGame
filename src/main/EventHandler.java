@@ -64,6 +64,7 @@ public class EventHandler {
     public void healingPool(int gameState) {
         if (gp.keyH.enterPressed) {
             gp.gameState = gameState;
+            gp.player.attackCanceled=true;
             gp.ui.currentDialogue = "Ai sorbit din apele cristaline ale lacului fermecat.\n" +
                     "Viața ți-a fost restabilită în totalitate.\n.";
             gp.player.life = gp.player.maxLife;

@@ -2,6 +2,8 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Shield_Wood;
+import object.OBJ_Sword_Normal;
 import tile.MapGenerator;
 import tile.TileManager;
 
@@ -18,6 +20,7 @@ public class Player extends Entity {
     int hasIron = 0;
     int hasStone = 0;
     int hasWood = 0;
+    public boolean attackCanceled = false;
 
     public Player(GamePanel gp, KeyHandler keyH, int characterNumber) {
         super(gp);
@@ -52,7 +55,7 @@ public class Player extends Entity {
 
         setDefaultValues(coordinates);
         getPlayerImage();
-        getPlayerAttackImage("Pistol");
+        getPlayerAttackImage("Fist");
     }
 
     public void setDefaultValues(int[] coordinates) {
@@ -63,8 +66,26 @@ public class Player extends Entity {
         direction = "down";
 
         //Player status
+        level = 1;
         maxLife = 6;
         life = maxLife;
+        strength = 1; // More strength -> More Damage
+        dexterity = 1;// More Dexterity -> Less Damage
+        exp = 0;
+        nextLevelExp = 5;
+        coin = 0;
+        currentWeapon = new OBJ_Sword_Normal(gp);
+        currentShield = new OBJ_Shield_Wood(gp);
+        attack = getAttack();
+        defense = getDefense();
+    }
+
+    public int getDefense() {
+        return attack = strength * currentWeapon.attackValue;
+    }
+
+    public int getAttack() {
+        return defense = dexterity * currentShield.defenseValue;
     }
 
     public void update() {
@@ -107,6 +128,13 @@ public class Player extends Entity {
 
         // Verifică evenimentele
         gp.eHandler.checkEvent();
+
+        if (keyH.enterPressed && !attackCanceled) {
+            gp.playSE(4);
+            attacking = true;
+            spriteCounter = 0;
+        }
+        attackCanceled = false;
 
         // Resetarea stării enterPressed pentru tastă
         gp.keyH.enterPressed = false;
@@ -218,7 +246,7 @@ public class Player extends Entity {
                 gp.monster[i].damageReaction();
 
                 if (gp.monster[i].life <= 0) {
-                    gp.monster[i].dying=true;
+                    gp.monster[i].dying = true;
                 }
             }
         }
@@ -238,12 +266,9 @@ public class Player extends Entity {
     private void interactNPC(int i) {
         if (gp.keyH.enterPressed) {
             if (i != 999) {
+                attackCanceled = true;
                 gp.gameState = gp.dialogState;
                 gp.npc[i].speak();
-            } else if (!attacking) {
-                gp.playSE(4);
-                attacking = true;
-
             }
         }
     }
