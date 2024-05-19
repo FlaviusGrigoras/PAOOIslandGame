@@ -67,11 +67,84 @@ public class AssetSetter {
     }
 
     public void setMonster() {
+        int i = 0;
+
         int[] coordinates = getRandomCoordinates();
-        createMonster(0, "greenslime", coordinates[0], coordinates[1]);
+        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
+        i++;
 
         coordinates = getRandomCoordinates();
-        createMonster(1, "greenslime", coordinates[0], coordinates[1]);
+        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
+        i++;
+
+        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
+        i++;
+
+        coordinates = getRandomCoordinates();
+        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
+        i++;
+
+        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
+        i++;
+
+        coordinates = getRandomCoordinates();
+        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
+        i++;
+
+        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
+        i++;
+
+        coordinates = getRandomCoordinates();
+        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
+        i++;
+
+        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
+        i++;
+
+        coordinates = getRandomCoordinates();
+        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
+        i++;
+
+        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
+        i++;
+
+        coordinates = getRandomCoordinates();
+        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
+        i++;
+
+        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
+        i++;
+
+        coordinates = getRandomCoordinates();
+        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
+        i++;
+
+        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
+        i++;
+
+        coordinates = getRandomCoordinates();
+        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
+        i++;
+
+        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
+        i++;
+
+        coordinates = getRandomCoordinates();
+        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
+        i++;
+
+        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
+        i++;
+
+        coordinates = getRandomCoordinates();
+        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
+        i++;
+
+        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
+        i++;
+
+        coordinates = getRandomCoordinates();
+        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
     }
 
     public void createMonster(int index, String Type, int x, int y) {

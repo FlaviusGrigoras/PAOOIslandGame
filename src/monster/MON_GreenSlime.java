@@ -11,14 +11,17 @@ public class MON_GreenSlime extends Entity {
     public MON_GreenSlime(GamePanel gp) {
         super(gp);
 
-        this.gp=gp;
+        this.gp = gp;
 
         type = 2;
-        name = "greenslime";
+        name = "Green Slime";
         speed = 1;
 
         maxLife = 4;
         life = maxLife;
+        attack = 5;
+        defense = 0;
+        exp = 2;
 
         solidArea.x = 3;
         solidArea.y = 18;
@@ -32,6 +35,7 @@ public class MON_GreenSlime extends Entity {
     public void getImage() {
 
         //UP
+        String name = "greenslime";
         w_up[0] = setup("monster", name, "down_1");
         w_up[1] = setup("monster", name, "down_2");
         w_up[2] = setup("monster", name, "down_1");
