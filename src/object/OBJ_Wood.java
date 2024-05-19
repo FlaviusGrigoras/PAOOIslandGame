@@ -19,5 +19,6 @@ public class OBJ_Wood extends Entity {
         solidArea.y = 8 * 3;
         solidArea.width = 11 * 3;
         solidArea.height = 8 * 3;
+        description = "[" + name + "]\nGood for starter tools.";
     }
 }

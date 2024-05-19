@@ -2,13 +2,13 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
-import object.OBJ_Shield_Wood;
-import object.OBJ_Sword_Normal;
+import object.*;
 import tile.MapGenerator;
 import tile.TileManager;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class Player extends Entity {
     KeyHandler keyH;
@@ -21,6 +21,8 @@ public class Player extends Entity {
     int hasStone = 0;
     int hasWood = 0;
     public boolean attackCanceled = false;
+    public ArrayList<Entity> inventory = new ArrayList<>();
+    public final int maxInventorySize = 20;
 
     public Player(GamePanel gp, KeyHandler keyH, int characterNumber) {
         super(gp);
@@ -36,8 +38,8 @@ public class Player extends Entity {
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
-        attackArea.width = 36;
-        attackArea.height = 36;
+        /*attackArea.width = 36;
+        attackArea.height = 36;*/
 
         TileManager TileM = new TileManager(gp);
         coordinates = MapGenerator.chooseRandomIslandTile(TileM.map);
@@ -55,7 +57,8 @@ public class Player extends Entity {
 
         setDefaultValues(coordinates);
         getPlayerImage();
-        getPlayerAttackImage("Fist");
+        getPlayerAttackImage();
+        setItems();
     }
 
     public void setDefaultValues(int[] coordinates) {
@@ -74,19 +77,113 @@ public class Player extends Entity {
         exp = 0;
         nextLevelExp = 5;
         coin = 0;
-        currentWeapon = new OBJ_Sword_Normal(gp);
-        currentShield = new OBJ_Shield_Wood(gp);
+        currentWeapon = new OBJ_Stick(gp);
+        currentShield = new OBJ_Patura(gp);
         attack = getAttack();
         defense = getDefense();
     }
 
-    public int getDefense() {
-        return attack = strength * currentWeapon.attackValue;
+    public void setItems() {
+        inventory.add(currentWeapon);
+        inventory.add(currentShield);
     }
 
     public int getAttack() {
+        attackArea = currentWeapon.attackArea;
+        return attack = strength * currentWeapon.attackValue;
+    }
+
+    public int getDefense() {
         return defense = dexterity * currentShield.defenseValue;
     }
+
+    public void getPlayerImage() {
+// Pentru directia 'up'
+        w_up[0] = setup("player", "Kid1", "Walk", "up_1", gp.tileSize, gp.tileSize);
+        w_up[1] = setup("player", "Kid1", "Walk", "up_2", gp.tileSize, gp.tileSize);
+        w_up[2] = setup("player", "Kid1", "Walk", "up_3", gp.tileSize, gp.tileSize);
+        w_up[3] = setup("player", "Kid1", "Walk", "up_4", gp.tileSize, gp.tileSize);
+
+        i_up[0] = setup("player", "Kid1", "Idle", "up_1", gp.tileSize, gp.tileSize);
+        i_up[1] = setup("player", "Kid1", "Idle", "up_2", gp.tileSize, gp.tileSize);
+        i_up[2] = setup("player", "Kid1", "Idle", "up_3", gp.tileSize, gp.tileSize);
+        i_up[3] = setup("player", "Kid1", "Idle", "up_4", gp.tileSize, gp.tileSize);
+
+// Pentru directia 'down'
+        w_down[0] = setup("player", "Kid1", "Walk", "down_1", gp.tileSize, gp.tileSize);
+        w_down[1] = setup("player", "Kid1", "Walk", "down_2", gp.tileSize, gp.tileSize);
+        w_down[2] = setup("player", "Kid1", "Walk", "down_3", gp.tileSize, gp.tileSize);
+        w_down[3] = setup("player", "Kid1", "Walk", "down_4", gp.tileSize, gp.tileSize);
+
+        i_down[0] = setup("player", "Kid1", "Idle", "down_1", gp.tileSize, gp.tileSize);
+        i_down[1] = setup("player", "Kid1", "Idle", "down_2", gp.tileSize, gp.tileSize);
+        i_down[2] = setup("player", "Kid1", "Idle", "down_3", gp.tileSize, gp.tileSize);
+        i_down[3] = setup("player", "Kid1", "Idle", "down_4", gp.tileSize, gp.tileSize);
+
+// Pentru directia 'left'
+        w_left[0] = setup("player", "Kid1", "Walk", "left_1", gp.tileSize, gp.tileSize);
+        w_left[1] = setup("player", "Kid1", "Walk", "left_2", gp.tileSize, gp.tileSize);
+        w_left[2] = setup("player", "Kid1", "Walk", "left_3", gp.tileSize, gp.tileSize);
+        w_left[3] = setup("player", "Kid1", "Walk", "left_4", gp.tileSize, gp.tileSize);
+
+        i_left[0] = setup("player", "Kid1", "Idle", "left_1", gp.tileSize, gp.tileSize);
+        i_left[1] = setup("player", "Kid1", "Idle", "left_2", gp.tileSize, gp.tileSize);
+        i_left[2] = setup("player", "Kid1", "Idle", "left_3", gp.tileSize, gp.tileSize);
+        i_left[3] = setup("player", "Kid1", "Idle", "left_4", gp.tileSize, gp.tileSize);
+
+// Pentru directia 'right'
+        w_right[0] = setup("player", "Kid1", "Walk", "right_1", gp.tileSize, gp.tileSize);
+        w_right[1] = setup("player", "Kid1", "Walk", "right_2", gp.tileSize, gp.tileSize);
+        w_right[2] = setup("player", "Kid1", "Walk", "right_3", gp.tileSize, gp.tileSize);
+        w_right[3] = setup("player", "Kid1", "Walk", "right_4", gp.tileSize, gp.tileSize);
+
+        i_right[0] = setup("player", "Kid1", "Idle", "right_1", gp.tileSize, gp.tileSize);
+        i_right[1] = setup("player", "Kid1", "Idle", "right_2", gp.tileSize, gp.tileSize);
+        i_right[2] = setup("player", "Kid1", "Idle", "right_3", gp.tileSize, gp.tileSize);
+        i_right[3] = setup("player", "Kid1", "Idle", "right_4", gp.tileSize, gp.tileSize);
+
+
+    }
+
+    public void getPlayerAttackImage() {
+        String Weapon = null;
+        if (currentWeapon.type == type_sword) {
+            Weapon = "Sword";
+        }
+        if (currentWeapon.type == type_axe) {
+            Weapon = "Sword";
+        }
+        if (currentWeapon.type == type_pistol)
+            Weapon = "Pistol";
+        if (currentWeapon.type == type_fist)
+            Weapon = "Fist";
+        // Attack UP
+        a_up[0] = setup("player", "Kid1", "Attack", Weapon, "up_1", gp.tileSize, gp.tileSize * 2);
+        a_up[1] = setup("player", "Kid1", "Attack", Weapon, "up_2", gp.tileSize, gp.tileSize * 2);
+        a_up[2] = setup("player", "Kid1", "Attack", Weapon, "up_3", gp.tileSize, gp.tileSize * 2);
+        a_up[3] = setup("player", "Kid1", "Attack", Weapon, "up_4", gp.tileSize, gp.tileSize * 2);
+
+// Attack DOWN
+        a_down[0] = setup("player", "Kid1", "Attack", Weapon, "down_1", gp.tileSize, gp.tileSize * 2);
+        a_down[1] = setup("player", "Kid1", "Attack", Weapon, "down_2", gp.tileSize, gp.tileSize * 2);
+        a_down[2] = setup("player", "Kid1", "Attack", Weapon, "down_3", gp.tileSize, gp.tileSize * 2);
+        a_down[3] = setup("player", "Kid1", "Attack", Weapon, "down_4", gp.tileSize, gp.tileSize * 2);
+
+// Attack LEFT
+        a_left[0] = setup("player", "Kid1", "Attack", Weapon, "left_1", gp.tileSize * 2, gp.tileSize);
+        a_left[1] = setup("player", "Kid1", "Attack", Weapon, "left_2", gp.tileSize * 2, gp.tileSize);
+        a_left[2] = setup("player", "Kid1", "Attack", Weapon, "left_3", gp.tileSize * 2, gp.tileSize);
+        a_left[3] = setup("player", "Kid1", "Attack", Weapon, "left_4", gp.tileSize * 2, gp.tileSize);
+
+// Attack RIGHT
+        a_right[0] = setup("player", "Kid1", "Attack", Weapon, "right_1", gp.tileSize * 2, gp.tileSize);
+        a_right[1] = setup("player", "Kid1", "Attack", Weapon, "right_2", gp.tileSize * 2, gp.tileSize);
+        a_right[2] = setup("player", "Kid1", "Attack", Weapon, "right_3", gp.tileSize * 2, gp.tileSize);
+        a_right[3] = setup("player", "Kid1", "Attack", Weapon, "right_4", gp.tileSize * 2, gp.tileSize);
+
+
+    }
+
 
     public void update() {
         // Verifică dacă jucătorul atacă și execută animația corespunzătoare
@@ -179,7 +276,6 @@ public class Player extends Entity {
         }
     }
 
-
     public void attacking() {
         spriteCounter++;
         if (spriteCounter <= 10) {
@@ -236,6 +332,43 @@ public class Player extends Entity {
 
     }
 
+    public void pickUpObject(int i) {
+        /*if (i != 999) {
+            String objectName = gp.obj[i].name;
+
+            switch (objectName) {
+                case "Coin":
+                    hasCoin++;
+                    gp.playSE(1);
+                    gp.obj[i] = null;
+                    break;
+                case "Iron":
+                    hasIron++;
+                    gp.obj[i] = null;
+                    break;
+                case "Stone":
+                    hasStone++;
+                    gp.obj[i] = null;
+                    break;
+                case "Wood":
+                    hasWood++;
+                    gp.obj[i] = null;
+                    break;
+        }*/
+        if (i != 999) {
+            String text;
+            if (inventory.size() != maxInventorySize) {
+                inventory.add(gp.obj[i]);
+                gp.playSE(1);
+                text = "Got a " + gp.obj[i].name + "!";
+            } else {
+                text = "You cannot carry any more!";
+            }
+            gp.ui.addMessage(text);
+            gp.obj[i] = null;
+        }
+    }
+
 
     public void damageMonster(int i) {
         if (i != 999) {
@@ -279,10 +412,31 @@ public class Player extends Entity {
         }
     }
 
+    public void selectItem() {
+        int itemIndex = gp.ui.getItemIndexOnSlot();
+
+        if (itemIndex < inventory.size()) {
+            Entity selectedItem = inventory.get(itemIndex);
+
+            if ((selectedItem.type == type_sword) || (selectedItem.type == type_axe) || (selectedItem.type == type_pistol) || selectedItem.type == type_fist) {
+                currentWeapon = selectedItem;
+                attack = getAttack();
+                getPlayerAttackImage();
+            }
+            if (selectedItem.type == type_shield) {
+                currentShield = selectedItem;
+                defense = getDefense();
+            }
+            if (selectedItem.type == type_consumable) {
+                selectedItem.use(this);
+                inventory.remove(itemIndex);
+            }
+        }
+    }
 
     public void contactMonster(int i) {
         if (i != 999) {
-            if (!invincible) {
+            if (!invincible && !gp.monster[i].dying) {
                 gp.playSE(3);
 
                 int damage = gp.monster[i].attack - defense;
@@ -306,108 +460,6 @@ public class Player extends Entity {
         }
     }
 
-
-    public void pickUpObject(int i) {
-        if (i != 999) {
-            String objectName = gp.obj[i].name;
-
-            switch (objectName) {
-                case "Coin":
-                    hasCoin++;
-                    gp.playSE(1);
-                    gp.obj[i] = null;
-                    break;
-                case "Iron":
-                    hasIron++;
-                    gp.obj[i] = null;
-                    break;
-                case "Stone":
-                    hasStone++;
-                    gp.obj[i] = null;
-                    break;
-                case "Wood":
-                    hasWood++;
-                    gp.obj[i] = null;
-                    break;
-            }
-        }
-    }
-
-    public void getPlayerImage() {
-// Pentru directia 'up'
-        w_up[0] = setup("player", "Kid1", "Walk", "up_1", gp.tileSize, gp.tileSize);
-        w_up[1] = setup("player", "Kid1", "Walk", "up_2", gp.tileSize, gp.tileSize);
-        w_up[2] = setup("player", "Kid1", "Walk", "up_3", gp.tileSize, gp.tileSize);
-        w_up[3] = setup("player", "Kid1", "Walk", "up_4", gp.tileSize, gp.tileSize);
-
-        i_up[0] = setup("player", "Kid1", "Idle", "up_1", gp.tileSize, gp.tileSize);
-        i_up[1] = setup("player", "Kid1", "Idle", "up_2", gp.tileSize, gp.tileSize);
-        i_up[2] = setup("player", "Kid1", "Idle", "up_3", gp.tileSize, gp.tileSize);
-        i_up[3] = setup("player", "Kid1", "Idle", "up_4", gp.tileSize, gp.tileSize);
-
-// Pentru directia 'down'
-        w_down[0] = setup("player", "Kid1", "Walk", "down_1", gp.tileSize, gp.tileSize);
-        w_down[1] = setup("player", "Kid1", "Walk", "down_2", gp.tileSize, gp.tileSize);
-        w_down[2] = setup("player", "Kid1", "Walk", "down_3", gp.tileSize, gp.tileSize);
-        w_down[3] = setup("player", "Kid1", "Walk", "down_4", gp.tileSize, gp.tileSize);
-
-        i_down[0] = setup("player", "Kid1", "Idle", "down_1", gp.tileSize, gp.tileSize);
-        i_down[1] = setup("player", "Kid1", "Idle", "down_2", gp.tileSize, gp.tileSize);
-        i_down[2] = setup("player", "Kid1", "Idle", "down_3", gp.tileSize, gp.tileSize);
-        i_down[3] = setup("player", "Kid1", "Idle", "down_4", gp.tileSize, gp.tileSize);
-
-// Pentru directia 'left'
-        w_left[0] = setup("player", "Kid1", "Walk", "left_1", gp.tileSize, gp.tileSize);
-        w_left[1] = setup("player", "Kid1", "Walk", "left_2", gp.tileSize, gp.tileSize);
-        w_left[2] = setup("player", "Kid1", "Walk", "left_3", gp.tileSize, gp.tileSize);
-        w_left[3] = setup("player", "Kid1", "Walk", "left_4", gp.tileSize, gp.tileSize);
-
-        i_left[0] = setup("player", "Kid1", "Idle", "left_1", gp.tileSize, gp.tileSize);
-        i_left[1] = setup("player", "Kid1", "Idle", "left_2", gp.tileSize, gp.tileSize);
-        i_left[2] = setup("player", "Kid1", "Idle", "left_3", gp.tileSize, gp.tileSize);
-        i_left[3] = setup("player", "Kid1", "Idle", "left_4", gp.tileSize, gp.tileSize);
-
-// Pentru directia 'right'
-        w_right[0] = setup("player", "Kid1", "Walk", "right_1", gp.tileSize, gp.tileSize);
-        w_right[1] = setup("player", "Kid1", "Walk", "right_2", gp.tileSize, gp.tileSize);
-        w_right[2] = setup("player", "Kid1", "Walk", "right_3", gp.tileSize, gp.tileSize);
-        w_right[3] = setup("player", "Kid1", "Walk", "right_4", gp.tileSize, gp.tileSize);
-
-        i_right[0] = setup("player", "Kid1", "Idle", "right_1", gp.tileSize, gp.tileSize);
-        i_right[1] = setup("player", "Kid1", "Idle", "right_2", gp.tileSize, gp.tileSize);
-        i_right[2] = setup("player", "Kid1", "Idle", "right_3", gp.tileSize, gp.tileSize);
-        i_right[3] = setup("player", "Kid1", "Idle", "right_4", gp.tileSize, gp.tileSize);
-
-
-    }
-
-    public void getPlayerAttackImage(String Weapon) {
-        // Attack UP
-        a_up[0] = setup("player", "Kid1", "Attack", Weapon, "up_1", gp.tileSize, gp.tileSize * 2);
-        a_up[1] = setup("player", "Kid1", "Attack", Weapon, "up_2", gp.tileSize, gp.tileSize * 2);
-        a_up[2] = setup("player", "Kid1", "Attack", Weapon, "up_3", gp.tileSize, gp.tileSize * 2);
-        a_up[3] = setup("player", "Kid1", "Attack", Weapon, "up_4", gp.tileSize, gp.tileSize * 2);
-
-// Attack DOWN
-        a_down[0] = setup("player", "Kid1", "Attack", Weapon, "down_1", gp.tileSize, gp.tileSize * 2);
-        a_down[1] = setup("player", "Kid1", "Attack", Weapon, "down_2", gp.tileSize, gp.tileSize * 2);
-        a_down[2] = setup("player", "Kid1", "Attack", Weapon, "down_3", gp.tileSize, gp.tileSize * 2);
-        a_down[3] = setup("player", "Kid1", "Attack", Weapon, "down_4", gp.tileSize, gp.tileSize * 2);
-
-// Attack LEFT
-        a_left[0] = setup("player", "Kid1", "Attack", Weapon, "left_1", gp.tileSize * 2, gp.tileSize);
-        a_left[1] = setup("player", "Kid1", "Attack", Weapon, "left_2", gp.tileSize * 2, gp.tileSize);
-        a_left[2] = setup("player", "Kid1", "Attack", Weapon, "left_3", gp.tileSize * 2, gp.tileSize);
-        a_left[3] = setup("player", "Kid1", "Attack", Weapon, "left_4", gp.tileSize * 2, gp.tileSize);
-
-// Attack RIGHT
-        a_right[0] = setup("player", "Kid1", "Attack", Weapon, "right_1", gp.tileSize * 2, gp.tileSize);
-        a_right[1] = setup("player", "Kid1", "Attack", Weapon, "right_2", gp.tileSize * 2, gp.tileSize);
-        a_right[2] = setup("player", "Kid1", "Attack", Weapon, "right_3", gp.tileSize * 2, gp.tileSize);
-        a_right[3] = setup("player", "Kid1", "Attack", Weapon, "right_4", gp.tileSize * 2, gp.tileSize);
-
-
-    }
 
     public void draw(Graphics2D g2) {
         BufferedImage image = null;

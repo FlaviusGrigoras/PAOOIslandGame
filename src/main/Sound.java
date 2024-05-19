@@ -18,6 +18,8 @@ public class Sound {
             soundURL[3] = getClass().getResource("sounds/receivedamage.wav");
             soundURL[4] = getClass().getResource("sounds/swingweapon.wav");
             soundURL[6] = getClass().getResource("sounds/levelup.wav");
+            soundURL[7] = getClass().getResource("sounds/cursor.wav");
+            soundURL[8] = getClass().getResource("sounds/powerup.wav");
         } catch (Exception e) {
             e.printStackTrace();
         }

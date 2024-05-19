@@ -20,5 +20,6 @@ public class OBJ_Iron extends Entity {
         solidArea.y = 5 * 3;
         solidArea.width = 8 * 3;
         solidArea.height = 11 * 3;
+        description = "[" + name + "]\nYou can craft better \ntools.";
     }
 }

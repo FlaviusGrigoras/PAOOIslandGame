@@ -45,7 +45,6 @@ public class Entity {
     int hpBarCounter = 0;
 
     //Character Attributes
-    public int type; // 0=player, 1= npc, 2=monster
     public String name;
     public int speed;
     public int maxLife;
@@ -60,6 +59,7 @@ public class Entity {
     //ITEM ATTRIBUTES
     public int attackValue;
     public int defenseValue;
+    public String description = "";
 
     public String direction = "down";
 
@@ -70,6 +70,18 @@ public class Entity {
     public boolean isWalking = false;
     String[] dialogues = new String[20];
     int dialogueIndex = 0;
+
+    //TYPE
+    public int type; // 0=player, 1= npc, 2=monster
+    public final int type_player = 0;
+    public final int type_npc = 1;
+    public final int type_monster = 2;
+    public final int type_sword = 3;
+    public final int type_axe = 4;
+    public final int type_shield = 5;
+    public final int type_consumable = 6;
+    public final int type_pistol = 7;
+    public final int type_fist = 8;
 
     boolean attacking = false;
     public boolean alive = true;
@@ -85,6 +97,9 @@ public class Entity {
 
     public void damageReaction() {
 
+    }
+
+    public void use(Entity entity) {
     }
 
     public void speak() {
@@ -120,7 +135,7 @@ public class Entity {
         gp.cChecker.checkEntity(this, gp.monster);
         boolean contactPlayer = gp.cChecker.checkPlayer(this);
 
-        if (this.type == 2 && contactPlayer) {
+        if (this.type == type_monster && contactPlayer) {
             if (!gp.player.invincible) {
                 //Damage
                 gp.playSE(3);
@@ -332,7 +347,6 @@ public class Entity {
             changeAlpha(g2, 1f);
         }
         if (dyingCounter > i * 8) {
-            dying = false;
             alive = false;
         }
     }

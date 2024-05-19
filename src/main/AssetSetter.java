@@ -2,25 +2,29 @@ package main;
 
 import entity.NPC_Villager;
 import monster.MON_GreenSlime;
-import object.OBJ_Coin;
-import object.OBJ_Iron;
-import object.OBJ_Stone;
-import object.OBJ_Wood;
+import object.*;
 import tile.MapGenerator;
 import tile.TileManager;
 
 public class AssetSetter {
     GamePanel gp;
+    public int objectCounter = 0;
 
     public AssetSetter(GamePanel gp) {
         this.gp = gp;
     }
 
     public void setObject() {
-        createObject(0, "Coin", 10, 11);
-        createObject(1, "Stone", 10, 12);
-        createObject(2, "Wood", 10, 13);
-        createObject(3, "Iron", 11, 14);
+        createObject(objectCounter, "Coin", 10, 10);
+        createObject(objectCounter, "Stone", 10, 10);
+        createObject(objectCounter, "Wood", 10, 10);
+        createObject(objectCounter, "Iron", 10, 10);
+        createObject(objectCounter, "Axe", 10, 10);
+        createObject(objectCounter, "Blue_Shield", 10, 10);
+        createObject(objectCounter, "Red_Potion", 10, 10);
+        createObject(objectCounter, "Pistol", 10, 10);
+        createObject(objectCounter, "Stick", 10, 10);
+        createObject(objectCounter, "Patura", 10, 10);
     }
 
     public void createObject(int index, String Type, int x, int y) {
@@ -37,12 +41,34 @@ public class AssetSetter {
             case "Iron":
                 gp.obj[index] = new OBJ_Iron(gp);
                 break;
+            case "Axe":
+                gp.obj[index] = new OBJ_Axe(gp);
+                break;
+            case "Wood_Shield":
+                gp.obj[index] = new OBJ_Shield_Wood(gp);
+                break;
+            case "Blue_Shield":
+                gp.obj[index] = new OBJ_Shield_Blue(gp);
+                break;
+            case "Red_Potion":
+                gp.obj[index] = new OBJ_Potion_Red(gp);
+                break;
+            case "Pistol":
+                gp.obj[index] = new OBJ_Pistol(gp);
+                break;
+            case "Stick":
+                gp.obj[index] = new OBJ_Stick(gp);
+                break;
+            case "Patura":
+                gp.obj[index] = new OBJ_Patura(gp);
+                break;
             case "Default":
                 System.out.println("Not an object!");
                 break;
         }
         gp.obj[index].worldX = gp.tileSize * x;
         gp.obj[index].worldY = gp.tileSize * y;
+        objectCounter++;
     }
 
     public int[] getRandomCoordinates() {

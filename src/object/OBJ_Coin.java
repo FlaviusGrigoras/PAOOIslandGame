@@ -19,5 +19,6 @@ public class OBJ_Coin extends Entity {
         solidArea.y = 5 * 3;
         solidArea.width = 8 * 3;
         solidArea.height = 11 * 3;
+        description = "[" + name + "]\nYou can buy better \nitems with this.";
     }
 }
