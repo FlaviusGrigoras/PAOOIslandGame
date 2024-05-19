@@ -14,14 +14,14 @@ public class GamePanel extends JPanel implements Runnable {
     public final int scale = 3; // Scalez la 48px48x pentru o vizibilitate mai bună
 
     public final int tileSize = originalTileSize * scale;
-    public final int maxScreenCol = 800 / tileSize;
-    public final int maxScreenRow = 600 / tileSize;
+    public final int maxScreenCol = 16;
+    public final int maxScreenRow = 12;
     public final int screenWidth = tileSize * maxScreenCol;
     public final int screenHeight = tileSize * maxScreenRow;
 
     // Setări lume
-    public final int maxWorldCol = 25;
-    public final int maxWorldRow = 25;
+    public final int maxWorldCol = 50;
+    public final int maxWorldRow = 50;
 
     double FPS = 60;
     int Real_FPS;
@@ -45,6 +45,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Entity[] npc = new Entity[10];
     public Entity[] monster = new Entity[50];
     ArrayList<Entity> entityList = new ArrayList<>();
+    public ArrayList<Entity> projectileList = new ArrayList<>();
 
     //Game state
 
@@ -129,13 +130,28 @@ public class GamePanel extends JPanel implements Runnable {
             //MONSTER
             for (int i = 0; i < monster.length; i++) {
                 if (monster[i] != null) {
-                    if (monster[i].alive) {
+                    if (monster[i].alive && !monster[i].dying) {
                         monster[i].update();
-                    } else {
+                    }
+                    if (!monster[i].alive) {
                         monster[i] = null;
                     }
                 }
             }
+
+            //Projectile
+            for (int i = 0; i < projectileList.size(); i++) {
+                if (projectileList.get(i) != null) {
+                    if (projectileList.get(i).alive) {
+                        projectileList.get(i).update();
+                    }
+                    if (!projectileList.get(i).alive) {
+                        projectileList.remove(i);
+                    }
+                }
+            }
+
+
             // Actualizează coordonatele jucătorului
             playerX = player.worldX;
             playerY = player.worldY;
@@ -186,6 +202,12 @@ public class GamePanel extends JPanel implements Runnable {
                     entityList.add(entity);
                 }
             }
+
+            for (Entity entity : projectileList)
+                if (entity != null) {
+                    entityList.add(entity);
+                }
+
 
             //SORT
             Collections.sort(entityList, new Comparator<Entity>() {

@@ -20,6 +20,7 @@ public class Sound {
             soundURL[6] = getClass().getResource("sounds/levelup.wav");
             soundURL[7] = getClass().getResource("sounds/cursor.wav");
             soundURL[8] = getClass().getResource("sounds/powerup.wav");
+            soundURL[9] = getClass().getResource("sounds/burning.wav");
         } catch (Exception e) {
             e.printStackTrace();
         }

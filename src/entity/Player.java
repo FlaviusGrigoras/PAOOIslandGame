@@ -79,6 +79,7 @@ public class Player extends Entity {
         coin = 0;
         currentWeapon = new OBJ_Stick(gp);
         currentShield = new OBJ_Patura(gp);
+        projectile = new OBJ_Fireball(gp);
         attack = getAttack();
         defense = getDefense();
     }
@@ -266,6 +267,16 @@ public class Player extends Entity {
             }
         }
 
+        if (gp.keyH.shotKeyPressed && !projectile.alive && shotAvailableCounter == 30) {
+            // Set default Coordinates, direction and user
+            projectile.set(worldX, worldY, direction, true, this);
+
+            // Add it to the list
+            gp.projectileList.add(projectile);
+            shotAvailableCounter=0;
+            gp.playSE(9);
+        }
+
         // Verificarea stării de invincibilitate și resetarea acesteia după un interval de timp
         if (invincible) {
             invincibleCounter++;
@@ -273,6 +284,9 @@ public class Player extends Entity {
                 invincible = false;
                 invincibleCounter = 0;
             }
+        }
+        if (shotAvailableCounter < 30) {
+            shotAvailableCounter++;
         }
     }
 
@@ -316,7 +330,7 @@ public class Player extends Entity {
             solidArea.height = attackArea.height;
 
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
-            damageMonster(monsterIndex);
+            damageMonster(monsterIndex, attack);
 
             //Dupa verificarea coliziunii, resetare la valorile originale
             worldX = currentWorldX;
@@ -370,7 +384,7 @@ public class Player extends Entity {
     }
 
 
-    public void damageMonster(int i) {
+    public void damageMonster(int i, int attack) {
         if (i != 999) {
             if (!gp.monster[i].invincible) {
                 gp.playSE(2);
