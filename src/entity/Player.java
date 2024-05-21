@@ -77,12 +77,23 @@ public class Player extends Entity {
         exp = 0;
         nextLevelExp = 5;
         coin = 0;
+        maxMana = 4;
+        ammo = 10;
+        mana = maxMana;
         currentWeapon = new OBJ_Stick(gp);
         currentShield = new OBJ_Patura(gp);
         projectile = new OBJ_Fireball(gp);
         attack = getAttack();
         defense = getDefense();
     }
+
+    /*public Projectile getProjectile() {
+        if (currentWeapon.type == type_pistol) {
+            return new OBJ_Rock(gp);
+        } else {
+            return new OBJ_Fireball(gp);
+        }
+    }*/
 
     public void setItems() {
         inventory.add(currentWeapon);
@@ -267,15 +278,6 @@ public class Player extends Entity {
             }
         }
 
-        if (gp.keyH.shotKeyPressed && !projectile.alive && shotAvailableCounter == 30) {
-            // Set default Coordinates, direction and user
-            projectile.set(worldX, worldY, direction, true, this);
-
-            // Add it to the list
-            gp.projectileList.add(projectile);
-            shotAvailableCounter=0;
-            gp.playSE(9);
-        }
 
         // Verificarea stării de invincibilitate și resetarea acesteia după un interval de timp
         if (invincible) {
@@ -287,6 +289,18 @@ public class Player extends Entity {
         }
         if (shotAvailableCounter < 30) {
             shotAvailableCounter++;
+        }
+        if (gp.keyH.shotKeyPressed && !projectile.alive && shotAvailableCounter == 30 && Projectile.haveResoure(this)) {
+            // Set default Coordinates, direction and user
+            projectile.set(worldX, worldY, direction, true, this);
+
+            // SUBTRACT THE COST
+            projectile.subtractResource(this);
+
+            // Add it to the list
+            gp.projectileList.add(projectile);
+            shotAvailableCounter = 0;
+            gp.playSE(9);
         }
     }
 

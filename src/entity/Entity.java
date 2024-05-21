@@ -51,6 +51,7 @@ public class Entity {
     public int maxLife;
     public int life;
     public int level;
+    public int ammo;
     public int strength;
     public int dexterity;
     public int attack, defense, exp, nextLevelExp, coin;
@@ -130,6 +131,7 @@ public class Entity {
         }
     }
 
+
     public void update() {
         setAction();
 
@@ -141,18 +143,7 @@ public class Entity {
         boolean contactPlayer = gp.cChecker.checkPlayer(this);
 
         if (this.type == type_monster && contactPlayer) {
-            if (!gp.player.invincible) {
-                //Damage
-                gp.playSE(3);
-
-                int damage = attack - gp.player.defense;
-                if (damage < 0) {
-                    damage = 0;
-                }
-
-                gp.player.life -= damage;
-                gp.player.invincible = true;
-            }
+            damagePlayer(attack);
         }
 
         if (!collisionOn) {
@@ -189,7 +180,25 @@ public class Entity {
                 invincibleCounter = 0;
             }
         }
+        if(shotAvailableCounter<30){
+            shotAvailableCounter++;
+        }
 
+    }
+
+    public void damagePlayer(int attack) {
+        if (!gp.player.invincible) {
+            //Damage
+            gp.playSE(3);
+
+            int damage = attack - gp.player.defense;
+            if (damage < 0) {
+                damage = 0;
+            }
+
+            gp.player.life -= damage;
+            gp.player.invincible = true;
+        }
     }
 
     public BufferedImage setup(String CharacterType, String CharacterType2, String StatusPath, String imageName, int width, int height) {
