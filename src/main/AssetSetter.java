@@ -5,12 +5,14 @@ import monster.MON_GreenSlime;
 import object.*;
 import tile.MapGenerator;
 import tile.TileManager;
+import tile_interactive.IT_Tree;
 
 public class AssetSetter {
     GamePanel gp;
     public int objectCounter = 0;
     public int monsterCounter = 0;
     public int npcCounter = 0;
+    public int itCounter = 0;
 
     public AssetSetter(GamePanel gp) {
         this.gp = gp;
@@ -18,17 +20,17 @@ public class AssetSetter {
 
     public void setObject() {
         createObject(objectCounter, "Coin", 10, 10);
-        createObject(objectCounter, "Stone", 10, 10);
-        createObject(objectCounter, "Wood", 10, 10);
-        createObject(objectCounter, "Iron", 10, 10);
-        createObject(objectCounter, "Axe", 10, 10);
-        createObject(objectCounter, "Blue_Shield", 10, 10);
-        createObject(objectCounter, "Red_Potion", 10, 10);
-        createObject(objectCounter, "Pistol", 10, 10);
-        createObject(objectCounter, "Swood_Normal", 10, 10);
-        createObject(objectCounter, "Wood_Shield", 10, 10);
-        createObject(objectCounter, "Mana", 10, 10);
-        createObject(objectCounter, "Inima", 10, 10);
+        createObject(objectCounter, "Stone", 11, 10);
+        createObject(objectCounter, "Wood", 12, 10);
+        createObject(objectCounter, "Iron", 13, 10);
+        createObject(objectCounter, "Axe", 14, 10);
+        createObject(objectCounter, "Blue_Shield", 15, 10);
+        createObject(objectCounter, "Red_Potion", 16, 10);
+        createObject(objectCounter, "Pistol", 17, 10);
+        createObject(objectCounter, "Swood_Normal", 18, 10);
+        createObject(objectCounter, "Wood_Shield", 19, 10);
+        createObject(objectCounter, "Mana", 20, 10);
+        createObject(objectCounter, "Inima", 21, 10);
 
     }
 
@@ -156,5 +158,28 @@ public class AssetSetter {
         gp.npc[index].worldX = x * gp.tileSize;
         gp.npc[index].worldY = y * gp.tileSize;
         npcCounter++;
+    }
+
+    public void setInteractiveTile() {
+        createInteractiveTile(itCounter, "Tree", 11, 11);
+        createInteractiveTile(itCounter, "Tree", 11, 12);
+        createInteractiveTile(itCounter, "Tree", 11, 13);
+    }
+
+    public void createInteractiveTile(int index, String Type, int x, int y) {
+        switch (Type) {
+            case "Tree":
+                gp.iTile[index] = new IT_Tree(gp);
+                break;
+            case "Rock":
+                //gp.iTile[index]=new IT_Rock(gp);
+                break;
+            case "Default":
+                System.out.println("Not an interactive Tile!");
+                break;
+        }
+        gp.iTile[index].worldX = x * gp.tileSize;
+        gp.iTile[index].worldY = y * gp.tileSize;
+        itCounter++;
     }
 }

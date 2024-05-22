@@ -126,9 +126,9 @@ public class MapGenerator {
                 if (i < width && j < height && map[i][j] == ISLAND) {
                     double randomValue = random.nextDouble();
                     if (randomValue < 0.1) {
-                        map[i][j] = TREE; // Tree tile with 20% chance
+                        //map[i][j] = TREE; // Tree tile with 20% chance
                     } else if (randomValue < 0.13) {
-                        map[i][j] = ROCK; // Rock tile with 3% chance
+                        //map[i][j] = ROCK; // Rock tile with 3% chance
                     }
                 }
             }

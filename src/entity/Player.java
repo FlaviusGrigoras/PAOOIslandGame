@@ -235,6 +235,9 @@ public class Player extends Entity {
         int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
         contactMonster(monsterIndex);
 
+        // Coliziunea cu Tile Interactiv
+        gp.cChecker.checkEntity(this, gp.iTile);
+
         // Verifică evenimentele
         gp.eHandler.checkEvent();
 
@@ -352,6 +355,10 @@ public class Player extends Entity {
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
             damageMonster(monsterIndex, attack);
 
+            // Check interactive tile collision
+            int iTileIndex = gp.cChecker.checkEntity(this, gp.iTile);
+            damageInteractiveTile(iTileIndex);
+
             //Dupa verificarea coliziunii, resetare la valorile originale
             worldX = currentWorldX;
             worldY = currentWorldY;
@@ -364,6 +371,21 @@ public class Player extends Entity {
             attacking = false;
         }
 
+    }
+
+    public void damageInteractiveTile(int i) {
+        if (i != 999 && gp.iTile[i].destructible && gp.iTile[i].isCorrectItem(this) && !gp.iTile[i].invincible) {
+            gp.iTile[i].playSE();
+            gp.iTile[i].life--;
+            gp.iTile[i].invincible = true;
+
+            // Generate particle
+            generateParticle(gp.iTile[i], gp.iTile[i]);
+
+            if (gp.iTile[i].life == 0) {
+                gp.iTile[i] = gp.iTile[i].getDestroyedForm();
+            }
+        }
     }
 
     public void pickUpObject(int i) {
