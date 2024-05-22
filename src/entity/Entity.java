@@ -66,6 +66,7 @@ public class Entity {
     public int defenseValue;
     public String description = "";
     public int useCost;
+    public int value;
 
     public String direction = "down";
 
@@ -88,6 +89,7 @@ public class Entity {
     public final int type_consumable = 6;
     public final int type_pistol = 7;
     public final int type_fist = 8;
+    public final int type_pickupOnly = 9;
 
     boolean attacking = false;
     public boolean alive = true;
@@ -106,6 +108,20 @@ public class Entity {
     }
 
     public void use(Entity entity) {
+    }
+
+    public void checkDrop() {
+    }
+
+    public void dropItem(Entity droppedItem) {
+        for (int i = 0; i < gp.obj.length; i++) {
+            if (gp.obj[i] == null) {
+                gp.obj[i] = droppedItem;
+                gp.obj[i].worldX = worldX; // Dead monster worldX
+                gp.obj[i].worldY = worldY;
+                break;
+            }
+        }
     }
 
     public void speak() {
@@ -180,7 +196,7 @@ public class Entity {
                 invincibleCounter = 0;
             }
         }
-        if(shotAvailableCounter<30){
+        if (shotAvailableCounter < 30) {
             shotAvailableCounter++;
         }
 
@@ -327,7 +343,7 @@ public class Entity {
             }
             if (dying)
                 dyingAnimation(g2);
-            g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+            g2.drawImage(image, screenX, screenY, null);
             changeAlpha(g2, 1F);
         }
     }
@@ -361,6 +377,7 @@ public class Entity {
             changeAlpha(g2, 1f);
         }
         if (dyingCounter > i * 8) {
+            //dying=false;
             alive = false;
         }
     }

@@ -400,7 +400,10 @@ public class UI {
 
     public void drawInventory() {
         //Frame
-        int frameX = gp.tileSize * 9, frameY = gp.tileSize, frameWidth = gp.tileSize * 6, frameHeight = gp.tileSize * 5;
+        int frameX = gp.tileSize * 9;
+        int frameY = gp.tileSize;
+        int frameWidth = gp.tileSize * 6;
+        int frameHeight = gp.tileSize * 5;
         drawSubWindow(frameX, frameY, frameWidth, frameHeight);
 
         // Slot
@@ -430,8 +433,8 @@ public class UI {
         }
 
         // Cursor
-        int cursorX = slotXstart + (slotSize * slotCol);
-        int cursorY = slotYstart + (slotSize * slotRow);
+        int cursorX = slotXstart + (gp.tileSize * slotCol);
+        int cursorY = slotYstart + (gp.tileSize * slotRow);
         int cursorWidth = gp.tileSize;
         int cursorHeight = gp.tileSize;
 

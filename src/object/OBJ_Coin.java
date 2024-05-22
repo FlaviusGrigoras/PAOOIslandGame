@@ -8,17 +8,21 @@ import java.io.File;
 import java.io.IOException;
 
 public class OBJ_Coin extends Entity {
+    GamePanel gp;
 
     public OBJ_Coin(GamePanel gp) {
         super(gp);
-        name = "Coin";
-        i_down[0] = setup(name);
+        this.gp = gp;
 
-        collision = true;
-        solidArea.x = 8 * 3;
-        solidArea.y = 5 * 3;
-        solidArea.width = 8 * 3;
-        solidArea.height = 11 * 3;
-        description = "[" + name + "]\nYou can buy better \nitems with this.";
+        type = type_pickupOnly;
+        name = "Coin";
+        value = 1;
+        i_down[0] = setup(name);
+    }
+
+    public void use(Entity entity) {
+        gp.playSE(1);
+        gp.ui.addMessage("Coin +" + value);
+        gp.player.coin += value;
     }
 }

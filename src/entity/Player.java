@@ -290,7 +290,7 @@ public class Player extends Entity {
         if (shotAvailableCounter < 30) {
             shotAvailableCounter++;
         }
-        if (gp.keyH.shotKeyPressed && !projectile.alive && shotAvailableCounter == 30 && Projectile.haveResoure(this)) {
+        if (gp.keyH.shotKeyPressed && !projectile.alive && shotAvailableCounter == 30 && projectile.haveResource(this)) {
             // Set default Coordinates, direction and user
             projectile.set(worldX, worldY, direction, true, this);
 
@@ -301,6 +301,12 @@ public class Player extends Entity {
             gp.projectileList.add(projectile);
             shotAvailableCounter = 0;
             gp.playSE(9);
+        }
+        if (life > maxLife) {
+            life = maxLife;
+        }
+        if (mana > maxMana) {
+            mana = maxMana;
         }
     }
 
@@ -384,16 +390,23 @@ public class Player extends Entity {
                     break;
         }*/
         if (i != 999) {
-            String text;
-            if (inventory.size() != maxInventorySize) {
-                inventory.add(gp.obj[i]);
-                gp.playSE(1);
-                text = "Got a " + gp.obj[i].name + "!";
+            // PICKUP ONLY
+            if (gp.obj[i].type == type_pickupOnly) {
+                gp.obj[i].use(this);
+                gp.obj[i] = null;
             } else {
-                text = "You cannot carry any more!";
+                // INVENTORY ITEMS
+                String text;
+                if (inventory.size() != maxInventorySize) {
+                    inventory.add(gp.obj[i]);
+                    gp.playSE(1);
+                    text = "Got a " + gp.obj[i].name + "!";
+                } else {
+                    text = "You cannot carry any more!";
+                }
+                gp.ui.addMessage(text);
+                gp.obj[i] = null;
             }
-            gp.ui.addMessage(text);
-            gp.obj[i] = null;
         }
     }
 
@@ -464,7 +477,7 @@ public class Player extends Entity {
 
     public void contactMonster(int i) {
         if (i != 999) {
-            if (!invincible && !gp.monster[i].dying) {
+            if (!invincible && gp.monster[i].dying == false) {
                 gp.playSE(3);
 
                 int damage = gp.monster[i].attack - defense;

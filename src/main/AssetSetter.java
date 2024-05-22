@@ -9,6 +9,8 @@ import tile.TileManager;
 public class AssetSetter {
     GamePanel gp;
     public int objectCounter = 0;
+    public int monsterCounter = 0;
+    public int npcCounter = 0;
 
     public AssetSetter(GamePanel gp) {
         this.gp = gp;
@@ -23,8 +25,11 @@ public class AssetSetter {
         createObject(objectCounter, "Blue_Shield", 10, 10);
         createObject(objectCounter, "Red_Potion", 10, 10);
         createObject(objectCounter, "Pistol", 10, 10);
-        createObject(objectCounter, "Stick", 10, 10);
-        createObject(objectCounter, "Patura", 10, 10);
+        createObject(objectCounter, "Swood_Normal", 10, 10);
+        createObject(objectCounter, "Wood_Shield", 10, 10);
+        createObject(objectCounter, "Mana", 10, 10);
+        createObject(objectCounter, "Inima", 10, 10);
+
     }
 
     public void createObject(int index, String Type, int x, int y) {
@@ -62,6 +67,16 @@ public class AssetSetter {
             case "Patura":
                 gp.obj[index] = new OBJ_Patura(gp);
                 break;
+            case "Inima":
+                gp.obj[index] = new OBJ_Heart(gp);
+                break;
+            case "Mana":
+                gp.obj[index] = new OBJ_ManaCrystal(gp);
+                break;
+            case "Swood_Normal":
+                gp.obj[index] = new OBJ_Sword_Normal(gp);
+                break;
+
             case "Default":
                 System.out.println("Not an object!");
                 break;
@@ -88,7 +103,7 @@ public class AssetSetter {
     public void setNPC() {
         if (gp != null && gp.npc != null) {
             int[] coordinates = getRandomCoordinates();
-            createNPC(0, "Villager", coordinates[0], coordinates[1]);
+            createNPC(npcCounter, "Villager", coordinates[0], coordinates[1]);
         }
     }
 
@@ -96,81 +111,22 @@ public class AssetSetter {
         int i = 0;
 
         int[] coordinates = getRandomCoordinates();
-        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
-        i++;
+        createMonster(monsterCounter, "greenslime", coordinates[0], coordinates[1]);
 
         coordinates = getRandomCoordinates();
-        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
-        i++;
-
-        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
-        i++;
+        createMonster(monsterCounter, "greenslime", coordinates[0], coordinates[1]);
 
         coordinates = getRandomCoordinates();
-        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
-        i++;
-
-        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
-        i++;
+        createMonster(monsterCounter, "greenslime", coordinates[0], coordinates[1]);
 
         coordinates = getRandomCoordinates();
-        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
-        i++;
-
-        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
-        i++;
+        createMonster(monsterCounter, "greenslime", coordinates[0], coordinates[1]);
 
         coordinates = getRandomCoordinates();
-        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
-        i++;
-
-        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
-        i++;
+        createMonster(monsterCounter, "greenslime", coordinates[0], coordinates[1]);
 
         coordinates = getRandomCoordinates();
-        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
-        i++;
-
-        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
-        i++;
-
-        coordinates = getRandomCoordinates();
-        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
-        i++;
-
-        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
-        i++;
-
-        coordinates = getRandomCoordinates();
-        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
-        i++;
-
-        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
-        i++;
-
-        coordinates = getRandomCoordinates();
-        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
-        i++;
-
-        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
-        i++;
-
-        coordinates = getRandomCoordinates();
-        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
-        i++;
-
-        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
-        i++;
-
-        coordinates = getRandomCoordinates();
-        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
-        i++;
-
-        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
-        i++;
-
-        coordinates = getRandomCoordinates();
-        createMonster(i, "greenslime", coordinates[0], coordinates[1]);
+        createMonster(monsterCounter, "greenslime", coordinates[0], coordinates[1]);
     }
 
     public void createMonster(int index, String Type, int x, int y) {
@@ -184,6 +140,7 @@ public class AssetSetter {
         }
         gp.monster[index].worldX = x * gp.tileSize;
         gp.monster[index].worldY = y * gp.tileSize;
+        monsterCounter++;
     }
 
 
@@ -198,5 +155,6 @@ public class AssetSetter {
         }
         gp.npc[index].worldX = x * gp.tileSize;
         gp.npc[index].worldY = y * gp.tileSize;
+        npcCounter++;
     }
 }
