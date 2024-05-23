@@ -102,7 +102,6 @@ public class TileManager {
                     int num = Integer.parseInt(numbers[col]);
 
                     map[col][row] = num;
-                    System.out.println(map[col][row]);
                     col++;
                 }
 

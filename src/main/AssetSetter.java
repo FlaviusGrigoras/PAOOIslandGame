@@ -3,9 +3,11 @@ package main;
 import entity.NPC_Villager;
 import monster.MON_GreenSlime;
 import object.*;
-import tile.MapGenerator;
-import tile.TileManager;
+import tile_interactive.IT_Rock;
 import tile_interactive.IT_Tree;
+import tile_interactive.InteractiveTile;
+
+import java.util.Random;
 
 public class AssetSetter {
     GamePanel gp;
@@ -96,11 +98,19 @@ public class AssetSetter {
     }
 
     public void setMonster() {
-        int i = 0;
-
-        createMonster(monsterCounter, "greenslime", 15, 22);
-        createMonster(monsterCounter, "greenslime", 17, 13);
-        createMonster(monsterCounter, "greenslime", 20, 10);
+        Random rand = new Random();
+        for (int x = 0; x < gp.maxWorldCol; x++) {
+            for (int y = 0; y < gp.maxWorldRow; y++) {
+                if (gp.tileM.map[x][y] == 4) {
+                    int chance = rand.nextInt(100);
+                    if (chance < 3) {
+                        createMonster(monsterCounter, "greenslime", x, y);
+                    } else if (chance < 20) {
+                        //createInteractiveTile(itCounter, "Rock", x, y);
+                    }
+                }
+            }
+        }
     }
 
     public void createMonster(int index, String Type, int x, int y) {
@@ -133,10 +143,21 @@ public class AssetSetter {
     }
 
     public void setInteractiveTile() {
-        createInteractiveTile(itCounter, "Tree", 11, 11);
-        createInteractiveTile(itCounter, "Tree", 11, 12);
-        createInteractiveTile(itCounter, "Tree", 11, 13);
+        Random rand = new Random();
+        for (int x = 0; x < gp.maxWorldCol; x++) {
+            for (int y = 0; y < gp.maxWorldRow; y++) {
+                if (gp.tileM.map[x][y] == 4) {
+                    int chance = rand.nextInt(100);
+                    if (chance < 10) {
+                        createInteractiveTile(itCounter, "Tree", x, y);
+                    } else if (chance < 20) {
+                        createInteractiveTile(itCounter, "Rock", x, y);
+                    }
+                }
+            }
+        }
     }
+
 
     public void createInteractiveTile(int index, String Type, int x, int y) {
         switch (Type) {
@@ -144,7 +165,7 @@ public class AssetSetter {
                 gp.iTile[index] = new IT_Tree(gp);
                 break;
             case "Rock":
-                //gp.iTile[index]=new IT_Rock(gp);
+                gp.iTile[index] = new IT_Rock(gp);
                 break;
             case "Default":
                 System.out.println("Not an interactive Tile!");
