@@ -30,7 +30,7 @@ public class GamePanel extends JPanel implements Runnable {
     int screenHeight2 = screenHeight;
     BufferedImage tempScreen;
     Graphics2D g2;
-    public boolean fullScreenOn=false;
+    public boolean fullScreenOn = false;
 
     double FPS = 60;
     int Real_FPS;
@@ -44,10 +44,11 @@ public class GamePanel extends JPanel implements Runnable {
     public AssetSetter aSetter = new AssetSetter(this);
     public UI ui = new UI(this);
     public EventHandler eHandler = new EventHandler(this);
+    Config config = new Config(this);
 
     //SOUND
     Sound sound = new Sound();
-    Sound se=new Sound();
+    Sound se = new Sound();
 
     //Entity and object
     public Player player;
@@ -86,13 +87,14 @@ public class GamePanel extends JPanel implements Runnable {
         aSetter.setNPC();
         aSetter.setMonster();
         aSetter.setInteractiveTile();
-        //playMusic(0);
         gameState = titleState;
 
         tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
         g2 = (Graphics2D) tempScreen.getGraphics();
 
-        setFullScreen();
+        if (fullScreenOn) {
+            setFullScreen();
+        }
     }
 
     public void startGameThread() {
@@ -311,12 +313,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 
     public void playMusic(int i) {
-        sound.setFile(i);
-        sound.play();
-        sound.loop();
-    }
-
-    public void playMusic(int i, float volume) {
         sound.setFile(i);
         sound.play();
         sound.loop();

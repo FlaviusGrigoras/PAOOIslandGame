@@ -256,6 +256,8 @@ public class UI {
         g2.drawRect(textX, textY, 120, 24);
         volumeWidth = 24 * gp.se.volumeScale;
         g2.fillRect(textX, textY, volumeWidth, 24);
+
+        gp.config.saveConfig();
     }
 
     public void options_control(int frameX, int frameY) {
@@ -316,7 +318,7 @@ public class UI {
             g2.drawString(">", textX - 25, textY);
             if (gp.keyH.enterPressed) {
                 subState = 0;
-                commandNum=3;
+                commandNum = 3;
             }
         }
     }

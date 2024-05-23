@@ -79,7 +79,7 @@ public class Sound {
                 volume = -20f;
                 break;
             case 2:
-                volume = 0f;
+                volume = -12f;
                 break;
             case 3:
                 volume = -5f;
@@ -88,7 +88,7 @@ public class Sound {
                 volume = 1f;
                 break;
             case 5:
-                volume = 5f;
+                volume = 6f;
                 break;
             default:
                 volume = 0f;
