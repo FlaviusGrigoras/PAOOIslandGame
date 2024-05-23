@@ -230,7 +230,7 @@ public class CollisionChecker {
         }
         if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
             entity.collisionOn = true;
-            contactPlayer=true;
+            contactPlayer = true;
         }
         return contactPlayer;
     }

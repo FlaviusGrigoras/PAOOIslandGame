@@ -22,8 +22,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
 
     // Setări lume
-    public final int maxWorldCol = 25;
-    public final int maxWorldRow = 25;
+    public final int maxWorldCol = 50;
+    public final int maxWorldRow = 50;
 
     // FOR FULL SCREEN
     int screenWidth2 = screenWidth;
@@ -75,6 +75,7 @@ public class GamePanel extends JPanel implements Runnable {
     int playerY;
 
     public GamePanel() {
+        tileM = new TileManager(this);
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(new Color(0x689cfc));
         this.setDoubleBuffered(true);

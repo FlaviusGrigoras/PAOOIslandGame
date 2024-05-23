@@ -88,47 +88,19 @@ public class AssetSetter {
         objectCounter++;
     }
 
-    public int[] getRandomCoordinates() {
-        TileManager tileM = new TileManager(gp);
-        int[] coordinates = MapGenerator.chooseRandomIslandTile(gp.tileM.map);
-
-        int x = coordinates[0];
-        int y = coordinates[1];
-        while (tileM.map[x + 1][y + 1] != 4) {
-            coordinates = MapGenerator.chooseRandomIslandTile(tileM.map);
-            x = coordinates[0];
-            y = coordinates[1];
-        }
-        return coordinates;
-    }
 
     public void setNPC() {
         if (gp != null && gp.npc != null) {
-            int[] coordinates = getRandomCoordinates();
-            createNPC(npcCounter, "Villager", coordinates[0], coordinates[1]);
+            createNPC(npcCounter, "Villager", 6, 7);
         }
     }
 
     public void setMonster() {
         int i = 0;
 
-        int[] coordinates = getRandomCoordinates();
-        createMonster(monsterCounter, "greenslime", coordinates[0], coordinates[1]);
-
-        coordinates = getRandomCoordinates();
-        createMonster(monsterCounter, "greenslime", coordinates[0], coordinates[1]);
-
-        coordinates = getRandomCoordinates();
-        createMonster(monsterCounter, "greenslime", coordinates[0], coordinates[1]);
-
-        coordinates = getRandomCoordinates();
-        createMonster(monsterCounter, "greenslime", coordinates[0], coordinates[1]);
-
-        coordinates = getRandomCoordinates();
-        createMonster(monsterCounter, "greenslime", coordinates[0], coordinates[1]);
-
-        coordinates = getRandomCoordinates();
-        createMonster(monsterCounter, "greenslime", coordinates[0], coordinates[1]);
+        createMonster(monsterCounter, "greenslime", 5, 5);
+        createMonster(monsterCounter, "greenslime", 3, 2);
+        createMonster(monsterCounter, "greenslime", 1, 1);
     }
 
     public void createMonster(int index, String Type, int x, int y) {

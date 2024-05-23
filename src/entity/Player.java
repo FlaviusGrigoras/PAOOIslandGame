@@ -28,7 +28,6 @@ public class Player extends Entity {
         super(gp);
         this.gp = gp;
         this.keyH = keyH;
-        int[] coordinates = new int[2];
         attacking = false;
 
         screenX = gp.screenWidth / 2 - (gp.tileSize / 2);
@@ -41,29 +40,15 @@ public class Player extends Entity {
         /*attackArea.width = 36;
         attackArea.height = 36;*/
 
-        TileManager TileM = new TileManager(gp);
-        coordinates = MapGenerator.chooseRandomIslandTile(TileM.map);
-        int x = coordinates[0];
-        int y = coordinates[1];
-
-        while (TileM.map[x + 1][y + 1] != 4) {
-            coordinates = MapGenerator.chooseRandomIslandTile(TileM.map);
-            x = coordinates[0];
-            y = coordinates[1];
-            System.out.println("x= " + x + "y= " + y + "Tile= " + TileM.map[x][x]);
-        }
-
-        System.out.println("Coordonatele tile-ului de tip insulă aleator selectat pentru Player sunt: (" + (coordinates[0] + 1) + ", " + (coordinates[1] + 1) + "). Tile-ul are numarul: " + TileM.map[coordinates[0]][coordinates[1]]);
-
-        setDefaultValues(coordinates);
+        setDefaultValues(9,12);
         getPlayerImage();
         getPlayerAttackImage();
         setItems();
     }
 
-    public void setDefaultValues(int[] coordinates) {
-        worldX = gp.tileSize * coordinates[0];
-        worldY = gp.tileSize * coordinates[1];
+    public void setDefaultValues(int x, int y) {
+        worldX = gp.tileSize * x;
+        worldY = gp.tileSize * y;
 
         speed = 4;
         direction = "down";

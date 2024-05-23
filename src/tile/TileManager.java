@@ -5,8 +5,7 @@ import main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 public class TileManager {
     public static int[] PlayerCoordinates;
@@ -14,18 +13,17 @@ public class TileManager {
     private final GamePanel gp;
     public final Tile[] tiles;
     public int[][] map;
+    //int mapTileNum[][];
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
         tiles = new Tile[140]; // Numărul total de țigle din spritesheet, inclusiv noile tipuri de țigle
+        map = new int[gp.maxWorldCol][gp.maxWorldRow];
 
         getTileImage();
-        generateMap();
+        loadMap("maps/map01.txt");
     }
 
-    public void generateMap() {
-        map = MapGenerator.generateMap(gp.maxWorldCol, gp.maxWorldRow);
-    }
 
     private void getTileImage() {
         setup(0, "CORNER_TOP_LEFT", "island", true);
@@ -84,6 +82,40 @@ public class TileManager {
         }
     }
 
+    public void loadMap(String filePath) {
+        try {
+            InputStream is = getClass().getResourceAsStream(filePath);
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+            int col = 0;
+            int row = 0;
+
+            while (row < gp.maxWorldRow) {
+                String line = br.readLine();
+                if (line == null) {
+                    break;
+                }
+
+                String[] numbers = line.split(" ");
+
+                while (col < gp.maxWorldCol && col < numbers.length) {
+                    int num = Integer.parseInt(numbers[col]);
+
+                    map[col][row] = num;
+                    System.out.println(map[col][row]);
+                    col++;
+                }
+
+                col = 0; // Reset column index after processing a row
+                row++;
+            }
+            br.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public void draw(Graphics2D g2) {
         int tileSize = gp.tileSize;
         int worldCol;
@@ -121,4 +153,25 @@ public class TileManager {
             System.out.println("Tiles sau map nu au fost inițializate corespunzător.");
         }
     }
+        /*
+        int worldCol = 0;
+        int worldRow = 0;
+
+        while (worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
+            int tileNum = map[worldCol][worldRow];
+
+            int worldX = worldCol * gp.tileSize;
+            int worldY = worldRow * gp.tileSize;
+            int screenX = worldX - gp.player.worldX + gp.player.screenX;
+            int screenY = worldY - gp.player.worldY + gp.player.screenY;
+
+            g2.drawImage(tiles[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+            worldCol++;
+
+            if (worldCol == gp.maxWorldCol) {
+                worldCol = 0;
+                worldRow++;
+            }
+        }
+                 */
 }
