@@ -4,6 +4,8 @@ import entity.Entity;
 import entity.Projectile;
 import main.GamePanel;
 
+import java.awt.*;
+
 public class OBJ_Rock extends Projectile {
 
     GamePanel gp;
@@ -35,6 +37,7 @@ public class OBJ_Rock extends Projectile {
         i_right[0] = setup("projectile", "rock", "down_1");
         i_right[1] = setup("projectile", "rock", "down_1");
     }
+
     public boolean haveResource(Entity user) {
         boolean haveResource = false;
         if (user.ammo >= useCost) {
@@ -42,7 +45,28 @@ public class OBJ_Rock extends Projectile {
         }
         return haveResource;
     }
-    public void substractResource(Entity user){
-        user.ammo-=useCost;
+
+    public void substractResource(Entity user) {
+        user.ammo -= useCost;
+    }
+
+    public Color getParticleColor() {
+        Color color = new Color(65, 50, 30);
+        return color;
+    }
+
+    public int getParticleSize() {
+        int size = 6;
+        return size;
+    }
+
+    public int getParticleSpeed() {
+        int speed = 1;
+        return speed;
+    }
+
+    public int getParticleMaxLife() {
+        int maxLife = 20;
+        return maxLife;
     }
 }
