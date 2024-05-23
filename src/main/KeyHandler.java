@@ -2,6 +2,7 @@ package main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.security.Key;
 
 public class KeyHandler implements KeyListener {
     public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, shotKeyPressed;
@@ -41,9 +42,73 @@ public class KeyHandler implements KeyListener {
         //Character State
         else if (gp.gameState == gp.characterState) {
             characterState(code);
+        }
+        // OPTION STATE
+        else if (gp.gameState == gp.optionState) {
+            optionState(code);
+        }
+
+    }
+
+    public void optionState(int code) {
+        if (code == KeyEvent.VK_ESCAPE) {
+            gp.gameState = gp.playState;
+        }
+        if (code == KeyEvent.VK_ENTER) {
+            enterPressed = true;
+        }
+
+        int maxCommandNum = 0;
+        switch (gp.ui.subState) {
+            case 0:
+                maxCommandNum = 5;
+                break;
+            case 3:
+                maxCommandNum = 5;
+                break;
 
         }
 
+        if (code == KeyEvent.VK_UP) {
+            gp.ui.commandNum--;
+            gp.playSE(7);
+            if (gp.ui.commandNum < 0) {
+                gp.ui.commandNum = maxCommandNum;
+            }
+        }
+        if (code == KeyEvent.VK_DOWN) {
+            gp.ui.commandNum++;
+            gp.playSE(7);
+            if (gp.ui.commandNum > maxCommandNum) {
+                gp.ui.commandNum = 0;
+            }
+        }
+        if (code == KeyEvent.VK_LEFT) {
+            if (gp.ui.subState == 0) {
+                if (gp.ui.commandNum == 1 && gp.sound.volumeScale > 0) {
+                    gp.sound.volumeScale--;
+                    gp.sound.checkVolume();
+                    gp.playSE(7);
+                }
+                if (gp.ui.commandNum == 2 && gp.se.volumeScale > 0) {
+                    gp.se.volumeScale--;
+                    gp.playSE(7);
+                }
+            }
+        }
+        if (code == KeyEvent.VK_RIGHT) {
+            if (gp.ui.subState == 0) {
+                if (gp.ui.commandNum == 1 && gp.sound.volumeScale < 5) {
+                    gp.sound.volumeScale++;
+                    gp.sound.checkVolume();
+                    gp.playSE(7);
+                }
+                if (gp.ui.commandNum == 2 && gp.se.volumeScale < 5) {
+                    gp.se.volumeScale++;
+                    gp.playSE(7);
+                }
+            }
+        }
     }
 
     public void titleState(int code) {
@@ -62,7 +127,7 @@ public class KeyHandler implements KeyListener {
             if (code == KeyEvent.VK_ENTER) {
                 if (gp.ui.commandNum == 0) {
                     gp.ui.titleScreenState = 1;
-                    //gp.playMusic(0);
+                    gp.playMusic(0);
                 }
                 if (gp.ui.commandNum == 1) {
                     //add later
@@ -128,6 +193,9 @@ public class KeyHandler implements KeyListener {
         }
         if (code == KeyEvent.VK_F) {
             shotKeyPressed = true;
+        }
+        if (code == KeyEvent.VK_ESCAPE) {
+            gp.gameState = gp.optionState;
         }
 
         //Debug

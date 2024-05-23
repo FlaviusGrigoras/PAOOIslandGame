@@ -9,6 +9,9 @@ import java.net.URL;
 public class Sound {
     Clip clip;
     URL[] soundURL = new URL[30];
+    FloatControl fc;
+    int volumeScale = 3;
+    float volume;
 
     public Sound() {
         try {
@@ -33,6 +36,8 @@ public class Sound {
                 AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
                 clip = AudioSystem.getClip();
                 clip.open(ais);
+                fc = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                checkVolume();
             } else {
                 System.out.println("URL-ul sunetului este null pentru indexul " + i);
             }
@@ -65,12 +70,30 @@ public class Sound {
         }
     }
 
-    public void setVolume(float volume) {
-        if (clip != null) {
-            FloatControl volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            volumeControl.setValue(volume);
-        } else {
-            System.out.println("Clipul este null. Asigura-te că ai apelat metoda setFile() înainte de setVolume().");
+    public void checkVolume() {
+        switch (volumeScale) {
+            case 0:
+                volume = -80f;
+                break;
+            case 1:
+                volume = -20f;
+                break;
+            case 2:
+                volume = 0f;
+                break;
+            case 3:
+                volume = -5f;
+                break;
+            case 4:
+                volume = 1f;
+                break;
+            case 5:
+                volume = 5f;
+                break;
+            default:
+                volume = 0f;
+                break;
         }
+        fc.setValue(volume);
     }
 }

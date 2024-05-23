@@ -7,6 +7,7 @@ import tile_interactive.InteractiveTile;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.*;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -15,14 +16,21 @@ public class GamePanel extends JPanel implements Runnable {
     public final int scale = 3; // Scalez la 48px48x pentru o vizibilitate mai bună
 
     public final int tileSize = originalTileSize * scale;
-    public final int maxScreenCol = 16;
+    public final int maxScreenCol = 20;
     public final int maxScreenRow = 12;
-    public final int screenWidth = tileSize * maxScreenCol;
-    public final int screenHeight = tileSize * maxScreenRow;
+    public final int screenWidth = tileSize * maxScreenCol; // 960 pixels
+    public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
 
     // Setări lume
     public final int maxWorldCol = 25;
     public final int maxWorldRow = 25;
+
+    // FOR FULL SCREEN
+    int screenWidth2 = screenWidth;
+    int screenHeight2 = screenHeight;
+    BufferedImage tempScreen;
+    Graphics2D g2;
+    public boolean fullScreenOn=false;
 
     double FPS = 60;
     int Real_FPS;
@@ -39,6 +47,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     //SOUND
     Sound sound = new Sound();
+    Sound se=new Sound();
 
     //Entity and object
     public Player player;
@@ -58,6 +67,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int pauseState = 2;
     public final int dialogState = 3;
     public final int characterState = 4;
+    public final int optionState = 5;
 
     // Variabile pentru afișarea coordonatelor jucătorului
     int playerX;
@@ -76,10 +86,13 @@ public class GamePanel extends JPanel implements Runnable {
         aSetter.setNPC();
         aSetter.setMonster();
         aSetter.setInteractiveTile();
+        //playMusic(0);
         gameState = titleState;
 
+        tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
+        g2 = (Graphics2D) tempScreen.getGraphics();
 
-        playMusic(0, -20.0f);
+        setFullScreen();
     }
 
     public void startGameThread() {
@@ -108,7 +121,8 @@ public class GamePanel extends JPanel implements Runnable {
             lastTime = currentTime;
             if (delta >= 1) {
                 update();
-                repaint();
+                drawToTempScreen();
+                drawToScreen();
                 delta--;
                 drawCount++;
             }
@@ -118,7 +132,6 @@ public class GamePanel extends JPanel implements Runnable {
                 drawCount = 0;
                 timer = 0;
             }
-
         }
     }
 
@@ -182,10 +195,25 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
+    public void drawToScreen() {
+        Graphics g = getGraphics();
+        g.drawImage(tempScreen, 0, 0, screenWidth2, screenHeight2, null);
+        g.dispose();
+    }
 
+
+    public void setFullScreen() {
+        // get local screen device
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice gd = ge.getDefaultScreenDevice();
+        gd.setFullScreenWindow(Main.window);
+
+        // GET FULL SCREEN WIDTH AND HEIGHT
+        screenWidth2 = Main.window.getWidth();
+        screenHeight2 = Main.window.getHeight();
+    }
+
+    public void drawToTempScreen() {
         // Debug
         double drawStart = 0;
         if (keyH.DebugMode) {
@@ -199,7 +227,7 @@ public class GamePanel extends JPanel implements Runnable {
         // Others
         else {
             // TILE
-            if (tileM != null) { // Verifică dacă tileM nu este null
+            if (tileM != null) {
                 tileM.draw(g2);
             } else {
                 System.out.println("TileManager-ul nu a fost inițializat corespunzător.");
@@ -243,7 +271,6 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
 
-
             //SORT
             Collections.sort(entityList, new Comparator<Entity>() {
                 @Override
@@ -282,6 +309,7 @@ public class GamePanel extends JPanel implements Runnable {
         ui.draw(g2);
     }
 
+
     public void playMusic(int i) {
         sound.setFile(i);
         sound.play();
@@ -290,7 +318,6 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void playMusic(int i, float volume) {
         sound.setFile(i);
-        sound.setVolume(volume);
         sound.play();
         sound.loop();
     }
