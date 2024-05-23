@@ -30,9 +30,9 @@ public class CollisionChecker {
                 // Calculăm rândul superior al entității după mișcare
                 entityTopRow = (entityTopWorldY - entity.speed) / gp.tileSize;
                 // Obținem numărul țiglei de la colțul stâng al entității după mișcare
-                int tileNumTopLeft = gp.tileM.map[entityLeftCol][entityTopRow];
+                int tileNumTopLeft = gp.tileM.map[gp.currentMap][entityLeftCol][entityTopRow];
                 // Obținem numărul țiglei de la colțul drept al entității după mișcare
-                int tileNumTopRight = gp.tileM.map[entityRightCol][entityTopRow];
+                int tileNumTopRight = gp.tileM.map[gp.currentMap][entityRightCol][entityTopRow];
                 // Verificăm dacă țiglele în care se deplasează entitatea sunt coliziuni
                 if (gp.tileM.tiles[tileNumTopLeft].collision || gp.tileM.tiles[tileNumTopRight].collision) {
                     // Dacă da, setăm indicatorul de coliziune al entității pe true
@@ -43,24 +43,24 @@ public class CollisionChecker {
             case "down":
                 // Similar pentru celelalte direcții de mișcare
                 entityBottomRow = (entityBottomWorldY + entity.speed) / gp.tileSize;
-                int tileNumBottomLeft = gp.tileM.map[entityLeftCol][entityBottomRow];
-                int tileNumBottomRight = gp.tileM.map[entityRightCol][entityBottomRow];
+                int tileNumBottomLeft = gp.tileM.map[gp.currentMap][entityLeftCol][entityBottomRow];
+                int tileNumBottomRight = gp.tileM.map[gp.currentMap][entityRightCol][entityBottomRow];
                 if (gp.tileM.tiles[tileNumBottomLeft].collision || gp.tileM.tiles[tileNumBottomRight].collision) {
                     entity.collisionOn = true;
                 }
                 break;
             case "left":
                 entityLeftCol = (entityLeftWorldX - entity.speed) / gp.tileSize;
-                int tileNumLeftTop = gp.tileM.map[entityLeftCol][entityTopRow];
-                int tileNumLeftBottom = gp.tileM.map[entityLeftCol][entityBottomRow];
+                int tileNumLeftTop = gp.tileM.map[gp.currentMap][entityLeftCol][entityTopRow];
+                int tileNumLeftBottom = gp.tileM.map[gp.currentMap][entityLeftCol][entityBottomRow];
                 if (gp.tileM.tiles[tileNumLeftTop].collision || gp.tileM.tiles[tileNumLeftBottom].collision) {
                     entity.collisionOn = true;
                 }
                 break;
             case "right":
                 entityRightCol = (entityRightWorldX + entity.speed) / gp.tileSize;
-                int tileNumRightTop = gp.tileM.map[entityRightCol][entityTopRow];
-                int tileNumRightBottom = gp.tileM.map[entityRightCol][entityBottomRow];
+                int tileNumRightTop = gp.tileM.map[gp.currentMap][entityRightCol][entityTopRow];
+                int tileNumRightBottom = gp.tileM.map[gp.currentMap][entityRightCol][entityBottomRow];
                 if (gp.tileM.tiles[tileNumRightTop].collision || gp.tileM.tiles[tileNumRightBottom].collision) {
                     entity.collisionOn = true;
                 }
@@ -75,23 +75,23 @@ public class CollisionChecker {
         Rectangle entitySolidAreaCopy = new Rectangle(entity.solidArea);
         Rectangle objectSolidAreaCopy;
 
-        for (int i = 0; i < gp.obj.length; i++) {
-            if (gp.obj[i] != null) {
-                objectSolidAreaCopy = new Rectangle(gp.obj[i].solidArea);
+        for (int i = 0; i < gp.obj[1].length; i++) {
+            if (gp.obj[gp.currentMap][i] != null) {
+                objectSolidAreaCopy = new Rectangle(gp.obj[gp.currentMap][i].solidArea);
 
                 // Get entity's solid area position
                 entitySolidAreaCopy.x = entity.worldX + entity.solidArea.x;
                 entitySolidAreaCopy.y = entity.worldY + entity.solidArea.y;
 
                 // Get the object's solid area position
-                objectSolidAreaCopy.x = gp.obj[i].worldX + gp.obj[i].solidArea.x;
-                objectSolidAreaCopy.y = gp.obj[i].worldY + gp.obj[i].solidArea.y;
+                objectSolidAreaCopy.x = gp.obj[gp.currentMap][i].worldX + gp.obj[gp.currentMap][i].solidArea.x;
+                objectSolidAreaCopy.y = gp.obj[gp.currentMap][i].worldY + gp.obj[gp.currentMap][i].solidArea.y;
 
                 switch (entity.direction) {
                     case "up":
                         entitySolidAreaCopy.y -= entity.speed;
                         if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
-                            if (gp.obj[i].collision) {
+                            if (gp.obj[gp.currentMap][i].collision) {
                                 entity.collisionOn = true;
                             }
                             if (player) {
@@ -102,7 +102,7 @@ public class CollisionChecker {
                     case "down":
                         entitySolidAreaCopy.y += entity.speed;
                         if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
-                            if (gp.obj[i].collision) {
+                            if (gp.obj[gp.currentMap][i].collision) {
                                 entity.collisionOn = true;
                             }
                             if (player) {
@@ -113,7 +113,7 @@ public class CollisionChecker {
                     case "left":
                         entitySolidAreaCopy.x -= entity.speed;
                         if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
-                            if (gp.obj[i].collision) {
+                            if (gp.obj[gp.currentMap][i].collision) {
                                 entity.collisionOn = true;
                             }
                             if (player) {
@@ -124,7 +124,7 @@ public class CollisionChecker {
                     case "right":
                         entitySolidAreaCopy.x += entity.speed;
                         if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
-                            if (gp.obj[i].collision) {
+                            if (gp.obj[gp.currentMap][i].collision) {
                                 entity.collisionOn = true;
                             }
                             if (player) {
@@ -139,28 +139,28 @@ public class CollisionChecker {
     }
 
     //NPC - Monster Collision
-    public int checkEntity(Entity entity, Entity[] target) {
+    public int checkEntity(Entity entity, Entity[][] target) {
         int index = 999;
         Rectangle entitySolidAreaCopy = new Rectangle(entity.solidArea);
         Rectangle objectSolidAreaCopy;
 
-        for (int i = 0; i < target.length; i++) {
-            if (target[i] != null) {
-                objectSolidAreaCopy = new Rectangle(target[i].solidArea);
+        for (int i = 0; i < target[1].length; i++) {
+            if (target[gp.currentMap][i] != null) {
+                objectSolidAreaCopy = new Rectangle(target[gp.currentMap][i].solidArea);
 
                 // Get entity's solid area position
                 entitySolidAreaCopy.x = entity.worldX + entity.solidArea.x;
                 entitySolidAreaCopy.y = entity.worldY + entity.solidArea.y;
 
                 // Get the object's solid area position
-                objectSolidAreaCopy.x = target[i].worldX + target[i].solidArea.x;
-                objectSolidAreaCopy.y = target[i].worldY + target[i].solidArea.y;
+                objectSolidAreaCopy.x = target[gp.currentMap][i].worldX + target[gp.currentMap][i].solidArea.x;
+                objectSolidAreaCopy.y = target[gp.currentMap][i].worldY + target[gp.currentMap][i].solidArea.y;
 
                 switch (entity.direction) {
                     case "up":
                         entitySolidAreaCopy.y -= entity.speed;
                         if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
-                            if (target[i] != entity) {
+                            if (target[gp.currentMap][i] != entity) {
                                 entity.collisionOn = true;
                                 index = i;
                             }
@@ -169,7 +169,7 @@ public class CollisionChecker {
                     case "down":
                         entitySolidAreaCopy.y += entity.speed;
                         if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
-                            if (target[i] != entity) {
+                            if (target[gp.currentMap][i] != entity) {
                                 entity.collisionOn = true;
                                 index = i;
                             }
@@ -178,7 +178,7 @@ public class CollisionChecker {
                     case "left":
                         entitySolidAreaCopy.x -= entity.speed;
                         if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
-                            if (target[i] != entity) {
+                            if (target[gp.currentMap][i] != entity) {
                                 entity.collisionOn = true;
                                 index = i;
                             }
@@ -187,7 +187,7 @@ public class CollisionChecker {
                     case "right":
                         entitySolidAreaCopy.x += entity.speed;
                         if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {
-                            if (target[i] != entity) {
+                            if (target[gp.currentMap][i] != entity) {
                                 entity.collisionOn = true;
                                 index = i;
                             }

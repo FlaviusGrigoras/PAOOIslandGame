@@ -2,10 +2,13 @@ package tile_interactive;
 
 import entity.Entity;
 import main.GamePanel;
+import object.OBJ_Iron;
 import object.OBJ_Rock;
+import object.OBJ_Stone;
 import object.OBJ_Wood;
 
 import java.awt.*;
+import java.util.Random;
 
 public class IT_Rock extends InteractiveTile {
     GamePanel gp;
@@ -33,9 +36,16 @@ public class IT_Rock extends InteractiveTile {
 
     @Override
     public InteractiveTile getDestroyedForm() {
-        dropItem(new OBJ_Rock(gp));
+        Random rand = new Random();
+        int n = rand.nextInt(10);
+        if (n < 9) { // 90% din cazuri
+            dropItem(new OBJ_Stone(gp));
+        } else { // 10% din cazuri
+            dropItem(new OBJ_Iron(gp));
+        }
         return null;
     }
+
 
     public Color getParticleColor() {
         Color color = new Color(73, 57, 57);

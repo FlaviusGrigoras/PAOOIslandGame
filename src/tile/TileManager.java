@@ -12,16 +12,16 @@ public class TileManager {
     public static int[] NPC1Coordinates;
     private final GamePanel gp;
     public final Tile[] tiles;
-    public int[][] map;
-    //int mapTileNum[][];
+    public int[][][] map;
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
         tiles = new Tile[140]; // Numărul total de țigle din spritesheet, inclusiv noile tipuri de țigle
-        map = new int[gp.maxWorldCol][gp.maxWorldRow];
+        map = new int[gp.maxMap][gp.maxWorldCol][gp.maxWorldRow];
 
         getTileImage();
-        loadMap("maps/map01.txt");
+        loadMap("maps/map01.txt", 0);
+        loadMap("maps/interior01.txt", 1);
     }
 
 
@@ -67,6 +67,12 @@ public class TileManager {
 
         setup(29, "BOTTOM_LEFT_LAKE", "lake", true);
         setup(30, "BOTTOM_RIGHT_LAKE", "lake", true);
+
+        setup(31, "hut", "hut", false);
+        setup(32, "floor", "hut", false);
+        setup(33, "table", "hut", true);
+        setup(34, "wall", "hut", true);
+
     }
 
     public void setup(int index, String imageName, String tileType, boolean collision) {
@@ -82,7 +88,7 @@ public class TileManager {
         }
     }
 
-    public void loadMap(String filePath) {
+    public void loadMap(String filePath, int mapi) {
         try {
             InputStream is = getClass().getResourceAsStream(filePath);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -101,7 +107,7 @@ public class TileManager {
                 while (col < gp.maxWorldCol && col < numbers.length) {
                     int num = Integer.parseInt(numbers[col]);
 
-                    map[col][row] = num;
+                    map[mapi][col][row] = num;
                     col++;
                 }
 
@@ -125,7 +131,7 @@ public class TileManager {
                 worldCol = 0; // Resetează coloana la fiecare rând nou
 
                 while (worldCol < gp.maxWorldCol) {
-                    int tileNum = map[worldCol][worldRow];
+                    int tileNum = map[gp.currentMap][worldCol][worldRow];
                     int worldX = worldCol * gp.tileSize;
                     int worldY = worldRow * gp.tileSize;
                     int screenX = worldX - gp.player.worldX + gp.player.screenX;

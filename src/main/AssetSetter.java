@@ -5,7 +5,6 @@ import monster.MON_GreenSlime;
 import object.*;
 import tile_interactive.IT_Rock;
 import tile_interactive.IT_Tree;
-import tile_interactive.InteractiveTile;
 
 import java.util.Random;
 
@@ -21,158 +20,156 @@ public class AssetSetter {
     }
 
     public void setObject() {
-        createObject(objectCounter, "Coin", 10, 10);
-        createObject(objectCounter, "Stone", 11, 10);
-        createObject(objectCounter, "Wood", 12, 10);
-        createObject(objectCounter, "Iron", 13, 10);
-        createObject(objectCounter, "Axe", 14, 10);
-        createObject(objectCounter, "Blue_Shield", 15, 10);
-        createObject(objectCounter, "Red_Potion", 16, 10);
-        createObject(objectCounter, "Pistol", 17, 10);
-        createObject(objectCounter, "Swood_Normal", 18, 10);
-        createObject(objectCounter, "Wood_Shield", 19, 10);
-        createObject(objectCounter, "Mana", 20, 10);
-        createObject(objectCounter, "Inima", 21, 10);
-
+        createObject(objectCounter, "Coin", 10, 10, 0);
+        createObject(objectCounter, "Stone", 11, 10, 0);
+        createObject(objectCounter, "Wood", 12, 10, 0);
+        createObject(objectCounter, "Iron", 13, 10, 0);
+        createObject(objectCounter, "Axe", 14, 10, 0);
+        createObject(objectCounter, "Blue_Shield", 15, 10, 0);
+        createObject(objectCounter, "Red_Potion", 16, 10, 0);
+        createObject(objectCounter, "Pistol", 17, 10, 0);
+        createObject(objectCounter, "Swood_Normal", 18, 10, 0);
+        createObject(objectCounter, "Wood_Shield", 19, 10, 0);
+        createObject(objectCounter, "Mana", 20, 10, 0);
+        createObject(objectCounter, "Inima", 21, 10, 0);
     }
-
-    public void createObject(int index, String Type, int x, int y) {
-        switch (Type) {
-            case "Coin":
-                gp.obj[index] = new OBJ_Coin(gp);
-                break;
-            case "Stone":
-                gp.obj[index] = new OBJ_Stone(gp);
-                break;
-            case "Wood":
-                gp.obj[index] = new OBJ_Wood(gp);
-                break;
-            case "Iron":
-                gp.obj[index] = new OBJ_Iron(gp);
-                break;
-            case "Axe":
-                gp.obj[index] = new OBJ_Axe(gp);
-                break;
-            case "Wood_Shield":
-                gp.obj[index] = new OBJ_Shield_Wood(gp);
-                break;
-            case "Blue_Shield":
-                gp.obj[index] = new OBJ_Shield_Blue(gp);
-                break;
-            case "Red_Potion":
-                gp.obj[index] = new OBJ_Potion_Red(gp);
-                break;
-            case "Pistol":
-                gp.obj[index] = new OBJ_Pistol(gp);
-                break;
-            case "Stick":
-                gp.obj[index] = new OBJ_Stick(gp);
-                break;
-            case "Patura":
-                gp.obj[index] = new OBJ_Patura(gp);
-                break;
-            case "Inima":
-                gp.obj[index] = new OBJ_Heart(gp);
-                break;
-            case "Mana":
-                gp.obj[index] = new OBJ_ManaCrystal(gp);
-                break;
-            case "Swood_Normal":
-                gp.obj[index] = new OBJ_Sword_Normal(gp);
-                break;
-
-            case "Default":
-                System.out.println("Not an object!");
-                break;
-        }
-        gp.obj[index].worldX = gp.tileSize * x;
-        gp.obj[index].worldY = gp.tileSize * y;
-        objectCounter++;
-    }
-
 
     public void setNPC() {
-        if (gp != null && gp.npc != null) {
-            createNPC(npcCounter, "Villager", 15, 15);
-        }
+        createNPC(npcCounter, "Villager", 15, 15, 0);
+        createNPC(npcCounter, "Villager", 12, 7, 1);
+
     }
 
     public void setMonster() {
+
         Random rand = new Random();
         for (int x = 0; x < gp.maxWorldCol; x++) {
             for (int y = 0; y < gp.maxWorldRow; y++) {
-                if (gp.tileM.map[x][y] == 4) {
+                if (gp.tileM.map[0][x][y] == 4 && x != 23 && y != 21) {
                     int chance = rand.nextInt(100);
-                    if (chance < 3) {
-                        createMonster(monsterCounter, "greenslime", x, y);
+                    if (chance < 0.5) {
+                        createMonster(monsterCounter, "greenslime", x, y, 0);
                     } else if (chance < 20) {
-                        //createInteractiveTile(itCounter, "Rock", x, y);
                     }
                 }
             }
         }
-    }
 
-    public void createMonster(int index, String Type, int x, int y) {
-        switch (Type) {
-            case "greenslime":
-                gp.monster[index] = new MON_GreenSlime(gp);
-                break;
-            case "Default":
-                System.out.println("Not an Monster!");
-                break;
-        }
-        gp.monster[index].worldX = x * gp.tileSize;
-        gp.monster[index].worldY = y * gp.tileSize;
-        monsterCounter++;
-    }
-
-
-    public void createNPC(int index, String Type, int x, int y) {
-        switch (Type) {
-            case "Villager":
-                gp.npc[index] = new NPC_Villager(gp);
-                break;
-            case "Default":
-                System.out.println("Not an NPC!");
-                break;
-        }
-        gp.npc[index].worldX = x * gp.tileSize;
-        gp.npc[index].worldY = y * gp.tileSize;
-        npcCounter++;
     }
 
     public void setInteractiveTile() {
         Random rand = new Random();
         for (int x = 0; x < gp.maxWorldCol; x++) {
             for (int y = 0; y < gp.maxWorldRow; y++) {
-                if (gp.tileM.map[x][y] == 4) {
+                if (gp.tileM.map[0][x][y] == 4 && x != 23 && y != 21) {
                     int chance = rand.nextInt(100);
                     if (chance < 10) {
-                        createInteractiveTile(itCounter, "Tree", x, y);
+                        createInteractiveTile(itCounter, "Tree", x, y, 0);
                     } else if (chance < 20) {
-                        createInteractiveTile(itCounter, "Rock", x, y);
+                        createInteractiveTile(itCounter, "Rock", x, y, 0);
                     }
+
                 }
             }
         }
     }
 
+    public void createObject(int index, String Type, int x, int y, int mapNum) {
+        switch (Type) {
+            case "Coin":
+                gp.obj[mapNum][index] = new OBJ_Coin(gp);
+                break;
+            case "Stone":
+                gp.obj[mapNum][index] = new OBJ_Stone(gp);
+                break;
+            case "Wood":
+                gp.obj[mapNum][index] = new OBJ_Wood(gp);
+                break;
+            case "Iron":
+                gp.obj[mapNum][index] = new OBJ_Iron(gp);
+                break;
+            case "Axe":
+                gp.obj[mapNum][index] = new OBJ_Axe(gp);
+                break;
+            case "Wood_Shield":
+                gp.obj[mapNum][index] = new OBJ_Shield_Wood(gp);
+                break;
+            case "Blue_Shield":
+                gp.obj[mapNum][index] = new OBJ_Shield_Blue(gp);
+                break;
+            case "Red_Potion":
+                gp.obj[mapNum][index] = new OBJ_Potion_Red(gp);
+                break;
+            case "Pistol":
+                gp.obj[mapNum][index] = new OBJ_Pistol(gp);
+                break;
+            case "Stick":
+                gp.obj[mapNum][index] = new OBJ_Stick(gp);
+                break;
+            case "Patura":
+                gp.obj[mapNum][index] = new OBJ_Patura(gp);
+                break;
+            case "Inima":
+                gp.obj[mapNum][index] = new OBJ_Heart(gp);
+                break;
+            case "Mana":
+                gp.obj[mapNum][index] = new OBJ_ManaCrystal(gp);
+                break;
+            case "Swood_Normal":
+                gp.obj[mapNum][index] = new OBJ_Sword_Normal(gp);
+                break;
 
-    public void createInteractiveTile(int index, String Type, int x, int y) {
+            case "Default":
+                System.out.println("Not an object!");
+                break;
+        }
+        gp.obj[mapNum][index].worldX = gp.tileSize * x;
+        gp.obj[mapNum][index].worldY = gp.tileSize * y;
+        objectCounter++;
+    }
+
+    public void createNPC(int index, String Type, int x, int y, int mapNum) {
+        switch (Type) {
+            case "Villager":
+                gp.npc[mapNum][index] = new NPC_Villager(gp);
+                break;
+            case "Default":
+                System.out.println("Not an NPC!");
+                break;
+        }
+        gp.npc[mapNum][index].worldX = x * gp.tileSize;
+        gp.npc[mapNum][index].worldY = y * gp.tileSize;
+        npcCounter++;
+    }
+
+    public void createMonster(int index, String Type, int x, int y, int mapNum) {
+        switch (Type) {
+            case "greenslime":
+                gp.monster[mapNum][index] = new MON_GreenSlime(gp);
+                break;
+            case "Default":
+                System.out.println("Not an Monster!");
+                break;
+        }
+        gp.monster[mapNum][index].worldX = x * gp.tileSize;
+        gp.monster[mapNum][index].worldY = y * gp.tileSize;
+        monsterCounter++;
+    }
+
+    public void createInteractiveTile(int index, String Type, int x, int y, int mapNum) {
         switch (Type) {
             case "Tree":
-                gp.iTile[index] = new IT_Tree(gp);
+                gp.iTile[mapNum][index] = new IT_Tree(gp);
                 break;
             case "Rock":
-                gp.iTile[index] = new IT_Rock(gp);
+                gp.iTile[mapNum][index] = new IT_Rock(gp);
                 break;
             case "Default":
                 System.out.println("Not an interactive Tile!");
                 break;
         }
-        gp.iTile[index].worldX = x * gp.tileSize;
-        gp.iTile[index].worldY = y * gp.tileSize;
+        gp.iTile[mapNum][index].worldX = x * gp.tileSize;
+        gp.iTile[mapNum][index].worldY = y * gp.tileSize;
         itCounter++;
     }
 }

@@ -1,11 +1,12 @@
 package main;
 
+
 import java.awt.*;
 
 public class EventHandler {
     GamePanel gp;
 
-    EventRect[][] eventRect;
+    EventRect[][][] eventRect;
 
     int previousEventX, previousEventY;
     boolean canTouchEvent = true;
@@ -13,23 +14,29 @@ public class EventHandler {
     public EventHandler(GamePanel gp) {
         this.gp = gp;
 
-        eventRect = new EventRect[gp.maxWorldCol][gp.maxWorldRow];
+        eventRect = new EventRect[gp.maxMap][gp.maxWorldCol][gp.maxWorldRow];
 
+        int map = 0;
         int col = 0;
         int row = 0;
-        while (col < gp.maxWorldCol && row < gp.maxWorldRow) {
-            eventRect[col][row] = new EventRect();
-            eventRect[col][row].x = 23;
-            eventRect[col][row].y = 23;
-            eventRect[col][row].width = 2;
-            eventRect[col][row].height = 2;
-            eventRect[col][row].eventRectDefaultX = eventRect[col][row].x;
-            eventRect[col][row].eventRectDefaultY = eventRect[col][row].y;
+        while (map < gp.maxMap && col < gp.maxWorldCol && row < gp.maxWorldRow) {
+            eventRect[map][col][row] = new EventRect();
+            eventRect[map][col][row].x = 23;
+            eventRect[map][col][row].y = 23;
+            eventRect[map][col][row].width = 2;
+            eventRect[map][col][row].height = 2;
+            eventRect[map][col][row].eventRectDefaultX = eventRect[map][col][row].x;
+            eventRect[map][col][row].eventRectDefaultY = eventRect[map][col][row].y;
 
             col++;
             if (col == gp.maxWorldCol) {
                 col = 0;
                 row++;
+
+                if (row == gp.maxWorldRow) {
+                    row = 0;
+                    map++;
+                }
             }
         }
     }
@@ -44,27 +51,42 @@ public class EventHandler {
         }
 
         if (canTouchEvent) {
-            if (hit(10, 10, "right")) {
-                damagePit(10, 10, gp.dialogState);
+            if (hit(10, 10, "right", 0)) {
+                damagePit(gp.dialogState);
             }
-            if (hit(23, 12, "up")) {
+            if (hit(23, 12, "up", 0)) {
                 healingPool(gp.dialogState);
+            }
+            if (hit(31, 34, "any", 0)) {
+                teleport(12, 12, 1);
+            }
+            if (hit(12, 13, "any", 1)) {
+                teleport(31, 34, 0);
             }
         }
     }
 
-    public void damagePit(int col, int row, int gameState) {
+    private void teleport(int col, int row, int map) {
+        gp.currentMap = map;
+        gp.player.worldX = gp.tileSize * col;
+        gp.player.worldY = gp.tileSize * row;
+        previousEventX = gp.player.worldX;
+        previousEventY = gp.player.worldY;
+        canTouchEvent = false;
+        gp.playSE(12);
+    }
+
+    public void damagePit(int gameState) {
         gp.gameState = gameState;
         gp.ui.currentDialogue = "You fall into a pit!";
         gp.player.life -= 1;
-        eventRect[col][row].eventDone = true;
         canTouchEvent = false;
     }
 
     public void healingPool(int gameState) {
         if (gp.keyH.enterPressed) {
             gp.gameState = gameState;
-            gp.player.attackCanceled=true;
+            gp.player.attackCanceled = true;
             gp.ui.currentDialogue = "Ai sorbit din apele cristaline ale lacului fermecat.\n" +
                     "Viața ți-a fost restabilită în totalitate.\n.";
             gp.player.life = gp.player.maxLife;
@@ -72,30 +94,23 @@ public class EventHandler {
         gp.keyH.enterPressed = false;
     }
 
-    public boolean hit(int col, int row, String reqDirection) {
+    public boolean hit(int col, int row, String reqDirection, int map) {
         boolean hit = false;
 
-        gp.player.solidArea.x = gp.player.worldX + gp.player.solidArea.x;
-        gp.player.solidArea.y = gp.player.worldY + gp.player.solidArea.y;
-        eventRect[col][row].x = col * gp.tileSize + eventRect[col][row].x;
-        eventRect[col][row].y = row * gp.tileSize + eventRect[col][row].y;
+        if (map == gp.currentMap) {
+            Rectangle playerSolidArea = new Rectangle(gp.player.worldX + gp.player.solidArea.x, gp.player.worldY + gp.player.solidArea.y, gp.player.solidArea.width, gp.player.solidArea.height);
+            Rectangle eventRectangle = new Rectangle(col * gp.tileSize + eventRect[map][col][row].x, row * gp.tileSize + eventRect[map][col][row].y, eventRect[map][col][row].width, eventRect[map][col][row].height);
 
-        if (gp.player.solidArea.intersects(eventRect[col][row]) && !eventRect[col][row].eventDone) {
-            if (gp.player.direction.contentEquals(reqDirection) || reqDirection.contentEquals("any")) {
-                hit = true;
+            if (playerSolidArea.intersects(eventRectangle) && !eventRect[map][col][row].eventDone) {
+                if (gp.player.direction.equals(reqDirection) || reqDirection.equals("any")) {
+                    hit = true;
 
-                previousEventX = gp.player.worldX;
-                previousEventY = gp.player.worldY;
+                    previousEventX = gp.player.worldX;
+                    previousEventY = gp.player.worldY;
+                }
             }
         }
 
-        gp.player.solidArea.x = gp.player.solidAreaDefaultX;
-        gp.player.solidArea.y = gp.player.solidAreaDefaultY;
-        eventRect[col][row].x = eventRect[col][row].eventRectDefaultX;
-        eventRect[col][row].y = eventRect[col][row].eventRectDefaultY;
-
         return hit;
     }
-
-
 }
