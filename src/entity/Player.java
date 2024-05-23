@@ -40,16 +40,14 @@ public class Player extends Entity {
         /*attackArea.width = 36;
         attackArea.height = 36;*/
 
-        setDefaultValues(9,12);
+        setDefaultPositions();
+        setDefaultValues();
         getPlayerImage();
         getPlayerAttackImage();
         setItems();
     }
 
-    public void setDefaultValues(int x, int y) {
-        worldX = gp.tileSize * x;
-        worldY = gp.tileSize * y;
-
+    public void setDefaultValues() {
         speed = 4;
         direction = "down";
 
@@ -72,6 +70,22 @@ public class Player extends Entity {
         defense = getDefense();
     }
 
+    public void setDefaultPositions() {
+        worldX = gp.tileSize * 23;
+        worldY = gp.tileSize * 21;
+        direction = "down";
+    }
+
+    public void restoreLifeAndMana() {
+        life = maxLife;
+        mana = maxMana;
+        invincible = false;
+    }
+
+    public void setItems() {
+        inventory.clear();
+    }
+
     /*public Projectile getProjectile() {
         if (currentWeapon.type == type_pistol) {
             return new OBJ_Rock(gp);
@@ -79,11 +93,6 @@ public class Player extends Entity {
             return new OBJ_Fireball(gp);
         }
     }*/
-
-    public void setItems() {
-        inventory.add(currentWeapon);
-        inventory.add(currentShield);
-    }
 
     public int getAttack() {
         attackArea = currentWeapon.attackArea;
@@ -295,6 +304,10 @@ public class Player extends Entity {
         }
         if (mana > maxMana) {
             mana = maxMana;
+        }
+        if (life <= 0) {
+            gp.gameState = gp.gameOverState;
+            gp.playSE(11);
         }
     }
 

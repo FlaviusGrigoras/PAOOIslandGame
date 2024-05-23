@@ -69,6 +69,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int dialogState = 3;
     public final int characterState = 4;
     public final int optionState = 5;
+    public final int gameOverState = 6;
 
     // Variabile pentru afișarea coordonatelor jucătorului
     int playerX;
@@ -89,7 +90,7 @@ public class GamePanel extends JPanel implements Runnable {
         aSetter.setMonster();
         aSetter.setInteractiveTile();
         gameState = titleState;
-        playMusic(0);
+        playSE(0, 1);
 
         tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
         g2 = (Graphics2D) tempScreen.getGraphics();
@@ -97,6 +98,23 @@ public class GamePanel extends JPanel implements Runnable {
         if (fullScreenOn) {
             setFullScreen();
         }
+    }
+
+    public void retry() {
+        player.setDefaultPositions();
+        player.restoreLifeAndMana();
+        aSetter.setNPC();
+        aSetter.setMonster();
+    }
+
+    public void restart() {
+        player.setDefaultValues();
+        player.setDefaultPositions();
+        player.restoreLifeAndMana();
+        player.setItems();
+        aSetter.setNPC();
+        aSetter.setMonster();
+        aSetter.setInteractiveTile();
     }
 
     public void startGameThread() {
@@ -314,10 +332,12 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
 
-    public void playMusic(int i) {
+    public void playSE(int i, int y) {
         sound.setFile(i);
         sound.play();
-        sound.loop();
+        if (y == 1) {
+            sound.loop();
+        }
     }
 
     public void stopMusic() {

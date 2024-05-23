@@ -91,16 +91,16 @@ public class AssetSetter {
 
     public void setNPC() {
         if (gp != null && gp.npc != null) {
-            createNPC(npcCounter, "Villager", 6, 7);
+            createNPC(npcCounter, "Villager", 15, 15);
         }
     }
 
     public void setMonster() {
         int i = 0;
 
-        createMonster(monsterCounter, "greenslime", 5, 5);
-        createMonster(monsterCounter, "greenslime", 3, 2);
-        createMonster(monsterCounter, "greenslime", 1, 1);
+        createMonster(monsterCounter, "greenslime", 15, 22);
+        createMonster(monsterCounter, "greenslime", 17, 13);
+        createMonster(monsterCounter, "greenslime", 20, 10);
     }
 
     public void createMonster(int index, String Type, int x, int y) {
