@@ -3,10 +3,6 @@ package object;
 import entity.Entity;
 import main.GamePanel;
 
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.IOException;
-
 public class OBJ_Coin extends Entity {
     GamePanel gp;
 
@@ -20,9 +16,10 @@ public class OBJ_Coin extends Entity {
         i_down[0] = setup(name);
     }
 
-    public void use(Entity entity) {
+    public boolean use(Entity entity) {
         gp.playSE(1);
         gp.ui.addMessage("Coin +" + value);
         gp.player.coin += value;
+        return false;
     }
 }

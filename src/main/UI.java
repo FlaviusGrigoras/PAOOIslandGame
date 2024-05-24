@@ -216,13 +216,14 @@ public class UI {
                     gp.gameState = gp.dialogState;
                     currentDialogue = "You need more coin to buy that!";
                     drawDialogScreen();
-                } else if (gp.player.inventory.size() == gp.player.maxInventorySize) {
-                    subState = 0;
-                    gp.gameState = gp.dialogState;
-                    currentDialogue = "You cannot carry any more!";
                 } else {
-                    gp.player.coin -= npc.inventory.get(itemIndex).price;
-                    gp.player.inventory.add(npc.inventory.get(itemIndex));
+                    if (gp.player.canObtainItem(npc.inventory.get(itemIndex))) {
+                        gp.player.coin -= npc.inventory.get(itemIndex).price;
+                    } else {
+                        subState = 0;
+                        gp.gameState = gp.dialogState;
+                        currentDialogue = "You cannot carry any more!";
+                    }
                 }
             }
         }
@@ -275,7 +276,11 @@ public class UI {
                         gp.gameState = gp.dialogState;
                         currentDialogue = "You cannot sell an equipped item!";
                     } else {
-                        gp.player.inventory.remove(itemIndex);
+                        if (gp.player.inventory.get(itemIndex).amount > 1) {
+                            gp.player.inventory.get(itemIndex).amount--;
+                        } else {
+                            gp.player.inventory.remove(itemIndex);
+                        }
                         gp.player.coin += price;
                     }
                 }
@@ -909,13 +914,30 @@ public class UI {
 
         // Draw Player's items
         for (int i = 0; i < entity.inventory.size(); i++) {
+            // EQUIP CURSOR
             if (entity.inventory.get(i) == entity.currentWeapon || entity.inventory.get(i) == entity.currentShield) {
                 g2.setColor(new Color(240, 190, 90));
                 g2.fillRoundRect(slotX, slotY, gp.tileSize, gp.tileSize, 10, 10);
             }
-
-
             g2.drawImage(entity.inventory.get(i).i_down[0], slotX, slotY, null);
+
+            // DISPLAY AMOUNT
+            if (entity == gp.player && entity.inventory.get(i).amount > 1) {
+                g2.setFont(maruMonica.deriveFont(32f));
+                int amountX;
+                int amountY;
+
+                String s = "" + entity.inventory.get(i).amount;
+                amountX = getXforAlignToRightText(s, slotX + 44);
+                amountY = slotY + gp.tileSize;
+
+                // SHADOW
+                g2.setColor(new Color(60, 60, 60));
+                g2.drawString(s, amountX, amountY);
+                // NUMBER
+                g2.setColor(Color.white);
+                g2.drawString(s, amountX - 3, amountY - 3);
+            }
 
             slotX += gp.tileSize;
 

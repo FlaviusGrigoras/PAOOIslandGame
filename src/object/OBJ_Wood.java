@@ -13,7 +13,8 @@ public class OBJ_Wood extends Entity {
         super(gp);
         name = "Wood";
         i_down[0] = setup(name);
-        sellPrice=10;
+        sellPrice = 10;
+        stackable = true;
 
         collision = true;
         solidArea.x = 5 * 3;

@@ -76,6 +76,8 @@ public class Entity {
     public int value;
     public int price;
     public int sellPrice;
+    public boolean stackable = false;
+    public int amount = 1;
 
     public String direction = "down";
 
@@ -100,6 +102,7 @@ public class Entity {
     public final int type_pistol = 7;
     public final int type_fist = 8;
     public final int type_pickupOnly = 9;
+    public final int type_obstacke = 10;
 
     boolean attacking = false;
     public boolean alive = true;
@@ -117,7 +120,8 @@ public class Entity {
 
     }
 
-    public void use(Entity entity) {
+    public boolean use(Entity entity) {
+        return false;
     }
 
     public void checkDrop() {

@@ -12,8 +12,9 @@ public class OBJ_Stone extends Entity {
     public OBJ_Stone(GamePanel gp) {
         super(gp);
         name = "Stone";
-        sellPrice=15;
+        sellPrice = 15;
         i_down[0] = setup(name);
+        stackable = true;
 
         collision = true;
         solidArea.x = 8 * 3;

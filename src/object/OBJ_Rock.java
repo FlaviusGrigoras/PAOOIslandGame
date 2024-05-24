@@ -20,6 +20,7 @@ public class OBJ_Rock extends Projectile {
         life = maxLife;
         attack = 2;
         useCost = 1;
+        stackable=true;
         alive = false;
         getImage();
     }
