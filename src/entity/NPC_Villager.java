@@ -16,7 +16,7 @@ public class NPC_Villager extends Entity {
     }
 
     public void getImage() {
-        String Type="Villager";
+        String Type = "Villager";
         // Pentru directia 'up'
         w_up[0] = setup("npc", Type, "Walk", "up_1");
         w_up[1] = setup("npc", Type, "Walk", "up_2");
@@ -71,29 +71,39 @@ public class NPC_Villager extends Entity {
 
     @Override
     public void setAction() {
-        actionLockCounter++;
+        if (onPath) {
+            /*int goalCol = 24;
+            int goalRow = 18;*/
+            int goalCol = (gp.player.worldX + gp.player.solidArea.x) / gp.tileSize;
+            int goalRow = (gp.player.worldY + gp.player.solidArea.y) / gp.tileSize;
 
-        if (actionLockCounter == 120) {
-            Random random = new Random();
-            int i = random.nextInt(100) + 1; // 1-100
-            int j = random.nextInt(100) + 1;
-            if (i <= 25) {
-                direction = "up";
-            } else if (i <= 50) {
-                direction = "down";
-            } else if (i <= 75) {
-                direction = "left";
-            } else {
-                direction = "right";
+            searchPath(goalCol, goalRow);
+        } else {
+            actionLockCounter++;
+
+            if (actionLockCounter == 120) {
+                Random random = new Random();
+                int i = random.nextInt(100) + 1; // 1-100
+                int j = random.nextInt(100) + 1;
+                if (i <= 25) {
+                    direction = "up";
+                } else if (i <= 50) {
+                    direction = "down";
+                } else if (i <= 75) {
+                    direction = "left";
+                } else {
+                    direction = "right";
+                }
+
+                isWalking = j <= 75;
+
+                actionLockCounter = 0;
             }
-
-            isWalking = j <= 75;
-
-            actionLockCounter = 0;
         }
     }
 
     public void speak() {
         super.speak();
+        onPath = true;
     }
 }
