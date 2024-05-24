@@ -252,7 +252,7 @@ public class KeyHandler implements KeyListener {
             }
             if (code == KeyEvent.VK_ENTER) {
                 if (gp.ui.commandNum == 0) {
-                    gp.ui.titleScreenState = 1;
+                    gp.gameState = gp.playState;
                 }
                 if (gp.ui.commandNum == 1) {
                     //add later
@@ -261,7 +261,9 @@ public class KeyHandler implements KeyListener {
                     System.exit(0);
                 }
             }
-        } else if (gp.ui.titleScreenState == 1) {
+        }
+        /* titleScreenState 2 pentru alegere personaje
+        else if (gp.ui.titleScreenState == 1) {
             if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {
                 gp.ui.commandNum--;
                 if (gp.ui.commandNum < 0)
@@ -288,8 +290,7 @@ public class KeyHandler implements KeyListener {
                     gp.ui.titleScreenState = 0;
                 }
             }
-        }
-
+         */
     }
 
     public void playState(int code) {

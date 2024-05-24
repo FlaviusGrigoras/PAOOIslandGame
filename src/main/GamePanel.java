@@ -3,6 +3,7 @@ package main;
 import ai.PathFinder;
 import entity.Entity;
 import entity.Player;
+import enviroment.EnviromentManager;
 import tile.TileManager;
 import tile_interactive.InteractiveTile;
 
@@ -49,6 +50,7 @@ public class GamePanel extends JPanel implements Runnable {
     public EventHandler eHandler = new EventHandler(this);
     Config config = new Config(this);
     public PathFinder pFinder = new PathFinder(this);
+    EnviromentManager eManager = new EnviromentManager(this);
 
     //SOUND
     Sound sound = new Sound();
@@ -92,10 +94,14 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setupGame() {
+        initializeCharacter(1);
+
         aSetter.setObject();
         aSetter.setNPC();
         aSetter.setMonster();
         aSetter.setInteractiveTile();
+        eManager.setup();
+
         gameState = titleState;
         playSE(0, 1);
 
@@ -317,7 +323,10 @@ public class GamePanel extends JPanel implements Runnable {
 
             //EMPTY ENTITY LIST
             entityList.clear();
+
+
         }
+
 
         // Debug
         if (keyH.DebugMode) {
@@ -334,6 +343,11 @@ public class GamePanel extends JPanel implements Runnable {
             int tileNum = tileM.map[currentMap][playerX / tileSize][playerY / tileSize];
             g2.drawString("Tile: " + tileNum, 10, 60); // Afișează numărul de tile
             g2.drawString("Current map: " + currentMap, 10, 100);
+        }
+
+        if (gameState != titleState) {
+            // ENVIROMENT
+            eManager.draw(g2);
         }
 
         // UI
