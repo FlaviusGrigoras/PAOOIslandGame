@@ -72,6 +72,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int characterState = 4;
     public final int optionState = 5;
     public final int gameOverState = 6;
+    public final int transitionState = 7;
+    public final int tradeState = 8;
 
     // Variabile pentru afișarea coordonatelor jucătorului
     int playerX;
@@ -273,13 +275,13 @@ public class GamePanel extends JPanel implements Runnable {
 
                 }
             }
-            for (int i=0; i<obj[1].length; i++) {
-                if (obj[currentMap][i]!=null) {
+            for (int i = 0; i < obj[1].length; i++) {
+                if (obj[currentMap][i] != null) {
                     entityList.add(obj[currentMap][i]);
                 }
             }
-            for (int i=0; i<monster[1].length; i++) {
-                if (monster[currentMap][i]!=null) {
+            for (int i = 0; i < monster[1].length; i++) {
+                if (monster[currentMap][i] != null) {
                     entityList.add(monster[currentMap][i]);
                 }
             }
@@ -328,7 +330,7 @@ public class GamePanel extends JPanel implements Runnable {
             g2.setColor(Color.white);
             int tileNum = tileM.map[currentMap][playerX / tileSize][playerY / tileSize];
             g2.drawString("Tile: " + tileNum, 10, 60); // Afișează numărul de tile
-            g2.drawString("Current map: "+currentMap,10, 100);
+            g2.drawString("Current map: " + currentMap, 10, 100);
         }
 
         // UI

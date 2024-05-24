@@ -25,6 +25,8 @@ public class UI {
     public int titleScreenState = 0; // 0: first screen, 1: second screen
     public int slotCol = 0, slotRow = 0;
     int subState = 0;
+    int counter = 0;
+    public Entity npc;
 
 
     public UI(GamePanel gp) {
@@ -61,7 +63,7 @@ public class UI {
     public void draw(Graphics2D g2) {
         this.g2 = g2;
 
-        g2.setFont(purisaB);
+        g2.setFont(maruMonica);
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g2.setColor(Color.WHITE);
 
@@ -99,9 +101,93 @@ public class UI {
         if (gp.gameState == gp.optionState) {
             drawOptionsScreen();
         }
-        // GAME OVER
+        // GAME OVER STATE
         if (gp.gameState == gp.gameOverState) {
             drawGameOverScreen();
+        }
+        // TRANSITION STATE
+        if (gp.gameState == gp.transitionState) {
+            drawTransitionScreen();
+        }
+        // Trade STATE
+        if (gp.gameState == gp.tradeState) {
+            drawTradeScreen();
+        }
+    }
+
+    private void drawTradeScreen() {
+        switch (subState) {
+            case 0:
+                trade_select();
+                break;
+            case 1:
+                trade_buy();
+                break;
+            case 2:
+                trade_sell();
+                break;
+        }
+        gp.keyH.enterPressed = false;
+    }
+
+    public void trade_select() {
+        drawDialogScreen();
+        // DRAW WINDOW
+        int x = gp.tileSize * 15;
+        int y = gp.tileSize * 4;
+        int width = gp.tileSize * 3;
+        int height = (int) (gp.tileSize * 3.5);
+        drawSubWindow(x, y, width, height);
+
+        // Draw texts
+        x += gp.tileSize;
+        y += gp.tileSize;
+        g2.drawString("Buy", x, y);
+        if (commandNum == 0) {
+            g2.drawString(">", x - 24, y);
+            if (gp.keyH.enterPressed == true) {
+                subState = 1;
+            }
+        }
+        y += gp.tileSize;
+        g2.drawString("Sell", x, y);
+        if (commandNum == 1) {
+            g2.drawString(">", x - 24, y);
+            if (gp.keyH.enterPressed == true) {
+                subState = 2;
+            }
+        }
+        y += gp.tileSize;
+        g2.drawString("Leave", x, y);
+        if (commandNum == 2) {
+            g2.drawString(">", x - 24, y);
+            if (gp.keyH.enterPressed == true) {
+                commandNum = 0;
+                gp.gameState = gp.dialogState;
+                currentDialogue = "Come again, hehe!";
+            }
+        }
+    }
+
+    public void trade_buy() {
+    }
+
+    public void trade_sell() {
+    }
+
+    private void drawTransitionScreen() {
+        counter++;
+        g2.setColor(new Color(0, 0, 0, counter * 5));
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+
+        if (counter == 50) {
+            counter = 0;
+            gp.gameState = gp.playState;
+            gp.currentMap = gp.eHandler.tempMap;
+            gp.player.worldX = gp.tileSize * gp.eHandler.tempCol;
+            gp.player.worldY = gp.tileSize * gp.eHandler.tempRow;
+            gp.eHandler.previousEventX = gp.player.worldX;
+            gp.eHandler.previousEventY = gp.player.worldY;
         }
     }
 
@@ -537,9 +623,9 @@ public class UI {
 
     private void drawDialogScreen() {
         //Window
-        int x = gp.tileSize * 2;
+        int x = gp.tileSize * 3;
         int y = gp.tileSize / 2;
-        int width = gp.screenWidth - (gp.tileSize * 4);
+        int width = gp.screenWidth - (gp.tileSize * 6);
         int height = gp.tileSize * 4;
         drawSubWindow(x, y, width, height);
 

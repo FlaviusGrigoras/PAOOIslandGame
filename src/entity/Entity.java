@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Entity {
     GamePanel gp;
@@ -62,6 +63,8 @@ public class Entity {
     public Projectile projectile;
 
     //ITEM ATTRIBUTES
+    public ArrayList<Entity> inventory = new ArrayList<>();
+    public final int maxInventorySize = 20;
     public int attackValue;
     public int defenseValue;
     public String description = "";

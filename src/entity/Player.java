@@ -21,8 +21,7 @@ public class Player extends Entity {
     int hasStone = 0;
     int hasWood = 0;
     public boolean attackCanceled = false;
-    public ArrayList<Entity> inventory = new ArrayList<>();
-    public final int maxInventorySize = 20;
+
 
     public Player(GamePanel gp, KeyHandler keyH, int characterNumber) {
         super(gp);

@@ -1,6 +1,8 @@
 package main;
 
 
+import entity.Entity;
+
 import java.awt.*;
 
 public class EventHandler {
@@ -10,6 +12,7 @@ public class EventHandler {
 
     int previousEventX, previousEventY;
     boolean canTouchEvent = true;
+    int tempMap, tempCol, tempRow;
 
     public EventHandler(GamePanel gp) {
         this.gp = gp;
@@ -53,25 +56,30 @@ public class EventHandler {
         if (canTouchEvent) {
             if (hit(10, 10, "right", 0)) {
                 damagePit(gp.dialogState);
-            }
-            if (hit(23, 12, "up", 0)) {
+            } else if (hit(23, 12, "up", 0)) {
                 healingPool(gp.dialogState);
-            }
-            if (hit(31, 34, "any", 0)) {
+            } else if (hit(31, 34, "any", 0)) {
                 teleport(12, 12, 1);
-            }
-            if (hit(12, 13, "any", 1)) {
+            } else if (hit(12, 13, "any", 1)) {
                 teleport(31, 34, 0);
+            } else if (hit(12, 9, "up", 1)) {
+                speak(gp.npc[1][1]);
             }
         }
     }
 
     private void teleport(int col, int row, int map) {
-        gp.currentMap = map;
+        gp.gameState = gp.transitionState;
+        tempMap = map;
+        tempCol = col;
+        tempRow = row;
+
+       /* gp.currentMap = map;
         gp.player.worldX = gp.tileSize * col;
         gp.player.worldY = gp.tileSize * row;
         previousEventX = gp.player.worldX;
         previousEventY = gp.player.worldY;
+       */
         canTouchEvent = false;
         gp.playSE(12);
     }
@@ -93,6 +101,15 @@ public class EventHandler {
         }
         gp.keyH.enterPressed = false;
     }
+
+    public void speak(Entity entity) {
+        if (gp.keyH.enterPressed) {
+            gp.gameState = gp.dialogState;
+            gp.player.attackCanceled = true;
+            entity.speak();
+        }
+    }
+
 
     public boolean hit(int col, int row, String reqDirection, int map) {
         boolean hit = false;

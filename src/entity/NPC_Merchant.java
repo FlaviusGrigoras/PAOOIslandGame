@@ -1,6 +1,7 @@
 package entity;
 
 import main.GamePanel;
+import object.*;
 
 import java.util.Random;
 
@@ -16,7 +17,7 @@ public class NPC_Merchant extends Entity {
     }
 
     public void getImage() {
-        String Type="Merchant";
+        String Type = "Merchant";
         // Pentru directia 'up'
         w_up[0] = setup("npc", Type, "Walk", "up_1");
         w_up[1] = setup("npc", Type, "Walk", "up_2");
@@ -64,37 +65,24 @@ public class NPC_Merchant extends Entity {
     }
 
     public void setDialogue() {
-        dialogues[0] = "Salut, călătorule!";
-        dialogues[1] = "De unde ai răsărit? Nu îmi \namintesc să te fi văzut pe aici înainte!";
-        dialogues[2] = "Fii precaut...când se lasă \nnoaptea, apar entități misterioase care \nnu sunt întotdeauna prietenoase.";
-        dialogues[3] = "Construiește-ți o barcă cât\nmai repede \nși părăsește acest loc!";
+        dialogues[0] = "He he, so you found me.\nI have some good stuff.\nDo you want to trade?";
     }
 
-    @Override
-    public void setAction() {
-        actionLockCounter++;
-
-        if (actionLockCounter == 120) {
-            Random random = new Random();
-            int i = random.nextInt(100) + 1; // 1-100
-            int j = random.nextInt(100) + 1;
-            if (i <= 25) {
-                direction = "up";
-            } else if (i <= 50) {
-                direction = "down";
-            } else if (i <= 75) {
-                direction = "left";
-            } else {
-                direction = "right";
-            }
-
-            isWalking = j <= 75;
-
-            actionLockCounter = 0;
-        }
+    public void setItems() {
+        inventory.add(new OBJ_Potion_Red(gp));
+        inventory.add(new OBJ_Wood(gp));
+        inventory.add(new OBJ_Stone(gp));
+        inventory.add(new OBJ_Stick(gp));
+        inventory.add(new OBJ_Sword_Normal(gp));
+        inventory.add(new OBJ_Pistol(gp));
+        inventory.add(new OBJ_Axe(gp));
+        inventory.add(new OBJ_Shield_Wood(gp));
+        inventory.add(new OBJ_Shield_Blue(gp));
     }
 
     public void speak() {
         super.speak();
+        gp.gameState = gp.tradeState;
+        gp.ui.npc = this;
     }
 }
