@@ -4,8 +4,8 @@ import main.GamePanel;
 
 import java.util.Random;
 
-public class NPC_Villager extends Entity {
-    public NPC_Villager(GamePanel gp) {
+public class NPC_Merchant extends Entity {
+    public NPC_Merchant(GamePanel gp) {
         super(gp);
 
         direction = "down";
@@ -16,7 +16,7 @@ public class NPC_Villager extends Entity {
     }
 
     public void getImage() {
-        String Type="Villager";
+        String Type="Merchant";
         // Pentru directia 'up'
         w_up[0] = setup("npc", Type, "Walk", "up_1");
         w_up[1] = setup("npc", Type, "Walk", "up_2");
@@ -60,6 +60,7 @@ public class NPC_Villager extends Entity {
         i_right[1] = setup("npc", Type, "Idle", "right_2");
         i_right[2] = setup("npc", Type, "Idle", "right_3");
         i_right[3] = setup("npc", Type, "Idle", "right_4");
+
     }
 
     public void setDialogue() {

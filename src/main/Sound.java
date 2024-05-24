@@ -15,6 +15,7 @@ public class Sound {
 
     public Sound() {
         try {
+            System.out.println("Initializing sound URLs...");
             soundURL[0] = getClass().getResource("sounds/intro.wav");
             soundURL[1] = getClass().getResource("sounds/coin.wav");
             soundURL[2] = getClass().getResource("sounds/hitmonster.wav");
@@ -27,6 +28,7 @@ public class Sound {
             soundURL[10] = getClass().getResource("sounds/cuttree.wav");
             soundURL[11] = getClass().getResource("sounds/GameOver.wav");
             soundURL[12] = getClass().getResource("sounds/stairs.wav");
+            System.out.println("Sound URLs initialized.");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -34,12 +36,17 @@ public class Sound {
 
     public void setFile(int i) {
         try {
+            System.out.println("Setting file for index: " + i);
             if (soundURL[i] != null) {
+                System.out.println("Opening audio stream for: " + soundURL[i]);
                 AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
+                System.out.println("Getting clip instance...");
                 clip = AudioSystem.getClip();
+                System.out.println("Opening clip with audio stream...");
                 clip.open(ais);
                 fc = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
                 checkVolume();
+                System.out.println("Clip set successfully.");
             } else {
                 System.out.println("URL-ul sunetului este null pentru indexul " + i);
             }
@@ -49,30 +56,37 @@ public class Sound {
     }
 
     public void play() {
+        System.out.println("Attempting to play clip...");
         if (clip != null) {
             clip.start();
+            System.out.println("Clip played.");
         } else {
             System.out.println("Clipul este null. Asigura-te că ai apelat metoda setFile() înainte de play().");
         }
     }
 
     public void loop() {
+        System.out.println("Attempting to loop clip...");
         if (clip != null) {
             clip.loop(Clip.LOOP_CONTINUOUSLY);
+            System.out.println("Clip is looping.");
         } else {
             System.out.println("Clipul este null. Asigura-te că ai apelat metoda setFile() înainte de loop().");
         }
     }
 
     public void stop() {
+        System.out.println("Attempting to stop clip...");
         if (clip != null) {
             clip.stop();
+            System.out.println("Clip stopped.");
         } else {
             System.out.println("Clipul este null. Asigura-te că ai apelat metoda setFile() înainte de stop().");
         }
     }
 
     public void checkVolume() {
+        System.out.println("Checking volume with volumeScale: " + volumeScale);
         switch (volumeScale) {
             case 0:
                 volume = -80f;
@@ -96,6 +110,7 @@ public class Sound {
                 volume = 0f;
                 break;
         }
+        System.out.println("Setting volume to: " + volume);
         fc.setValue(volume);
     }
 }

@@ -1,5 +1,6 @@
 package main;
 
+import entity.NPC_Merchant;
 import entity.NPC_Villager;
 import monster.MON_GreenSlime;
 import object.*;
@@ -36,7 +37,7 @@ public class AssetSetter {
 
     public void setNPC() {
         createNPC(npcCounter, "Villager", 15, 15, 0);
-        createNPC(npcCounter, "Villager", 12, 7, 1);
+        createNPC(npcCounter, "Merchant", 12, 7, 1);
 
     }
 
@@ -132,6 +133,9 @@ public class AssetSetter {
         switch (Type) {
             case "Villager":
                 gp.npc[mapNum][index] = new NPC_Villager(gp);
+                break;
+            case "Merchant":
+                gp.npc[mapNum][index] = new NPC_Merchant(gp);
                 break;
             case "Default":
                 System.out.println("Not an NPC!");
