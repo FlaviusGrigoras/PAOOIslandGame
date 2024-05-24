@@ -13,6 +13,9 @@ public class OBJ_Pistol extends Entity {
         attackValue = 10;
         attackArea.width = 36;
         attackArea.height = 36;
+        price = 250;
+        sellPrice = 100;
+        projectile = new OBJ_Rock(gp);
         description = "[" + name + "]\nDon't get caught by the \npolice.";
     }
 }

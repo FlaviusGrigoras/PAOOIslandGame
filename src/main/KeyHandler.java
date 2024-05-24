@@ -78,6 +78,73 @@ public class KeyHandler implements KeyListener {
                 gp.playSE(7);
             }
         }
+        if (gp.ui.subState == 1) {
+            npcInventory(code);
+            if (code == KeyEvent.VK_ESCAPE) {
+                gp.ui.subState = 0;
+            }
+        }
+        if (gp.ui.subState == 2) {
+            playerInventory(code);
+            if (code == KeyEvent.VK_ESCAPE) {
+                gp.ui.subState = 0;
+            }
+        }
+    }
+
+    public void playerInventory(int code) {
+        if (code == KeyEvent.VK_UP) {
+            if (gp.ui.playerSlotRow != 0) {
+                gp.ui.playerSlotRow--;
+                gp.playSE(7);
+            }
+        }
+        if (code == KeyEvent.VK_LEFT) {
+            if (gp.ui.playerSlotCol != 0) {
+                gp.ui.playerSlotCol--;
+                gp.playSE(7);
+            }
+        }
+        if (code == KeyEvent.VK_DOWN) {
+            if (gp.ui.playerSlotRow != 3) {
+                gp.ui.playerSlotRow++;
+                gp.playSE(7);
+            }
+        }
+        if (code == KeyEvent.VK_RIGHT) {
+            if (gp.ui.playerSlotCol != 4) {
+                gp.ui.playerSlotCol++;
+                gp.playSE(7);
+            }
+        }
+    }
+
+    public void npcInventory(int code) {
+        if (code == KeyEvent.VK_UP) {
+            if (gp.ui.npcSlotRow != 0) {
+                gp.ui.npcSlotRow--;
+                gp.playSE(7);
+            }
+        }
+        if (code == KeyEvent.VK_LEFT) {
+            if (gp.ui.npcSlotCol != 0) {
+                gp.ui.npcSlotCol--;
+                gp.playSE(7);
+            }
+        }
+        if (code == KeyEvent.VK_DOWN) {
+            if (gp.ui.npcSlotRow != 3) {
+                gp.ui.npcSlotRow++;
+                gp.playSE(7);
+            }
+        }
+        if (code == KeyEvent.VK_RIGHT) {
+            if (gp.ui.npcSlotCol != 4) {
+                gp.ui.npcSlotCol++;
+                gp.playSE(7);
+            }
+        }
+
     }
 
     private void gameOverState(int code) {
@@ -288,33 +355,11 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_C) {
             gp.gameState = gp.playState;
         }
-        if (code == KeyEvent.VK_UP) {
-            if (gp.ui.slotRow != 0) {
-                gp.ui.slotRow--;
-                gp.playSE(7);
-            }
-        }
-        if (code == KeyEvent.VK_LEFT) {
-            if (gp.ui.slotCol != 0) {
-                gp.ui.slotCol--;
-                gp.playSE(7);
-            }
-        }
-        if (code == KeyEvent.VK_DOWN) {
-            if (gp.ui.slotRow != 3) {
-                gp.ui.slotRow++;
-                gp.playSE(7);
-            }
-        }
-        if (code == KeyEvent.VK_RIGHT) {
-            if (gp.ui.slotCol != 4) {
-                gp.ui.slotCol++;
-                gp.playSE(7);
-            }
-        }
+
         if (code == KeyEvent.VK_ENTER) {
             gp.player.selectItem();
         }
+        playerInventory(code);
     }
 
     @Override

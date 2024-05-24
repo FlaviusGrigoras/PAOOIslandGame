@@ -70,6 +70,8 @@ public class Entity {
     public String description = "";
     public int useCost;
     public int value;
+    public int price;
+    public int sellPrice;
 
     public String direction = "down";
 

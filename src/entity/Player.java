@@ -16,10 +16,6 @@ public class Player extends Entity {
     public final int screenX;
     public final int screenY;
     public boolean isWalking = false;
-    public int hasCoin = 0;
-    int hasIron = 0;
-    int hasStone = 0;
-    int hasWood = 0;
     public boolean attackCanceled = false;
 
 
@@ -58,7 +54,7 @@ public class Player extends Entity {
         dexterity = 1;// More Dexterity -> Less Damage
         exp = 0;
         nextLevelExp = 5;
-        coin = 0;
+        coin = 500;
         maxMana = 4;
         ammo = 10;
         mana = maxMana;
@@ -477,7 +473,7 @@ public class Player extends Entity {
     }
 
     public void selectItem() {
-        int itemIndex = gp.ui.getItemIndexOnSlot();
+        int itemIndex = gp.ui.getItemIndexOnSlot(gp.ui.playerSlotCol, gp.ui.playerSlotRow);
 
         if (itemIndex < inventory.size()) {
             Entity selectedItem = inventory.get(itemIndex);

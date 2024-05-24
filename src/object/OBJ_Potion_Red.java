@@ -13,6 +13,7 @@ public class OBJ_Potion_Red extends Entity {
         type = type_consumable;
         name = "Red Potion";
         value = 5;
+        price=25;
         i_down[0] = setup("potion_red");
         description = "[" + name + "]" + "\nHeals your life by " + value + ".";
     }

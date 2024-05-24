@@ -14,6 +14,7 @@ public class OBJ_Iron extends Entity {
         super(gp);
         name = "Iron";
         i_down[0] = setup(name);
+        sellPrice = 35;
 
         collision = true;
         solidArea.x = 8 * 3;

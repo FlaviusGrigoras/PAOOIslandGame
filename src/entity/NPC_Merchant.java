@@ -14,6 +14,7 @@ public class NPC_Merchant extends Entity {
 
         getImage();
         setDialogue();
+        setItems();
     }
 
     public void getImage() {
@@ -70,8 +71,6 @@ public class NPC_Merchant extends Entity {
 
     public void setItems() {
         inventory.add(new OBJ_Potion_Red(gp));
-        inventory.add(new OBJ_Wood(gp));
-        inventory.add(new OBJ_Stone(gp));
         inventory.add(new OBJ_Stick(gp));
         inventory.add(new OBJ_Sword_Normal(gp));
         inventory.add(new OBJ_Pistol(gp));

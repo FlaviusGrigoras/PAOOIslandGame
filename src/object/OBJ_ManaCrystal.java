@@ -13,6 +13,7 @@ public class OBJ_ManaCrystal extends Entity {
         type = type_pickupOnly;
         name = "Mana Crystal";
         value = 1;
+        price = 50;
         i_down[0] = setup("manacrystal_full");
         image = setup("manacrystal_full");
         image2 = setup("manacrystal_blank");

@@ -13,6 +13,8 @@ public class OBJ_Stick extends Entity {
         attackValue = 1;
         attackArea.width = 36;
         attackArea.height = 36;
+        price = 10;
+        sellPrice=5;
         description = "[" + name + "]\nBetter than nothing \nahh weapon.";
     }
 }

@@ -11,8 +11,10 @@ public class OBJ_Sword_Normal extends Entity {
         name = "Normal Sword";
         i_down[0] = setup("sword_normal");
         attackValue = 3;
-        attackArea.width=36;
-        attackArea.height=36;
+        attackArea.width = 36;
+        attackArea.height = 36;
+        price = 40;
+        sellPrice=15;
         description = "[" + name + "]\nAn old sword.";
     }
 }
