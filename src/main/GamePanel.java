@@ -221,6 +221,7 @@ public class GamePanel extends JPanel implements Runnable {
                     iTile[currentMap][i].update();
                 }
             }
+            eManager.update();
 
             // Actualizează coordonatele jucătorului
             playerX = player.worldX;

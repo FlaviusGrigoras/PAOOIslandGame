@@ -33,6 +33,7 @@ public class AssetSetter {
         createObject(objectCounter, "Wood_Shield", 19, 10, 0);
         createObject(objectCounter, "Mana", 20, 10, 0);
         createObject(objectCounter, "Inima", 21, 10, 0);
+        createObject(objectCounter, "Lantern", 22, 10, 0);
     }
 
     public void setNPC() {
@@ -118,6 +119,9 @@ public class AssetSetter {
                 break;
             case "Swood_Normal":
                 gp.obj[mapNum][index] = new OBJ_Sword_Normal(gp);
+                break;
+            case "Lantern":
+                gp.obj[mapNum][index] = new OBJ_Lantern(gp);
                 break;
 
             case "Default":

@@ -60,6 +60,7 @@ public class Entity {
     public int attack, defense, exp, nextLevelExp, coin;
     public Entity currentWeapon;
     public Entity currentShield;
+    public Entity currentLight;
     public int maxMana;
     public int mana;
     public Projectile projectile;
@@ -78,6 +79,7 @@ public class Entity {
     public int sellPrice;
     public boolean stackable = false;
     public int amount = 1;
+    public int lightRadius;
 
     public String direction = "down";
 
@@ -102,7 +104,8 @@ public class Entity {
     public final int type_pistol = 7;
     public final int type_fist = 8;
     public final int type_pickupOnly = 9;
-    public final int type_obstacke = 10;
+    public final int type_obstacle = 10;
+    public final int type_light = 11;
 
     boolean attacking = false;
     public boolean alive = true;
