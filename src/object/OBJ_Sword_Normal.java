@@ -16,5 +16,6 @@ public class OBJ_Sword_Normal extends Entity {
         price = 40;
         sellPrice=15;
         description = "[" + name + "]\nAn old sword.";
+        knockBackPower = 2;
     }
 }

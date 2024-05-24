@@ -16,5 +16,6 @@ public class OBJ_Axe extends Entity {
         price = 75;
         sellPrice = 20;
         description = "[" + name + "]\nA bit rusty but still can \ncut out some trees.";
+        knockBackPower = 10;
     }
 }

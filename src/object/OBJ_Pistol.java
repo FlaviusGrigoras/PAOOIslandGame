@@ -17,5 +17,6 @@ public class OBJ_Pistol extends Entity {
         sellPrice = 100;
         projectile = new OBJ_Rock(gp);
         description = "[" + name + "]\nDon't get caught by the \npolice.";
+        knockBackPower = 15;
     }
 }
