@@ -24,8 +24,14 @@ public class CollisionChecker {
         int entityTopRow = entityTopWorldY / gp.tileSize;
         int entityBottomRow = entityBottomWorldY / gp.tileSize;
 
+        // Use temporal direction
+        String direction = entity.direction;
+        if (entity.knockBack) {
+            direction = entity.knockBackDirection;
+        }
+
         // Verificăm coliziunile pentru fiecare direcție de mișcare
-        switch (entity.direction) {
+        switch (direction) {
             case "up":
                 // Calculăm rândul superior al entității după mișcare
                 entityTopRow = (entityTopWorldY - entity.speed) / gp.tileSize;
@@ -141,6 +147,13 @@ public class CollisionChecker {
     //NPC - Monster Collision
     public int checkEntity(Entity entity, Entity[][] target) {
         int index = 999;
+
+        // Use temporal direction
+        String direction = entity.direction;
+        if (entity.knockBack) {
+            direction = entity.knockBackDirection;
+        }
+
         Rectangle entitySolidAreaCopy = new Rectangle(entity.solidArea);
         Rectangle objectSolidAreaCopy;
 
@@ -156,7 +169,7 @@ public class CollisionChecker {
                 objectSolidAreaCopy.x = target[gp.currentMap][i].worldX + target[gp.currentMap][i].solidArea.x;
                 objectSolidAreaCopy.y = target[gp.currentMap][i].worldY + target[gp.currentMap][i].solidArea.y;
 
-                switch (entity.direction) {
+                switch (direction) {
                     case "up":
                         entitySolidAreaCopy.y -= entity.speed;
                         if (entitySolidAreaCopy.intersects(objectSolidAreaCopy)) {

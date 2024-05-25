@@ -177,7 +177,6 @@ public class KeyHandler implements KeyListener {
                 gp.gameState = gp.playState;
                 gp.retry();
                 gp.stopMusic();
-                gp.playSE(0, 1);
             } else if (gp.ui.commandNum == 1) {
                 gp.gameState = gp.titleState;
                 gp.restart();
@@ -223,6 +222,7 @@ public class KeyHandler implements KeyListener {
                 if (gp.ui.commandNum == 1 && gp.sound.volumeScale > 0) {
                     gp.sound.volumeScale--;
                     gp.stopMusic();
+
                     gp.sound.checkVolume();
                     gp.playSE(7);
                 }

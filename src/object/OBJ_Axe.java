@@ -17,5 +17,9 @@ public class OBJ_Axe extends Entity {
         sellPrice = 20;
         description = "[" + name + "]\nA bit rusty but still can \ncut out some trees.";
         knockBackPower = 10;
+        motion1_duration = 5;
+        motion2_duration = 12;
+        motion3_duration = 19;
+        motion4_duration = 25;
     }
 }

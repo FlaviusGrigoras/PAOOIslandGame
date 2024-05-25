@@ -83,6 +83,10 @@ public class Player extends Entity {
 
     public int getAttack() {
         attackArea = currentWeapon.attackArea;
+        motion1_duration= currentWeapon.motion1_duration;
+        motion2_duration= currentWeapon.motion2_duration;
+        motion3_duration= currentWeapon.motion3_duration;
+        motion4_duration= currentWeapon.motion4_duration;
         return attack = strength * currentWeapon.attackValue;
     }
 
@@ -138,11 +142,6 @@ public class Player extends Entity {
 
     }
 
-    public void knockBack(Entity entity, int knockBackPower) {
-        entity.direction = direction;
-        entity.speed += knockBackPower;
-        entity.knockBack = true;
-    }
 
     public void getPlayerAttackImage() {
         String Weapon = null;
@@ -162,25 +161,23 @@ public class Player extends Entity {
         a_up[2] = setup("player", "Kid1", "Attack", Weapon, "up_3", gp.tileSize, gp.tileSize * 2);
         a_up[3] = setup("player", "Kid1", "Attack", Weapon, "up_4", gp.tileSize, gp.tileSize * 2);
 
-// Attack DOWN
+        // Attack DOWN
         a_down[0] = setup("player", "Kid1", "Attack", Weapon, "down_1", gp.tileSize, gp.tileSize * 2);
         a_down[1] = setup("player", "Kid1", "Attack", Weapon, "down_2", gp.tileSize, gp.tileSize * 2);
         a_down[2] = setup("player", "Kid1", "Attack", Weapon, "down_3", gp.tileSize, gp.tileSize * 2);
         a_down[3] = setup("player", "Kid1", "Attack", Weapon, "down_4", gp.tileSize, gp.tileSize * 2);
 
-// Attack LEFT
+        // Attack LEFT
         a_left[0] = setup("player", "Kid1", "Attack", Weapon, "left_1", gp.tileSize * 2, gp.tileSize);
         a_left[1] = setup("player", "Kid1", "Attack", Weapon, "left_2", gp.tileSize * 2, gp.tileSize);
         a_left[2] = setup("player", "Kid1", "Attack", Weapon, "left_3", gp.tileSize * 2, gp.tileSize);
         a_left[3] = setup("player", "Kid1", "Attack", Weapon, "left_4", gp.tileSize * 2, gp.tileSize);
 
-// Attack RIGHT
+        // Attack RIGHT
         a_right[0] = setup("player", "Kid1", "Attack", Weapon, "right_1", gp.tileSize * 2, gp.tileSize);
         a_right[1] = setup("player", "Kid1", "Attack", Weapon, "right_2", gp.tileSize * 2, gp.tileSize);
         a_right[2] = setup("player", "Kid1", "Attack", Weapon, "right_3", gp.tileSize * 2, gp.tileSize);
         a_right[3] = setup("player", "Kid1", "Attack", Weapon, "right_4", gp.tileSize * 2, gp.tileSize);
-
-
     }
 
     public void update() {
@@ -310,70 +307,9 @@ public class Player extends Entity {
         }
     }
 
-    public void attacking() {
-        spriteCounter++;
-        if (spriteCounter <= 10) {
-            spriteNum = 1;
-        }
-        if (spriteCounter > 10 && spriteCounter <= 15) {
-            spriteNum = 2;
-        }
-        if (spriteCounter > 15 && spriteCounter <= 18) {
-            spriteNum = 3;
-        }
-        if (spriteCounter > 18 && spriteCounter <= 24) {
-            spriteNum = 4;
 
-            //Save current worldX, worldY, solidArea
-            int currentWorldX = worldX;
-            int currentWorldY = worldY;
-            int solidAreaWidth = solidArea.width;
-            int solidAreaHeight = solidArea.height;
 
-            //Adjust player worldX/Y for the attackArea
-            switch (direction) {
-                case "up":
-                    worldY -= attackArea.height;
-                    break;
-                case "down":
-                    worldY += attackArea.height;
-                    break;
-                case "left":
-                    worldX -= attackArea.width;
-                    break;
-                case "right":
-                    worldX += attackArea.width;
-                    break;
-            }
-            //attackArea becomes solidArea
-            solidArea.width = attackArea.width;
-            solidArea.height = attackArea.height;
-
-            int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
-            damageMonster(monsterIndex, attack, currentWeapon.knockBackPower);
-
-            // Check interactive tile collision
-            int iTileIndex = gp.cChecker.checkEntity(this, gp.iTile);
-            damageInteractiveTile(iTileIndex);
-
-            int projectileIndex = gp.cChecker.checkEntity(this, gp.projectile);
-            damageProjectile(projectileIndex);
-
-            //Dupa verificarea coliziunii, resetare la valorile originale
-            worldX = currentWorldX;
-            worldY = currentWorldY;
-            solidArea.width = solidAreaWidth;
-            solidArea.height = solidAreaHeight;
-        }
-        if (spriteCounter > 24) {
-            spriteNum = 1;
-            spriteCounter = 0;
-            attacking = false;
-        }
-
-    }
-
-    private void damageProjectile(int i) {
+    public void damageProjectile(int i) {
         if (i != 999) {
             Entity projectile = gp.projectile[gp.currentMap][i];
             projectile.alive = false;
@@ -417,13 +353,13 @@ public class Player extends Entity {
         }
     }
 
-    public void damageMonster(int i, int attack, int knockBackPower) {
+    public void damageMonster(int i, Entity attacker, int attack, int knockBackPower) {
         if (i != 999) {
             if (!gp.monster[gp.currentMap][i].invincible) {
                 gp.playSE(2);
 
                 if (knockBackPower > 0) {
-                    knockBack(gp.monster[gp.currentMap][i], knockBackPower);
+                    setKnockBack(gp.monster[gp.currentMap][i], attacker, knockBackPower);
                 }
 
                 int damage = attack - gp.monster[gp.currentMap][i].defense;

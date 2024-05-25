@@ -3,10 +3,12 @@ package main;
 import entity.NPC_Merchant;
 import entity.NPC_Villager;
 import monster.MON_GreenSlime;
+import monster.MON_Orc;
 import object.*;
 import tile_interactive.IT_Rock;
 import tile_interactive.IT_Tree;
 
+import java.awt.desktop.ScreenSleepEvent;
 import java.util.Random;
 
 public class AssetSetter {
@@ -21,20 +23,7 @@ public class AssetSetter {
     }
 
     public void setObject() {
-        createObject(objectCounter, "Coin", 10, 10, 0);
-        createObject(objectCounter, "Stone", 11, 10, 0);
-        createObject(objectCounter, "Wood", 12, 10, 0);
-        createObject(objectCounter, "Iron", 13, 10, 0);
-        createObject(objectCounter, "Axe", 14, 10, 0);
-        createObject(objectCounter, "Blue_Shield", 15, 10, 0);
-        createObject(objectCounter, "Red_Potion", 16, 10, 0);
-        createObject(objectCounter, "Pistol", 17, 10, 0);
-        createObject(objectCounter, "Swood_Normal", 18, 10, 0);
-        createObject(objectCounter, "Wood_Shield", 19, 10, 0);
-        createObject(objectCounter, "Mana", 20, 10, 0);
-        createObject(objectCounter, "Inima", 21, 10, 0);
-        createObject(objectCounter, "Lantern", 22, 10, 0);
-        createObject(objectCounter, "Tent", 23, 10, 0);
+
     }
 
     public void setNPC() {
@@ -58,13 +47,15 @@ public class AssetSetter {
             }
         }
 
+        createMonster(monsterCounter, "orc", 42, 31, 0);
+
     }
 
     public void setInteractiveTile() {
         Random rand = new Random();
         for (int x = 0; x < gp.maxWorldCol; x++) {
             for (int y = 0; y < gp.maxWorldRow; y++) {
-                if (gp.tileM.map[0][x][y] == 4 && x != 23 && y != 21 && x != 41 && y != 10 && x != 29 && y != 24) {
+                if (gp.tileM.map[0][x][y] == 4 && x != 23 && y != 21 && x != 41 && y != 10 && x != 29 && y != 24 && x != 42 && y != 31) {
                     int chance = rand.nextInt(100);
                     if (chance < 10) {
                         createInteractiveTile(itCounter, "Tree", x, y, 0);
@@ -158,6 +149,9 @@ public class AssetSetter {
         switch (Type) {
             case "greenslime":
                 gp.monster[mapNum][index] = new MON_GreenSlime(gp);
+                break;
+            case "orc":
+                gp.monster[mapNum][index] = new MON_Orc(gp);
                 break;
             case "Default":
                 System.out.println("Not an Monster!");

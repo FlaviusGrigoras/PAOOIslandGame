@@ -16,5 +16,10 @@ public class OBJ_Stick extends Entity {
         price = 10;
         sellPrice=5;
         description = "[" + name + "]\nBetter than nothing \nahh weapon.";
+
+        motion1_duration = 5;
+        motion2_duration = 12;
+        motion3_duration = 19;
+        motion4_duration = 25;
     }
 }

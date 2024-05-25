@@ -18,5 +18,9 @@ public class OBJ_Pistol extends Entity {
         projectile = new OBJ_Rock(gp);
         description = "[" + name + "]\nDon't get caught by the \npolice.";
         knockBackPower = 15;
+        motion1_duration = 5;
+        motion2_duration = 12;
+        motion3_duration = 19;
+        motion4_duration = 25;
     }
 }

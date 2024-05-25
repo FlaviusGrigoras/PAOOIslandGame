@@ -17,7 +17,7 @@ public class OBJ_Fireball extends Projectile {
         name = "Fireball";
         speed = 5;
         maxLife = 40;
-        knockBackPower = 0;
+        knockBackPower = 5;
         life = maxLife;
         attack = 2;
         useCost = 1;
