@@ -3,12 +3,9 @@ package entity;
 import main.GamePanel;
 import main.KeyHandler;
 import object.*;
-import tile.MapGenerator;
-import tile.TileManager;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 public class Player extends Entity {
     KeyHandler keyH;
@@ -67,8 +64,8 @@ public class Player extends Entity {
     }
 
     public void setDefaultPositions() {
-        worldX = gp.tileSize * 23;
-        worldY = gp.tileSize * 21;
+        worldX = gp.tileSize * 41;
+        worldY = gp.tileSize * 10;
         /*worldX = gp.tileSize * 12;
         worldY = gp.tileSize * 13;*/
         direction = "down";
@@ -515,6 +512,16 @@ public class Player extends Entity {
                 invincible = true;
             }
         }
+    }
+
+    public void getSleepingImage(BufferedImage image) {
+        for (int i = 0; i < 4; i++) {
+            i_down[i] = image;
+            i_up[i] = image;
+            i_left[i] = image;
+            i_right[i] = image;
+        }
+
     }
 
     private void interactNPC(int i) {

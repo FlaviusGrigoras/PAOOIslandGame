@@ -21,7 +21,7 @@ public class TileManager {
         map = new int[gp.maxMap][gp.maxWorldCol][gp.maxWorldRow];
 
         getTileImage();
-        loadMap("maps/map01.txt", 0);
+        loadMap("maps/map00.txt", 0);
         loadMap("maps/interior01.txt", 1);
     }
 
@@ -73,6 +73,10 @@ public class TileManager {
         setup(32, "floor", "hut", false);
         setup(33, "table", "hut", true);
         setup(34, "wall", "hut", true);
+
+        setup(35, "EDGE_RIGHT", "island", false);
+        setup(36, "OCEAN", "ocean", false);
+        setup(37, "EDGE_TOP", "island", false);
 
     }
 

@@ -12,7 +12,9 @@ import java.util.ArrayList;
 public class UI {
     GamePanel gp;
     Graphics2D g2;
-    Font maruMonica, purisaB, serif;
+    public Font maruMonica;
+    Font purisaB;
+    Font serif;
 
     BufferedImage heart_full, heart_half, heart_blank, crystal_full, crystal_blank, coin;
 
@@ -116,6 +118,32 @@ public class UI {
         // Trade STATE
         if (gp.gameState == gp.tradeState) {
             drawTradeScreen();
+        }
+        // Sleep STATE
+        if (gp.gameState == gp.sleepState) {
+            drawSleepScreen();
+        }
+    }
+
+    private void drawSleepScreen() {
+        counter++;
+
+        if (counter < 120) {
+            gp.eManager.lighting.filterAlpha += 0.01f;
+            if (gp.eManager.lighting.filterAlpha > 1f) {
+                gp.eManager.lighting.filterAlpha = 1f;
+            }
+        }
+        if (counter >= 120) {
+            gp.eManager.lighting.filterAlpha -= 0.01f;
+            if (gp.eManager.lighting.filterAlpha <= 0f) {
+                gp.eManager.lighting.filterAlpha = 0f;
+                counter = 0;
+                gp.eManager.lighting.dayState = gp.eManager.lighting.day;
+                gp.eManager.lighting.dayCounter = 0;
+                gp.gameState = gp.playState;
+                gp.player.getPlayerImage();
+            }
         }
     }
 

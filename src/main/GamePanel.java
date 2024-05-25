@@ -5,6 +5,7 @@ import entity.Entity;
 import entity.Player;
 import enviroment.EnviromentManager;
 import tile.TileManager;
+import tile.Map;
 import tile_interactive.InteractiveTile;
 
 import javax.swing.*;
@@ -66,6 +67,7 @@ public class GamePanel extends JPanel implements Runnable {
     // public ArrayList<Entity> projectileList = new ArrayList<>();
     public InteractiveTile[][] iTile = new InteractiveTile[maxMap][500];
     public ArrayList<Entity> particleList = new ArrayList<>();
+    Map map = new Map(this);
 
     //Game state
 
@@ -79,6 +81,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int gameOverState = 6;
     public final int transitionState = 7;
     public final int tradeState = 8;
+    public final int sleepState = 9;
+    public final int mapState = 10;
 
     // Variabile pentru afișarea coordonatelor jucătorului
     int playerX;
@@ -261,6 +265,10 @@ public class GamePanel extends JPanel implements Runnable {
         if (gameState == titleState) {
             ui.draw(g2);
         }
+        // MAP SCREEN
+        else if (gameState == mapState) {
+            map.drawFullMapScreen(g2);
+        }
         // Others
         else {
             // TILE
@@ -350,6 +358,9 @@ public class GamePanel extends JPanel implements Runnable {
             // ENVIROMENT
             eManager.draw(g2);
         }
+
+        // MINI MAP
+        map.drawMiniMap(g2);
 
         // UI
         ui.draw(g2);

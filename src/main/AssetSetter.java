@@ -34,6 +34,7 @@ public class AssetSetter {
         createObject(objectCounter, "Mana", 20, 10, 0);
         createObject(objectCounter, "Inima", 21, 10, 0);
         createObject(objectCounter, "Lantern", 22, 10, 0);
+        createObject(objectCounter, "Tent", 23, 10, 0);
     }
 
     public void setNPC() {
@@ -47,7 +48,7 @@ public class AssetSetter {
         Random rand = new Random();
         for (int x = 0; x < gp.maxWorldCol; x++) {
             for (int y = 0; y < gp.maxWorldRow; y++) {
-                if (gp.tileM.map[0][x][y] == 4 && x != 23 && y != 21) {
+                if (gp.tileM.map[0][x][y] == 4 && x != 23 && y != 21 && x != 41 && y != 10 && x != 29 && y != 24) {
                     int chance = rand.nextInt(100);
                     if (chance < 0.5) {
                         createMonster(monsterCounter, "greenslime", x, y, 0);
@@ -63,7 +64,7 @@ public class AssetSetter {
         Random rand = new Random();
         for (int x = 0; x < gp.maxWorldCol; x++) {
             for (int y = 0; y < gp.maxWorldRow; y++) {
-                if (gp.tileM.map[0][x][y] == 4 && x != 23 && y != 21) {
+                if (gp.tileM.map[0][x][y] == 4 && x != 23 && y != 21 && x != 41 && y != 10 && x != 29 && y != 24) {
                     int chance = rand.nextInt(100);
                     if (chance < 10) {
                         createInteractiveTile(itCounter, "Tree", x, y, 0);
@@ -122,6 +123,9 @@ public class AssetSetter {
                 break;
             case "Lantern":
                 gp.obj[mapNum][index] = new OBJ_Lantern(gp);
+                break;
+            case "Tent":
+                gp.obj[mapNum][index] = new OBJ_Tent(gp);
                 break;
 
             case "Default":
