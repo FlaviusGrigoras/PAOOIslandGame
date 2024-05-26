@@ -24,6 +24,11 @@ public class Lighting {
         setLightSource();
     }
 
+    public void resetDay() {
+        dayState = day;
+        filterAlpha = 0f;
+    }
+
     public void setLightSource() {
         if (gp == null) {
             throw new IllegalArgumentException("GamePanel instance is null");

@@ -54,10 +54,16 @@ public class EventHandler {
         }
 
         if (canTouchEvent) {
-            if (hit(10, 10, "right", 0)) {
-                damagePit(gp.dialogState);
-            } else if (hit(23, 12, "up", 0)) {
+            if (hit(38, 13, "up", 0) || hit(39, 13, "up", 0)) {
                 healingPool(gp.dialogState);
+            } else if (hit(40, 11, "left", 0) || hit(40, 12, "left", 0)) {
+                healingPool(gp.dialogState);
+            } else if (hit(37, 11, "right", 0) || hit(37, 12, "right", 0)) {
+                healingPool(gp.dialogState);
+            } else if (hit(38, 10, "down", 0) || hit(39, 10, "down", 0)) {
+                healingPool(gp.dialogState);
+            } else if (hit(23, 12, "up", 0)) {
+                damagePit(gp.dialogState);
             } else if (hit(29, 25, "any", 0)) {
                 teleport(12, 12, 1);
             } else if (hit(12, 13, "any", 1)) {
@@ -95,9 +101,11 @@ public class EventHandler {
         if (gp.keyH.enterPressed) {
             gp.gameState = gameState;
             gp.player.attackCanceled = true;
-            gp.ui.currentDialogue = "Ai sorbit din apele cristaline ale lacului fermecat.\n" +
-                    "Viața ți-a fost restabilită în totalitate.\n.";
+            gp.ui.currentDialogue = "Ai sorbit din apele cristaline ale lacului fermecat." +
+                    "\nViața ți-a fost restabilită în totalitate." + "\n(The progress has been saved)";
             gp.player.life = gp.player.maxLife;
+            gp.player.mana = gp.player.maxMana;
+            gp.saveLoad.save();
         }
         gp.keyH.enterPressed = false;
     }

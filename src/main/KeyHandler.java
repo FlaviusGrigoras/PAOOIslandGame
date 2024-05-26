@@ -175,11 +175,11 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_ENTER) {
             if (gp.ui.commandNum == 0) {
                 gp.gameState = gp.playState;
-                gp.retry();
+                gp.resetGame(false);
                 gp.stopMusic();
             } else if (gp.ui.commandNum == 1) {
                 gp.gameState = gp.titleState;
-                gp.restart();
+                gp.resetGame(true);
             }
         }
     }
@@ -265,7 +265,9 @@ public class KeyHandler implements KeyListener {
                     gp.gameState = gp.playState;
                 }
                 if (gp.ui.commandNum == 1) {
-                    //add later
+                    gp.saveLoad.load();
+                    gp.gameState = gp.playState;
+
                 }
                 if (gp.ui.commandNum == 2) {
                     System.exit(0);
@@ -329,6 +331,7 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_F) {
             shotKeyPressed = true;
         }
+
         if (code == KeyEvent.VK_ESCAPE) {
             gp.gameState = gp.optionState;
         }
@@ -359,7 +362,6 @@ public class KeyHandler implements KeyListener {
         }
     }
 
-
     public void pauseState(int code) {
         if (code == KeyEvent.VK_P) {
             gp.gameState = gp.playState;
@@ -384,7 +386,6 @@ public class KeyHandler implements KeyListener {
     }
 
     @Override
-
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
         if (code == KeyEvent.VK_W || code == KeyEvent.VK_UP) {

@@ -58,6 +58,9 @@ public class Player extends Entity {
         mana = maxMana;
         currentWeapon = new OBJ_Stick(gp);
         currentShield = new OBJ_Patura(gp);
+
+        currentLight = null;
+
         projectile = new OBJ_Fireball(gp);
         attack = getAttack();
         defense = getDefense();
@@ -71,10 +74,32 @@ public class Player extends Entity {
         direction = "down";
     }
 
-    public void restoreLifeAndMana() {
+    public void restoreStatus() {
         life = maxLife;
         mana = maxMana;
         invincible = false;
+        attacking = false;
+        knockBack = false;
+        lightUpdated = true;
+    }
+
+    public int getCurrentWeaponSlot() {
+        int currentWeaponSlot = 0;
+        for (int i = 0; i < inventory.size(); i++) {
+            if (inventory.get(i) == currentWeapon) {
+                currentWeaponSlot = i;
+            }
+        }
+        return currentWeaponSlot;
+    }
+    public int getCurrentShieldlot() {
+        int currentShieldSlot = 0;
+        for (int i = 0; i < inventory.size(); i++) {
+            if (inventory.get(i) == currentShield) {
+                currentShieldSlot = i;
+            }
+        }
+        return currentShieldSlot;
     }
 
     public void setItems() {
@@ -83,10 +108,10 @@ public class Player extends Entity {
 
     public int getAttack() {
         attackArea = currentWeapon.attackArea;
-        motion1_duration= currentWeapon.motion1_duration;
-        motion2_duration= currentWeapon.motion2_duration;
-        motion3_duration= currentWeapon.motion3_duration;
-        motion4_duration= currentWeapon.motion4_duration;
+        motion1_duration = currentWeapon.motion1_duration;
+        motion2_duration = currentWeapon.motion2_duration;
+        motion3_duration = currentWeapon.motion3_duration;
+        motion4_duration = currentWeapon.motion4_duration;
         return attack = strength * currentWeapon.attackValue;
     }
 
@@ -306,7 +331,6 @@ public class Player extends Entity {
             gp.playSE(11);
         }
     }
-
 
 
     public void damageProjectile(int i) {

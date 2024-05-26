@@ -17,9 +17,11 @@ public class AssetSetter {
     public int monsterCounter = 0;
     public int npcCounter = 0;
     public int itCounter = 0;
+    public int[][][] alreadyExisting = null;
 
     public AssetSetter(GamePanel gp) {
         this.gp = gp;
+        this.alreadyExisting = new int[gp.maxMap][gp.maxWorldCol][gp.maxWorldRow];
     }
 
     public void setObject() {
@@ -29,7 +31,6 @@ public class AssetSetter {
     public void setNPC() {
         createNPC(npcCounter, "Villager", 15, 15, 0);
         createNPC(npcCounter, "Merchant", 12, 7, 1);
-
     }
 
     public void setMonster() {
@@ -37,35 +38,74 @@ public class AssetSetter {
         Random rand = new Random();
         for (int x = 0; x < gp.maxWorldCol; x++) {
             for (int y = 0; y < gp.maxWorldRow; y++) {
-                if (gp.tileM.map[0][x][y] == 4 && x != 23 && y != 21 && x != 41 && y != 10 && x != 29 && y != 24) {
-                    int chance = rand.nextInt(100);
-                    if (chance < 0.5) {
-                        createMonster(monsterCounter, "greenslime", x, y, 0);
-                    } else if (chance < 20) {
+                if (getAlreadyExisting(0, x, y)) {
+                    if (gp.tileM.map[0][x][y] == 4 && x != 23 && y != 21 && x != 41 && y != 10 && x != 29 && y != 24) {
+                        int chance = rand.nextInt(100);
+                        if (chance < 0.5) {
+                            createMonster(monsterCounter, "greenslime", x, y, 0);
+                        } else if (chance < 20) {
+                        }
                     }
                 }
             }
         }
+        if (
 
-        createMonster(monsterCounter, "orc", 42, 31, 0);
+                getAlreadyExisting(0, 42, 31)) {
+            createMonster(monsterCounter, "orc", 42, 31, 0);
+            alreadyExisting[0][42][31] = 1;
+        }
 
     }
 
     public void setInteractiveTile() {
+
+        for (int i = 13; i <= 17; i++)
+            createInteractiveTile(itCounter, "Rock", i, 26, 0);
+        for (int i = 37; i <= 39; i++) {
+            createInteractiveTile(itCounter, "Rock", 20, i, 0);
+            createInteractiveTile(itCounter, "Rock", 34, i, 0);
+        }
+
+
         Random rand = new Random();
         for (int x = 0; x < gp.maxWorldCol; x++) {
             for (int y = 0; y < gp.maxWorldRow; y++) {
-                if (gp.tileM.map[0][x][y] == 4 && x != 23 && y != 21 && x != 41 && y != 10 && x != 29 && y != 24 && x != 42 && y != 31) {
-                    int chance = rand.nextInt(100);
-                    if (chance < 10) {
-                        createInteractiveTile(itCounter, "Tree", x, y, 0);
-                    } else if (chance < 20) {
-                        createInteractiveTile(itCounter, "Rock", x, y, 0);
-                    }
+                if (getAlreadyExisting(0, x, y)) {
+                    if (gp.tileM.map[0][x][y] == 4 && excludedX(x) && excludedY(y)) {
+                        int chance = rand.nextInt(100);
+                        if (chance < 10) {
+                            createInteractiveTile(itCounter, "Tree", x, y, 0);
+                        } else if (chance < 20) {
+                            createInteractiveTile(itCounter, "Rock", x, y, 0);
+                        }
 
+                    }
                 }
             }
         }
+    }
+
+    public boolean excludedX(int x) {
+        int[] no = {23, 41, 29, 42};
+        boolean ok = true;
+        for (int i = 0; i < no.length; i++) {
+            if (x == no[i]) {
+                ok = false;
+            }
+        }
+        return ok;
+    }
+
+    public boolean excludedY(int y) {
+        int[] no = {21, 10, 24, 31};
+        boolean ok = true;
+        for (int i = 0; i < no.length; i++) {
+            if (y == no[i]) {
+                ok = false;
+            }
+        }
+        return ok;
     }
 
     public void createObject(int index, String Type, int x, int y, int mapNum) {
@@ -142,7 +182,14 @@ public class AssetSetter {
         }
         gp.npc[mapNum][index].worldX = x * gp.tileSize;
         gp.npc[mapNum][index].worldY = y * gp.tileSize;
+        alreadyExisting[mapNum][x][y] = 1;
         npcCounter++;
+    }
+
+    public boolean getAlreadyExisting(int mapNum, int x, int y) {
+        if (alreadyExisting[mapNum][x][y] != 0)
+            return false;
+        else return true;
     }
 
     public void createMonster(int index, String Type, int x, int y, int mapNum) {
@@ -159,10 +206,12 @@ public class AssetSetter {
         }
         gp.monster[mapNum][index].worldX = x * gp.tileSize;
         gp.monster[mapNum][index].worldY = y * gp.tileSize;
+        alreadyExisting[mapNum][x][y] = 1;
         monsterCounter++;
     }
 
     public void createInteractiveTile(int index, String Type, int x, int y, int mapNum) {
+
         switch (Type) {
             case "Tree":
                 gp.iTile[mapNum][index] = new IT_Tree(gp);
@@ -176,6 +225,7 @@ public class AssetSetter {
         }
         gp.iTile[mapNum][index].worldX = x * gp.tileSize;
         gp.iTile[mapNum][index].worldY = y * gp.tileSize;
+        alreadyExisting[mapNum][x][y] = 1;
         itCounter++;
     }
 }
