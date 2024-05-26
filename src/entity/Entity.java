@@ -69,6 +69,7 @@ public class Entity {
     public boolean knockBack = false;
     public String knockBackDirection;
     public Entity attacker;
+    public Entity linkedEntity;
     public int motion1_duration;
     public int motion2_duration;
     public int motion3_duration;
@@ -96,7 +97,7 @@ public class Entity {
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
     public boolean isWalking = false;
-    String[] dialogues = new String[20];
+    public String[] dialogues = new String[20];
     int dialogueIndex = 0;
     public int knockBackPower = 0;
 
@@ -114,6 +115,7 @@ public class Entity {
     public final int type_pickupOnly = 9;
     public final int type_obstacle = 10;
     public final int type_light = 11;
+    public final int type_pickaxe = 12;
 
     public boolean attacking = false;
     public boolean alive = true;
@@ -525,6 +527,10 @@ public class Entity {
                 System.out.println("Image is null for direction: " + direction + ", spriteNum: " + spriteNum);
             }
         }
+    }
+
+    public void move(String direction) {
+
     }
 
     private BufferedImage getUpImage() {

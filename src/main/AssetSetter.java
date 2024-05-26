@@ -1,15 +1,14 @@
 package main;
 
+import entity.NPC_BigRock;
 import entity.NPC_Merchant;
 import entity.NPC_Villager;
 import monster.MON_GreenSlime;
 import monster.MON_Orc;
 import monster.MON_RedSlime;
 import object.*;
-import tile_interactive.IT_Rock;
-import tile_interactive.IT_Tree;
+import tile_interactive.*;
 
-import java.awt.desktop.ScreenSleepEvent;
 import java.util.Random;
 
 public class AssetSetter {
@@ -26,12 +25,85 @@ public class AssetSetter {
     }
 
     public void setObject() {
+        createObject(objectCounter, "Pickaxe", 40, 41, 2);
+        createObject(objectCounter, "Red_Potion", 13, 16, 2);
+        createObject(objectCounter, "Red_Potion", 26, 34, 2);
+        createObject(objectCounter, "Red_Potion", 27, 15, 2);
+        createObject(objectCounter, "Iron_Door", 18, 23, 2);
+    }
 
+    public void createObject(int index, String Type, int x, int y, int mapNum) {
+        switch (Type) {
+            case "Coin":
+                gp.obj[mapNum][index] = new OBJ_Coin(gp);
+                break;
+            case "Stone":
+                gp.obj[mapNum][index] = new OBJ_Stone(gp);
+                break;
+            case "Wood":
+                gp.obj[mapNum][index] = new OBJ_Wood(gp);
+                break;
+            case "Iron":
+                gp.obj[mapNum][index] = new OBJ_Iron(gp);
+                break;
+            case "Axe":
+                gp.obj[mapNum][index] = new OBJ_Axe(gp);
+                break;
+            case "Pickaxe":
+                gp.obj[mapNum][index] = new OBJ_Pickaxe(gp);
+                break;
+            case "Wood_Shield":
+                gp.obj[mapNum][index] = new OBJ_Shield_Wood(gp);
+                break;
+            case "Blue_Shield":
+                gp.obj[mapNum][index] = new OBJ_Shield_Blue(gp);
+                break;
+            case "Red_Potion":
+                gp.obj[mapNum][index] = new OBJ_Potion_Red(gp);
+                break;
+            case "Pistol":
+                gp.obj[mapNum][index] = new OBJ_Pistol(gp);
+                break;
+            case "Stick":
+                gp.obj[mapNum][index] = new OBJ_Stick(gp);
+                break;
+            case "Patura":
+                gp.obj[mapNum][index] = new OBJ_Patura(gp);
+                break;
+            case "Inima":
+                gp.obj[mapNum][index] = new OBJ_Heart(gp);
+                break;
+            case "Mana":
+                gp.obj[mapNum][index] = new OBJ_ManaCrystal(gp);
+                break;
+            case "Swood_Normal":
+                gp.obj[mapNum][index] = new OBJ_Sword_Normal(gp);
+                break;
+            case "Lantern":
+                gp.obj[mapNum][index] = new OBJ_Lantern(gp);
+                break;
+            case "Tent":
+                gp.obj[mapNum][index] = new OBJ_Tent(gp);
+                break;
+            case "Iron_Door":
+                gp.obj[mapNum][index] = new OBJ_Iron_Door(gp);
+                break;
+
+            case "Default":
+                System.out.println("Not an object!");
+                break;
+        }
+        gp.obj[mapNum][index].worldX = gp.tileSize * x;
+        gp.obj[mapNum][index].worldY = gp.tileSize * y;
+        objectCounter++;
     }
 
     public void setNPC() {
         createNPC(npcCounter, "Villager", 15, 15, 0);
         createNPC(npcCounter, "Merchant", 12, 7, 1);
+        createNPC(npcCounter, "Rock", 20, 25, 2);
+        createNPC(npcCounter, "Rock", 11, 18, 2);
+        createNPC(npcCounter, "Rock", 23, 14, 2);
     }
 
     public void setMonster() {
@@ -74,6 +146,28 @@ public class AssetSetter {
             createInteractiveTile(itCounter, "Rock", 34, i, 0);
         }
 
+        createInteractiveTile(itCounter, "Wall", 18, 30, 2);
+        createInteractiveTile(itCounter, "Wall", 17, 31, 2);
+        createInteractiveTile(itCounter, "Wall", 17, 32, 2);
+        createInteractiveTile(itCounter, "Wall", 17, 34, 2);
+        createInteractiveTile(itCounter, "Wall", 18, 34, 2);
+        createInteractiveTile(itCounter, "Wall", 18, 33, 2);
+        createInteractiveTile(itCounter, "Wall", 10, 22, 2);
+        createInteractiveTile(itCounter, "Wall", 10, 24, 2);
+        createInteractiveTile(itCounter, "Wall", 38, 18, 2);
+        createInteractiveTile(itCounter, "Wall", 38, 19, 2);
+        createInteractiveTile(itCounter, "Wall", 38, 20, 2);
+        createInteractiveTile(itCounter, "Wall", 38, 21, 2);
+        createInteractiveTile(itCounter, "Wall", 18, 13, 2);
+        createInteractiveTile(itCounter, "Wall", 18, 14, 2);
+        createInteractiveTile(itCounter, "Wall", 22, 28, 2);
+        createInteractiveTile(itCounter, "Wall", 30, 28, 2);
+        createInteractiveTile(itCounter, "Wall", 32, 28, 2);
+
+        createInteractiveTile(itCounter, "MetalPlate", 20, 22, 2);
+        createInteractiveTile(itCounter, "MetalPlate", 8, 17, 2);
+        createInteractiveTile(itCounter, "MetalPlate", 39, 31, 2);
+
 
         Random rand = new Random();
         for (int x = 0; x < gp.maxWorldCol; x++) {
@@ -115,65 +209,6 @@ public class AssetSetter {
         return ok;
     }
 
-    public void createObject(int index, String Type, int x, int y, int mapNum) {
-        switch (Type) {
-            case "Coin":
-                gp.obj[mapNum][index] = new OBJ_Coin(gp);
-                break;
-            case "Stone":
-                gp.obj[mapNum][index] = new OBJ_Stone(gp);
-                break;
-            case "Wood":
-                gp.obj[mapNum][index] = new OBJ_Wood(gp);
-                break;
-            case "Iron":
-                gp.obj[mapNum][index] = new OBJ_Iron(gp);
-                break;
-            case "Axe":
-                gp.obj[mapNum][index] = new OBJ_Axe(gp);
-                break;
-            case "Wood_Shield":
-                gp.obj[mapNum][index] = new OBJ_Shield_Wood(gp);
-                break;
-            case "Blue_Shield":
-                gp.obj[mapNum][index] = new OBJ_Shield_Blue(gp);
-                break;
-            case "Red_Potion":
-                gp.obj[mapNum][index] = new OBJ_Potion_Red(gp);
-                break;
-            case "Pistol":
-                gp.obj[mapNum][index] = new OBJ_Pistol(gp);
-                break;
-            case "Stick":
-                gp.obj[mapNum][index] = new OBJ_Stick(gp);
-                break;
-            case "Patura":
-                gp.obj[mapNum][index] = new OBJ_Patura(gp);
-                break;
-            case "Inima":
-                gp.obj[mapNum][index] = new OBJ_Heart(gp);
-                break;
-            case "Mana":
-                gp.obj[mapNum][index] = new OBJ_ManaCrystal(gp);
-                break;
-            case "Swood_Normal":
-                gp.obj[mapNum][index] = new OBJ_Sword_Normal(gp);
-                break;
-            case "Lantern":
-                gp.obj[mapNum][index] = new OBJ_Lantern(gp);
-                break;
-            case "Tent":
-                gp.obj[mapNum][index] = new OBJ_Tent(gp);
-                break;
-
-            case "Default":
-                System.out.println("Not an object!");
-                break;
-        }
-        gp.obj[mapNum][index].worldX = gp.tileSize * x;
-        gp.obj[mapNum][index].worldY = gp.tileSize * y;
-        objectCounter++;
-    }
 
     public void createNPC(int index, String Type, int x, int y, int mapNum) {
         switch (Type) {
@@ -182,6 +217,9 @@ public class AssetSetter {
                 break;
             case "Merchant":
                 gp.npc[mapNum][index] = new NPC_Merchant(gp);
+                break;
+            case "Rock":
+                gp.npc[mapNum][index] = new NPC_BigRock(gp);
                 break;
             case "Default":
                 System.out.println("Not an NPC!");
@@ -228,6 +266,12 @@ public class AssetSetter {
                 break;
             case "Rock":
                 gp.iTile[mapNum][index] = new IT_Rock(gp);
+                break;
+            case "Wall":
+                gp.iTile[mapNum][index] = new IT_DestructibleWall(gp);
+                break;
+            case "MetalPlate":
+                gp.iTile[mapNum][index] = new IT_MetalPlate(gp);
                 break;
             case "Default":
                 System.out.println("Not an interactive Tile!");

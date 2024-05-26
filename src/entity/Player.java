@@ -67,11 +67,28 @@ public class Player extends Entity {
     }
 
     public void setDefaultPositions() {
-        worldX = gp.tileSize * 43;
-        worldY = gp.tileSize * 9;
+        if (gp.currentMap == 0) {
+            worldX = gp.tileSize * 43;
+            worldY = gp.tileSize * 9;
+            direction = "down";
+        }
+        if (gp.currentMap == 2) {
+            worldX = gp.tileSize * 9;
+            worldY = gp.tileSize * 40;
+            direction = "up";
+        }
+        if (gp.currentMap == 3) {
+            worldX = gp.tileSize * 26;
+            worldY = gp.tileSize * 40;
+            direction = "up";
+        }
+        if (gp.currentMap == 4) {
+            worldX = gp.tileSize * 18;
+            worldY = gp.tileSize * 11;
+            direction = "down";
+        }
         /*worldX = gp.tileSize * 18;
         worldY = gp.tileSize * 11;*/
-        direction = "down";
     }
 
     public void restoreStatus() {
@@ -92,6 +109,7 @@ public class Player extends Entity {
         }
         return currentWeaponSlot;
     }
+
     public int getCurrentShieldlot() {
         int currentShieldSlot = 0;
         for (int i = 0; i < inventory.size(); i++) {
@@ -131,7 +149,7 @@ public class Player extends Entity {
         i_up[2] = setup("player", "Kid1", "Idle", "up_3", gp.tileSize, gp.tileSize);
         i_up[3] = setup("player", "Kid1", "Idle", "up_4", gp.tileSize, gp.tileSize);
 
-// Pentru directia 'down'
+        // Pentru directia 'down'
         w_down[0] = setup("player", "Kid1", "Walk", "down_1", gp.tileSize, gp.tileSize);
         w_down[1] = setup("player", "Kid1", "Walk", "down_2", gp.tileSize, gp.tileSize);
         w_down[2] = setup("player", "Kid1", "Walk", "down_3", gp.tileSize, gp.tileSize);
@@ -142,7 +160,7 @@ public class Player extends Entity {
         i_down[2] = setup("player", "Kid1", "Idle", "down_3", gp.tileSize, gp.tileSize);
         i_down[3] = setup("player", "Kid1", "Idle", "down_4", gp.tileSize, gp.tileSize);
 
-// Pentru directia 'left'
+        // Pentru directia 'left'
         w_left[0] = setup("player", "Kid1", "Walk", "left_1", gp.tileSize, gp.tileSize);
         w_left[1] = setup("player", "Kid1", "Walk", "left_2", gp.tileSize, gp.tileSize);
         w_left[2] = setup("player", "Kid1", "Walk", "left_3", gp.tileSize, gp.tileSize);
@@ -153,7 +171,7 @@ public class Player extends Entity {
         i_left[2] = setup("player", "Kid1", "Idle", "left_3", gp.tileSize, gp.tileSize);
         i_left[3] = setup("player", "Kid1", "Idle", "left_4", gp.tileSize, gp.tileSize);
 
-// Pentru directia 'right'
+        // Pentru directia 'right'
         w_right[0] = setup("player", "Kid1", "Walk", "right_1", gp.tileSize, gp.tileSize);
         w_right[1] = setup("player", "Kid1", "Walk", "right_2", gp.tileSize, gp.tileSize);
         w_right[2] = setup("player", "Kid1", "Walk", "right_3", gp.tileSize, gp.tileSize);
@@ -174,6 +192,9 @@ public class Player extends Entity {
             Weapon = "Sword";
         }
         if (currentWeapon.type == type_axe) {
+            Weapon = "Sword";
+        }
+        if (currentWeapon.type == type_pickaxe) {
             Weapon = "Sword";
         }
         if (currentWeapon.type == type_pistol)
@@ -429,7 +450,7 @@ public class Player extends Entity {
         if (itemIndex < inventory.size()) {
             Entity selectedItem = inventory.get(itemIndex);
 
-            if ((selectedItem.type == type_sword) || (selectedItem.type == type_axe) || (selectedItem.type == type_pistol) || selectedItem.type == type_fist) {
+            if ((selectedItem.type == type_sword) || (selectedItem.type == type_axe) || (selectedItem.type == type_pickaxe) || (selectedItem.type == type_pistol) || selectedItem.type == type_fist) {
                 currentWeapon = selectedItem;
                 attack = getAttack();
                 getPlayerAttackImage();
@@ -485,12 +506,13 @@ public class Player extends Entity {
     }
 
     private void interactNPC(int i) {
-        if (gp.keyH.enterPressed) {
-            if (i != 999) {
+        if (i != 999) {
+            if (gp.keyH.enterPressed) {
                 attackCanceled = true;
                 gp.gameState = gp.dialogState;
                 gp.npc[gp.currentMap][i].speak();
             }
+            gp.npc[gp.currentMap][i].move(direction);
         }
     }
 
