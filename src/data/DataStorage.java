@@ -13,7 +13,7 @@ public class DataStorage {
     public static void savePlayer(GamePanel gp) {
         try (Connection connection = SQLiteDB.getConnection()) {
             String deletePlayer = "DELETE FROM player";
-            String insertPlayer = "INSERT INTO player (level, maxLife, life, maxMana, mana, strength, dexterity, exp, nextLevelExp, coin, worldX, worldY) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String insertPlayer = "INSERT INTO player (level, maxLife, life, maxMana, mana, strength, dexterity, exp, nextLevelExp, coin, worldX, worldY, currentMap) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             PreparedStatement deleteStmt = connection.prepareStatement(deletePlayer);
             deleteStmt.executeUpdate();
@@ -31,6 +31,7 @@ public class DataStorage {
             insertStmt.setInt(10, gp.player.coin);
             insertStmt.setInt(11, gp.player.worldX);
             insertStmt.setInt(12, gp.player.worldY);
+            insertStmt.setInt(13, gp.currentMap);
             insertStmt.executeUpdate();
 
             System.out.println("Datele jucătorului au fost salvate cu succes!");
@@ -60,6 +61,7 @@ public class DataStorage {
                 gp.player.coin = rs.getInt("coin");
                 gp.player.worldX = rs.getInt("worldX");
                 gp.player.worldY = rs.getInt("worldY");
+                gp.currentMap = rs.getInt("currentMap");
 
                 System.out.println("Datele jucătorului au fost încărcate cu succes!");
             }
@@ -82,6 +84,8 @@ public class DataStorage {
                 insertStmt.setString(1, gp.player.inventory.get(i).name);
                 insertStmt.setInt(2, gp.player.inventory.get(i).amount);
                 insertStmt.addBatch();
+                // Afisarea numelui obiectului și slot-ului în baza de date
+                System.out.println("Obiectul " + gp.player.inventory.get(i).name + " a fost salvat în slot-ul " + i + " în baza de date.");
             }
             insertStmt.executeBatch();
 
@@ -92,6 +96,7 @@ public class DataStorage {
         }
     }
 
+
     public static void loadInventory(GamePanel gp, SaveLoad saveLoad) {
         try (Connection connection = SQLiteDB.getConnection()) {
             String selectInventory = "SELECT * FROM player_inventory";
@@ -100,6 +105,8 @@ public class DataStorage {
             ResultSet rs = selectStmt.executeQuery();
 
             gp.player.inventory.clear();
+
+            boolean itemsLoaded = false; // Verificăm dacă s-au încărcat obiecte din inventar
 
             while (rs.next()) {
                 String itemName = rs.getString("name");
@@ -113,9 +120,18 @@ public class DataStorage {
 
                 obj.amount = amount;
                 gp.player.inventory.add(obj);
+                itemsLoaded = true; // Setăm că s-au încărcat obiecte din inventar
+
+                // Afisarea numelui obiectului și slot-ului din baza de date
+                System.out.println("Obiectul " + itemName + " a fost încărcat din baza de date cu cantitatea " + amount + ".");
             }
 
-            System.out.println("Inventarul a fost încărcat cu succes!");
+            // Afișăm mesajul doar dacă s-au încărcat obiecte din inventar
+            if (!itemsLoaded) {
+                System.out.println("Inventarul nu a fost încărcat cu succes!");
+            } else {
+                System.out.println("Inventarul a fost încărcat cu succes!");
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -125,7 +141,6 @@ public class DataStorage {
             System.out.println("Eroare necunoscută la încărcarea inventarului!");
         }
     }
-
 
 
     public static void saveMapObjects(GamePanel gp) {

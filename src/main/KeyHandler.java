@@ -50,8 +50,7 @@ public class KeyHandler implements KeyListener {
         // GAME OVER STATE
         else if (gp.gameState == gp.gameOverState) {
             gameOverState(code);
-        }
-        else if (gp.gameState == gp.winnerState) {
+        } else if (gp.gameState == gp.winnerState) {
             winnerState(code);
         }
         // TRADE STATE
@@ -388,6 +387,10 @@ public class KeyHandler implements KeyListener {
             } else {
                 gp.map.miniMapOn = false;
             }
+        }
+
+        if (code == KeyEvent.VK_K) {
+            gp.saveLoad.save();
         }
 
         //Debug
