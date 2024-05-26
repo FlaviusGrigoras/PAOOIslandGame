@@ -34,6 +34,7 @@ public class Sound {
             soundURL[16] = getClass().getResource("sounds/chipwall.wav");
             soundURL[17] = getClass().getResource("sounds/dooropen.wav");
             soundURL[18] = getClass().getResource("sounds/unlock.wav");
+            soundURL[19] = getClass().getResource("sounds/winner.wav");
 
             System.out.println("Sound URLs initialized.");
         } catch (Exception e) {

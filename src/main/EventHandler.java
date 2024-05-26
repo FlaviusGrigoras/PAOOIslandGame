@@ -7,6 +7,7 @@ import java.awt.*;
 
 public class EventHandler {
     GamePanel gp;
+    UI ui;
 
     EventRect[][][] eventRect;
 
@@ -16,6 +17,7 @@ public class EventHandler {
 
     public EventHandler(GamePanel gp) {
         this.gp = gp;
+        this.ui = new UI(gp);
 
         eventRect = new EventRect[gp.maxMap][gp.maxWorldCol][gp.maxWorldRow];
 
@@ -80,8 +82,36 @@ public class EventHandler {
                 teleport(8, 7, 2, gp.dungeon); // To B1
             } else if (hit(25, 8, "any", 3)) {
                 teleport(18, 11, 4, gp.outside); // To Desert
+            } else if (hit(17, 38, "down", 4)) {
+                win();
             }
         }
+    }
+
+    private void win() {
+        if (gp.keyH.enterPressed) {
+            gp.gameState = gp.winnerState;
+            gp.player.attackCanceled = true;
+            gp.playSE(19);
+            gp.ui.currentDialogue = "Ai reușit să scapi de pe insula bântuită!";
+            gp.player.life = gp.player.maxLife;
+            gp.player.mana = gp.player.maxMana;
+            gp.saveLoad.save();
+        }
+        gp.keyH.enterPressed = false;
+    }
+
+    public void healingPool(int gameState) {
+        if (gp.keyH.enterPressed) {
+            gp.gameState = gameState;
+            gp.player.attackCanceled = true;
+            gp.ui.currentDialogue = "Ai sorbit din apele cristaline ale lacului fermecat." +
+                    "\nViața ți-a fost restabilită în totalitate." + "\n(The progress has been saved)";
+            gp.player.life = gp.player.maxLife;
+            gp.player.mana = gp.player.maxMana;
+            gp.saveLoad.save();
+        }
+        gp.keyH.enterPressed = false;
     }
 
     private void teleport(int col, int row, int map, int area) {
@@ -108,18 +138,6 @@ public class EventHandler {
         canTouchEvent = false;
     }
 
-    public void healingPool(int gameState) {
-        if (gp.keyH.enterPressed) {
-            gp.gameState = gameState;
-            gp.player.attackCanceled = true;
-            gp.ui.currentDialogue = "Ai sorbit din apele cristaline ale lacului fermecat." +
-                    "\nViața ți-a fost restabilită în totalitate." + "\n(The progress has been saved)";
-            gp.player.life = gp.player.maxLife;
-            gp.player.mana = gp.player.maxMana;
-            gp.saveLoad.save();
-        }
-        gp.keyH.enterPressed = false;
-    }
 
     public void speak(Entity entity) {
         if (gp.keyH.enterPressed) {
