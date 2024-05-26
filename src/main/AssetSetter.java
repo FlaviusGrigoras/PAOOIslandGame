@@ -3,9 +3,7 @@ package main;
 import entity.NPC_BigRock;
 import entity.NPC_Merchant;
 import entity.NPC_Villager;
-import monster.MON_GreenSlime;
-import monster.MON_Orc;
-import monster.MON_RedSlime;
+import monster.*;
 import object.*;
 import tile_interactive.*;
 
@@ -135,6 +133,13 @@ public class AssetSetter {
             //createMonster(monsterCounter, "orc", 42, 31, 0);
         }
 
+        createMonster(monsterCounter, "bat", 34, 39, 2);
+        createMonster(monsterCounter, "bat", 36, 25, 2);
+        createMonster(monsterCounter, "bat", 39, 26, 2);
+        createMonster(monsterCounter, "bat", 28, 11, 2);
+        createMonster(monsterCounter, "bat", 10, 19, 2);
+
+        createMonster(monsterCounter, "skeleton", 23, 16, 3);
     }
 
     public void setInteractiveTile() {
@@ -167,6 +172,8 @@ public class AssetSetter {
         createInteractiveTile(itCounter, "MetalPlate", 20, 22, 2);
         createInteractiveTile(itCounter, "MetalPlate", 8, 17, 2);
         createInteractiveTile(itCounter, "MetalPlate", 39, 31, 2);
+
+        createInteractiveTile(itCounter, "boat", 17, 39, 4);
 
 
         Random rand = new Random();
@@ -248,6 +255,12 @@ public class AssetSetter {
             case "orc":
                 gp.monster[mapNum][index] = new MON_Orc(gp);
                 break;
+            case "bat":
+                gp.monster[mapNum][index] = new MON_Bat(gp);
+                break;
+            case "skeleton":
+                gp.monster[mapNum][index] = new MON_SkeletonLord(gp);
+                break;
             case "Default":
                 System.out.println("Not an Monster!");
                 break;
@@ -272,6 +285,9 @@ public class AssetSetter {
                 break;
             case "MetalPlate":
                 gp.iTile[mapNum][index] = new IT_MetalPlate(gp);
+                break;
+            case "boat":
+                gp.iTile[mapNum][index] = new IT_Boat(gp);
                 break;
             case "Default":
                 System.out.println("Not an interactive Tile!");

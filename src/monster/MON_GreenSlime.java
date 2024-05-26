@@ -97,7 +97,7 @@ public class MON_GreenSlime extends Entity {
             // Check if it starts chasing
             checkStartChasingOrNot(gp.player, 5, 100);
             // Get a random direction if not on path
-            getRandomDirection();
+            getRandomDirection(120);
         }
     }
 

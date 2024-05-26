@@ -51,6 +51,9 @@ public class KeyHandler implements KeyListener {
         else if (gp.gameState == gp.gameOverState) {
             gameOverState(code);
         }
+        else if (gp.gameState == gp.winnerState) {
+            winnerState(code);
+        }
         // TRADE STATE
         else if (gp.gameState == gp.tradeState) {
             tradeState(code);
@@ -60,6 +63,33 @@ public class KeyHandler implements KeyListener {
             mapState(code);
         }
 
+    }
+
+    private void winnerState(int code) {
+        if (code == KeyEvent.VK_UP) {
+            gp.ui.commandNum--;
+            if (gp.ui.commandNum < 0) {
+                gp.ui.commandNum = 1;
+            }
+            gp.playSE(7);
+        }
+        if (code == KeyEvent.VK_DOWN) {
+            gp.ui.commandNum++;
+            if (gp.ui.commandNum > 1) {
+                gp.ui.commandNum = 0;
+            }
+            gp.playSE(7);
+        }
+        if (code == KeyEvent.VK_ENTER) {
+            if (gp.ui.commandNum == 0) {
+                gp.gameState = gp.playState;
+                gp.resetGame(false);
+                gp.stopMusic();
+            } else if (gp.ui.commandNum == 1) {
+                gp.gameState = gp.titleState;
+                gp.resetGame(true);
+            }
+        }
     }
 
     private void mapState(int code) {

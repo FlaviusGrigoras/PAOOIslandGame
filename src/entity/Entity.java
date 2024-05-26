@@ -175,16 +175,26 @@ public class Entity {
     }
 
     public int getXdistance(Entity target) {
-        return Math.abs(worldX - target.worldX);
+        return Math.abs(getCenterX() - target.getCenterX());
     }
 
     public int getYdistance(Entity target) {
-        return Math.abs(worldY - target.worldY);
+        return Math.abs(getCenterY() - target.getCenterY());
     }
 
     public int getTileDistance(Entity target) {
         int tileDistance = (getXdistance(target) + getYdistance(target)) / gp.tileSize;
         return tileDistance;
+    }
+
+    public int getCenterX() {
+        int centerX = worldX + w_left[0].getWidth() / 2;
+        return centerX;
+    }
+
+    public int getCenterY() {
+        int centerY = worldY + w_up[0].getHeight() / 2;
+        return centerY;
     }
 
     public int getGoalCol(Entity target) {
@@ -221,10 +231,10 @@ public class Entity {
     }
 
 
-    public void getRandomDirection() {
+    public void getRandomDirection(int interval) {
         actionLockCounter++;
 
-        if (actionLockCounter == 120) {
+        if (actionLockCounter == interval) {
             Random random = new Random();
             int i = random.nextInt(100) + 1; // 1-100
             int j = random.nextInt(100) + 1;
@@ -268,22 +278,22 @@ public class Entity {
 
         switch (direction) {
             case "up":
-                if (gp.player.worldY < worldY && yDis < straight && xDis < horizontal) {
+                if (gp.player.getCenterY() < getCenterY() && yDis < straight && xDis < horizontal) {
                     targetInRange = true;
                 }
                 break;
             case "down":
-                if (gp.player.worldY > worldY && yDis < straight && xDis < horizontal) {
+                if (gp.player.getCenterY() > getCenterY() && yDis < straight && xDis < horizontal) {
                     targetInRange = true;
                 }
                 break;
             case "left":
-                if (gp.player.worldX < worldX && xDis < straight && xDis < horizontal) {
+                if (gp.player.getCenterX() < getCenterX() && xDis < straight && xDis < horizontal) {
                     targetInRange = true;
                 }
                 break;
             case "right":
-                if (gp.player.worldX > worldX && yDis < straight && xDis < horizontal) {
+                if (gp.player.getCenterX() > getCenterX() && yDis < straight && xDis < horizontal) {
                     targetInRange = true;
                 }
                 break;
@@ -470,9 +480,9 @@ public class Entity {
         int screenX = worldX - gp.player.worldX + gp.player.screenX;
         int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-        if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
+        if (worldX + gp.tileSize * 5 > gp.player.worldX - gp.player.screenX &&
                 worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
-                worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
+                worldY + gp.tileSize * 5 > gp.player.worldY - gp.player.screenY &&
                 worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
 
             int tempScreenX = screenX;
@@ -480,12 +490,18 @@ public class Entity {
 
             switch (direction) {
                 case "up":
+                    if (attacking) {
+                        tempScreenY = screenY - w_up[0].getHeight();
+                    }
                     image = getUpImage();
                     break;
                 case "down":
                     image = getDownImage();
                     break;
                 case "left":
+                    if (attacking) {
+                        tempScreenX = screenX - w_left[0].getWidth();
+                    }
                     image = getLeftImage();
                     break;
                 case "right":
@@ -531,6 +547,28 @@ public class Entity {
 
     public void move(String direction) {
 
+    }
+
+    public void moveTowardPlayer(int interval) {
+        actionLockCounter++;
+
+        if (actionLockCounter > interval) {
+            if (getXdistance(gp.player) > getYdistance(gp.player)) {
+                if (gp.player.getCenterX() < getCenterX()) {
+                    direction = "left";
+                } else {
+                    direction = "right";
+                }
+
+            } else if (getXdistance(gp.player) < getYdistance(gp.player)) {
+                if (gp.player.getCenterY() < getCenterY()) {
+                    direction = "up";
+                } else {
+                    direction = "down";
+                }
+            }
+            actionLockCounter = 0;
+        }
     }
 
     private BufferedImage getUpImage() {

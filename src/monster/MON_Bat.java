@@ -6,30 +6,29 @@ import object.*;
 
 import java.util.Random;
 
-public class MON_RedSlime extends Entity {
+public class MON_Bat extends Entity {
     GamePanel gp;
 
-    public MON_RedSlime(GamePanel gp) {
+    public MON_Bat(GamePanel gp) {
         super(gp);
 
         this.gp = gp;
 
         type = type_monster;
-        name = "Red Slime";
-        defaultSpeed = 3;
+        name = "Bat";
+        defaultSpeed = 4;
         speed = defaultSpeed;
 
-        maxLife = 10;
+        maxLife = 7;
         life = maxLife;
-        attack = 9;
-        defense = 3;
-        exp = 10;
-        projectile = new OBJ_Rock(gp);
+        attack = 7;
+        defense = 0;
+        exp = 7;
 
         solidArea.x = 3;
-        solidArea.y = 18;
+        solidArea.y = 15;
         solidArea.width = 42;
-        solidArea.height = 30;
+        solidArea.height = 21;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
         getImage();
@@ -38,7 +37,7 @@ public class MON_RedSlime extends Entity {
     public void getImage() {
 
         //UP
-        String name = "redslime";
+        String name = "bat";
         w_up[0] = setup("monster", name, "down_1");
         w_up[1] = setup("monster", name, "down_2");
         w_up[2] = setup("monster", name, "down_1");
@@ -85,25 +84,24 @@ public class MON_RedSlime extends Entity {
 
     public void setAction() {
         if (onPath) {
-            // Check if it stops chasing
+            /*// Check if it stops chasing
             checkStopChasingOrNot(gp.player, 15, 100);
 
             // Search the direction to go
             searchPath(getGoalCol(gp.player), getGoalRow(gp.player));
 
             // Check if it shoots a projectile
-            checkShootOrNot(200, 30);
+            checkShootOrNot(200, 30);*/
         } else {
             // Check if it starts chasing
-            checkStartChasingOrNot(gp.player, 5, 100);
+            //checkStartChasingOrNot(gp.player, 5, 100);
             // Get a random direction if not on path
-            getRandomDirection(120);
+            getRandomDirection(10);
         }
     }
 
     public void damageReaction() {
         actionLockCounter = 0;
-        onPath = true;
     }
 
     public void checkDrop() {
@@ -111,17 +109,15 @@ public class MON_RedSlime extends Entity {
         int i = new Random().nextInt(100) + 1;
 
         // Set the monster drop
-        if (i < 50) {
+        if (i < 75) {
+            dropItem(new OBJ_Coin(gp));
+            dropItem(new OBJ_Coin(gp));
+            dropItem(new OBJ_Coin(gp));
+            dropItem(new OBJ_Coin(gp));
             dropItem(new OBJ_Coin(gp));
         }
-        if (i >= 50 && i < 70) {
-            dropItem(new OBJ_ManaCrystal(gp));
-        }
-        if (i >= 70 && i < 90) {
+        if (i > 74) {
             dropItem(new OBJ_Heart(gp));
-        }
-        if (i >= 90) {
-            dropItem(new OBJ_Axe(gp));
         }
     }
 }

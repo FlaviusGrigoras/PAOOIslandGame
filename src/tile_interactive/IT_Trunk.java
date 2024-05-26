@@ -12,13 +12,6 @@ public class IT_Trunk extends InteractiveTile {
         this.worldX = gp.tileSize * col;
         this.worldY = gp.tileSize * row;
 
-        solidArea.x = 0;
-        solidArea.y = 0;
-        solidArea.width = 0;
-        solidArea.height = 0;
-        solidAreaDefaultX = solidArea.x;
-        solidAreaDefaultY = solidArea.y;
-
         i_down[0] = setup("tiles", "interactive", "trunk");
     }
 }
