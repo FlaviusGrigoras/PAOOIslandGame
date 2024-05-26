@@ -30,6 +30,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int maxWorldRow = 50;
     public final int maxMap = 10;
     public int currentMap = 0;
+    public int nextArea;
 
     // FOR FULL SCREEN
     int screenWidth2 = screenWidth;
@@ -86,6 +87,12 @@ public class GamePanel extends JPanel implements Runnable {
     public final int sleepState = 9;
     public final int mapState = 10;
 
+    // AREA
+    public int currentArea;
+    public final int outside = 50;
+    public final int indoor = 51;
+    public final int dungeon = 52;
+
     // Variabile pentru afișarea coordonatelor jucătorului
     int playerX;
     int playerY;
@@ -110,7 +117,10 @@ public class GamePanel extends JPanel implements Runnable {
         eManager.setup();
 
         gameState = titleState;
-        playSE(0, 1);
+        currentArea = outside;
+        if (currentArea == outside) {
+            playSE(0, true);
+        }
 
         tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
         g2 = (Graphics2D) tempScreen.getGraphics();
@@ -370,12 +380,11 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
 
-    public void playSE(int i, int y) {
+    public void playSE(int i, boolean loop) {
         sound.setFile(i);
         sound.play();
-        if (y == 1) {
+        if (loop)
             sound.loop();
-        }
     }
 
     public void stopMusic() {
@@ -383,7 +392,26 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void playSE(int i) {
-        sound.setFile(i);
-        sound.play();
+        se.setFile(i);
+        se.play();
     }
+
+    public void changeArea() {
+        if (nextArea != currentArea) {
+            stopMusic();
+
+            if (nextArea == outside) {
+                playSE(0, true);
+            }
+            if (nextArea == indoor) {
+                playSE(14, true);
+            }
+            if (nextArea == dungeon) {
+                playSE(15, true);
+            }
+        }
+        currentArea = nextArea;
+        aSetter.setMonster();
+    }
+
 }

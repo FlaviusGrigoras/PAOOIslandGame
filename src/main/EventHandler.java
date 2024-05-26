@@ -65,27 +65,28 @@ public class EventHandler {
             } else if (hit(23, 12, "up", 0)) {
                 damagePit(gp.dialogState);
             } else if (hit(29, 25, "any", 0)) {
-                teleport(12, 12, 1);
+                teleport(12, 12, 1, gp.indoor); // To mercahnt
             } else if (hit(12, 13, "any", 1)) {
-                teleport(29, 25, 0);
+                teleport(29, 25, 0, gp.outside); // To outside
             } else if (hit(12, 9, "up", 1)) {
                 speak(gp.npc[1][1]);
             } else if (hit(42, 32, "any", 0)) {
-                teleport(9, 41, 2); // To the dungeon
+                teleport(9, 41, 2, gp.dungeon); // To the dungeon
             } else if (hit(9, 41, "any", 2)) {
-                teleport(42, 32, 0); // To outside
+                teleport(42, 32, 0, gp.outside); // To outside
             } else if (hit(8, 7, "any", 2)) {
-                teleport(26, 41, 3); // To B2
+                teleport(26, 41, 3, gp.dungeon); // To B2
             } else if (hit(26, 41, "any", 3)) {
-                teleport(8, 7, 2); // To B1
+                teleport(8, 7, 2, gp.dungeon); // To B1
             } else if (hit(25, 8, "any", 3)) {
-                teleport(18, 11, 4); // To Desert
+                teleport(18, 11, 4, gp.outside); // To Desert
             }
         }
     }
 
-    private void teleport(int col, int row, int map) {
+    private void teleport(int col, int row, int map, int area) {
         gp.gameState = gp.transitionState;
+        gp.nextArea = area;
         tempMap = map;
         tempCol = col;
         tempRow = row;

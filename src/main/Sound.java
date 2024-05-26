@@ -29,6 +29,8 @@ public class Sound {
             soundURL[11] = getClass().getResource("sounds/GameOver.wav");
             soundURL[12] = getClass().getResource("sounds/stairs.wav");
             soundURL[13] = getClass().getResource("sounds/sleep.wav");
+            soundURL[14] = getClass().getResource("sounds/Merchant.wav");
+            soundURL[15] = getClass().getResource("sounds/dungeon.wav");
             System.out.println("Sound URLs initialized.");
         } catch (Exception e) {
             e.printStackTrace();

@@ -221,7 +221,7 @@ public class KeyHandler implements KeyListener {
             if (gp.ui.subState == 0) {
                 if (gp.ui.commandNum == 1 && gp.sound.volumeScale > 0) {
                     gp.sound.volumeScale--;
-                    gp.stopMusic();
+                    stopAndResume();
 
                     gp.sound.checkVolume();
                     gp.playSE(7);
@@ -236,7 +236,8 @@ public class KeyHandler implements KeyListener {
             if (gp.ui.subState == 0) {
                 if (gp.ui.commandNum == 1 && gp.sound.volumeScale < 5) {
                     gp.sound.volumeScale++;
-                    gp.stopMusic();
+                    stopAndResume();
+
                     gp.sound.checkVolume();
                     gp.playSE(7);
                 }
@@ -245,6 +246,19 @@ public class KeyHandler implements KeyListener {
                     gp.playSE(7);
                 }
             }
+        }
+    }
+
+    private void stopAndResume() {
+        gp.stopMusic();
+        if (gp.currentArea == gp.outside) {
+            gp.playSE(0, true);
+        }
+        if (gp.currentArea == gp.indoor) {
+            gp.playSE(14, true);
+        }
+        if (gp.currentArea == gp.dungeon) {
+            gp.playSE(15, true);
         }
     }
 
