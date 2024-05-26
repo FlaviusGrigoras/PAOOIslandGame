@@ -30,6 +30,12 @@ public class Map extends TileManager {
 
             while (col < gp.maxWorldCol && row < gp.maxWorldRow) {
                 int tileNum = map[i][col][row];
+                if (tiles[tileNum] == null) {
+                    System.out.println("Tile number " + tileNum + " at map " + i + " [" + col + "][" + row + "] is null.");
+                } else if (tiles[tileNum].image == null) {
+                    System.out.println("Image for tile number " + tileNum + " at map " + i + " [" + col + "][" + row + "] is null.");
+                }
+
                 int x = gp.tileSize * col;
                 int y = gp.tileSize * row;
                 g2.drawImage(tiles[tileNum].image, x, y, null);
@@ -43,6 +49,7 @@ public class Map extends TileManager {
             g2.dispose();
         }
     }
+
 
     public void drawFullMapScreen(Graphics2D g2) {
         g2.setColor(Color.black);
@@ -70,7 +77,7 @@ public class Map extends TileManager {
     }
 
     public void drawMiniMap(Graphics2D g2) {
-        if (miniMapOn == true) {
+        if (miniMapOn) {
             // Draw Map
             int width = 200;
             int height = 200;

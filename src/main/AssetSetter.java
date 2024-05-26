@@ -4,6 +4,7 @@ import entity.NPC_Merchant;
 import entity.NPC_Villager;
 import monster.MON_GreenSlime;
 import monster.MON_Orc;
+import monster.MON_RedSlime;
 import object.*;
 import tile_interactive.IT_Rock;
 import tile_interactive.IT_Tree;
@@ -35,11 +36,20 @@ public class AssetSetter {
 
     public void setMonster() {
 
+        createMonster(monsterCounter, "redslime", 15, 25, 0);
+        createMonster(monsterCounter, "redslime", 14, 28, 0);
+        createMonster(monsterCounter, "redslime", 10, 34, 0);
+        createMonster(monsterCounter, "redslime", 13, 37, 0);
+        createMonster(monsterCounter, "redslime", 23, 38, 0);
+        createMonster(monsterCounter, "redslime", 26, 39, 0);
+        createMonster(monsterCounter, "redslime", 30, 37, 0);
+        createMonster(monsterCounter, "redslime", 32, 39, 0);
+
         Random rand = new Random();
         for (int x = 0; x < gp.maxWorldCol; x++) {
             for (int y = 0; y < gp.maxWorldRow; y++) {
                 if (getAlreadyExisting(0, x, y)) {
-                    if (gp.tileM.map[0][x][y] == 4 && x != 23 && y != 21 && x != 41 && y != 10 && x != 29 && y != 24) {
+                    if (gp.tileM.map[0][x][y] == 217) {
                         int chance = rand.nextInt(100);
                         if (chance < 0.5) {
                             createMonster(monsterCounter, "greenslime", x, y, 0);
@@ -49,11 +59,8 @@ public class AssetSetter {
                 }
             }
         }
-        if (
-
-                getAlreadyExisting(0, 42, 31)) {
-            createMonster(monsterCounter, "orc", 42, 31, 0);
-            alreadyExisting[0][42][31] = 1;
+        if (getAlreadyExisting(0, 42, 31)) {
+            //createMonster(monsterCounter, "orc", 42, 31, 0);
         }
 
     }
@@ -72,7 +79,7 @@ public class AssetSetter {
         for (int x = 0; x < gp.maxWorldCol; x++) {
             for (int y = 0; y < gp.maxWorldRow; y++) {
                 if (getAlreadyExisting(0, x, y)) {
-                    if (gp.tileM.map[0][x][y] == 4 && excludedX(x) && excludedY(y)) {
+                    if (gp.tileM.map[0][x][y] == 217) {
                         int chance = rand.nextInt(100);
                         if (chance < 10) {
                             createInteractiveTile(itCounter, "Tree", x, y, 0);
@@ -196,6 +203,9 @@ public class AssetSetter {
         switch (Type) {
             case "greenslime":
                 gp.monster[mapNum][index] = new MON_GreenSlime(gp);
+                break;
+            case "redslime":
+                gp.monster[mapNum][index] = new MON_RedSlime(gp);
                 break;
             case "orc":
                 gp.monster[mapNum][index] = new MON_Orc(gp);

@@ -17,68 +17,114 @@ public class TileManager {
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
-        tiles = new Tile[140]; // Numărul total de țigle din spritesheet, inclusiv noile tipuri de țigle
+        tiles = new Tile[300]; // Numărul total de țigle din spritesheet, inclusiv noile tipuri de țigle
         map = new int[gp.maxMap][gp.maxWorldCol][gp.maxWorldRow];
 
         getTileImage();
         loadMap("maps/map00.txt", 0);
         loadMap("maps/interior01.txt", 1);
+        loadMap("maps/dungeon01.txt", 2);
+        loadMap("maps/dungeon02.txt", 3);
+        loadMap("maps/desert00.txt", 4);
     }
 
 
     private void getTileImage() {
-        setup(0, "CORNER_TOP_LEFT", "island", true);
-        setup(1, "EDGE_TOP", "island", true);
-        setup(2, "CORNER_TOP_RIGHT", "island", true);
+        for (int i = 0; i < 213; i++) {
+            String s = String.valueOf(i);
+            if (i < 10) {
+                setup(i, "00" + s, "desert", true);
+            }
+            if (i >= 10 && i < 100) {
+                setup(i, "0" + s, "desert", true);
+            }
+            if (i > 99) {
+                setup(i, s, "desert", true);
+            }
 
-        setup(3, "EDGE_LEFT", "island", true);
-        setup(4, "ISLAND", "island", false);
-        setup(5, "EDGE_RIGHT", "island", true);
+        }
 
-        setup(6, "CORNER_BOTTOM_LEFT", "island", true);
-        setup(7, "EDGE_BOTTOM", "island", true);
-        setup(8, "CORNER_BOTTOM_RIGHT", "island", true);
+        for (int i = 0; i < 40; i++) {
+            tiles[i].collision = false;
+        }
+        for (int i = 41; i < 45; i++) {
+            tiles[i].collision = false;
+        }
+        for (int i = 55; i < 67; i++) {
+            tiles[i].collision = false;
+        }
+        for (int i = 70; i < 81; i++) {
+            tiles[i].collision = false;
+        }
+        for (int i = 175; i < 196; i++) {
+            tiles[i].collision = false;
+        }
+        tiles[96].collision=false;
+        tiles[109].collision=false;
+        tiles[111].collision=false;
+        tiles[124].collision=false;
+        tiles[52].collision=false;
 
-        setup(9, "OCEAN", "ocean", true);
-        setup(10, "OCEAN_1", "ocean", true);
-        setup(11, "OCEAN_2", "ocean", true);
-        setup(12, "OCEAN_3", "ocean", true);
-        setup(13, "OCEAN_4", "ocean", true);
-        setup(14, "OCEAN_5", "ocean", true);
 
-        setup(15, "TOP_LEFT_RAMA", "rama", true);
-        setup(16, "TOP_RAMA", "rama", true);
-        setup(17, "TOP_RIGHT_RAMA", "rama", true);
+        setup(213, "CORNER_TOP_LEFT", "island", true);
+        setup(214, "EDGE_TOP", "island", true);
+        setup(215, "CORNER_TOP_RIGHT", "island", true);
 
-        setup(18, "LEFT_RAMA", "rama", true);
-        setup(19, "RIGHT_RAMA", "rama", true);
+        setup(216, "EDGE_LEFT", "island", true);
+        setup(217, "ISLAND", "island", false);
+        setup(218, "EDGE_RIGHT", "island", true);
 
-        setup(20, "BOTTOM_LEFT_RAMA", "rama", true);
-        setup(21, "BOTTOM_RAMA", "rama", true);
-        setup(22, "BOTTOM_RIGHT_RAMA", "rama", true);
+        setup(219, "CORNER_BOTTOM_LEFT", "island", true);
+        setup(220, "EDGE_BOTTOM", "island", true);
+        setup(221, "CORNER_BOTTOM_RIGHT", "island", true);
 
-        setup(23, "TREE", "interactive", true);
-        setup(24, "TREE_1", "interactive", true);
+        setup(222, "OCEAN", "ocean", true);
+        setup(223, "OCEAN_1", "ocean", true);
+        setup(224, "OCEAN_2", "ocean", true);
+        setup(225, "OCEAN_3", "ocean", true);
+        setup(226, "OCEAN_4", "ocean", true);
+        setup(227, "OCEAN_5", "ocean", true);
 
-        setup(25, "ROCK", "interactive", true);
-        setup(26, "ROCK_1", "interactive", true);
+        setup(228, "TOP_LEFT_RAMA", "rama", true);
+        setup(229, "TOP_RAMA", "rama", true);
+        setup(230, "TOP_RIGHT_RAMA", "rama", true);
 
-        setup(27, "TOP_LEFT_LAKE", "lake", true);
-        setup(28, "TOP_RIGHT_LAKE", "lake", true);
+        setup(231, "LEFT_RAMA", "rama", true);
+        setup(232, "RIGHT_RAMA", "rama", true);
 
-        setup(29, "BOTTOM_LEFT_LAKE", "lake", true);
-        setup(30, "BOTTOM_RIGHT_LAKE", "lake", true);
+        setup(233, "BOTTOM_LEFT_RAMA", "rama", true);
+        setup(234, "BOTTOM_RAMA", "rama", true);
+        setup(235, "BOTTOM_RIGHT_RAMA", "rama", true);
 
-        setup(31, "hut", "hut", false);
-        setup(32, "floor", "hut", false);
-        setup(33, "table", "hut", true);
-        setup(34, "wall", "hut", true);
+        setup(236, "TREE", "interactive", true);
+        setup(237, "TREE_1", "interactive", true);
 
-        setup(35, "EDGE_RIGHT", "island", false);
-        setup(36, "OCEAN", "ocean", false);
-        setup(37, "EDGE_TOP", "island", false);
+        setup(238, "ROCK", "interactive", true);
+        setup(239, "ROCK_1", "interactive", true);
 
+        setup(240, "TOP_LEFT_LAKE", "lake", true);
+        setup(241, "TOP_RIGHT_LAKE", "lake", true);
+
+        setup(242, "BOTTOM_LEFT_LAKE", "lake", true);
+        setup(243, "BOTTOM_RIGHT_LAKE", "lake", true);
+
+        setup(244, "hut", "hut", false);
+        setup(245, "floor", "hut", false);
+        setup(246, "table", "hut", true);
+        setup(247, "wall", "hut", true);
+
+        setup(248, "EDGE_RIGHT", "island", false);
+        setup(249, "OCEAN", "ocean", false);
+        setup(250, "EDGE_TOP", "island", false);
+
+        setup(251, "251", "dungeon", false);
+        setup(252, "252", "dungeon", false);
+        setup(253, "253", "dungeon", false);
+
+        setup(254, "BLANK", "island", true);
+        setup(255, "ISLAND", "island", false);
     }
+
 
     public void setup(int index, String imageName, String tileType, boolean collision) {
         UtilityTool uTool = new UtilityTool();
@@ -88,7 +134,7 @@ public class TileManager {
             tiles[index].image = uTool.scaleImage(tiles[index].image, gp.tileSize, gp.tileSize);
             tiles[index].collision = collision;
         } catch (IOException e) {
-
+            System.out.println("Nu se poate la index: " + index + " imageName: " + imageName);
             e.printStackTrace();
         }
     }

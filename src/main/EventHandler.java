@@ -70,6 +70,16 @@ public class EventHandler {
                 teleport(29, 25, 0);
             } else if (hit(12, 9, "up", 1)) {
                 speak(gp.npc[1][1]);
+            } else if (hit(42, 32, "any", 0)) {
+                teleport(9, 41, 2); // To the dungeon
+            } else if (hit(9, 41, "any", 2)) {
+                teleport(42, 32, 0); // To outside
+            } else if (hit(8, 7, "any", 2)) {
+                teleport(26, 41, 3); // To B2
+            } else if (hit(26, 41, "any", 3)) {
+                teleport(8, 7, 2); // To B1
+            } else if (hit(25, 8, "any", 3)) {
+                teleport(18, 11, 4); // To Desert
             }
         }
     }

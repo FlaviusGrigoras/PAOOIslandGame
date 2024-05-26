@@ -67,10 +67,10 @@ public class Player extends Entity {
     }
 
     public void setDefaultPositions() {
-        worldX = gp.tileSize * 41;
-        worldY = gp.tileSize * 10;
-        /*worldX = gp.tileSize * 12;
-        worldY = gp.tileSize * 13;*/
+        worldX = gp.tileSize * 43;
+        worldY = gp.tileSize * 9;
+        /*worldX = gp.tileSize * 18;
+        worldY = gp.tileSize * 11;*/
         direction = "down";
     }
 
@@ -120,7 +120,7 @@ public class Player extends Entity {
     }
 
     public void getPlayerImage() {
-// Pentru directia 'up'
+        // Pentru directia 'up'
         w_up[0] = setup("player", "Kid1", "Walk", "up_1", gp.tileSize, gp.tileSize);
         w_up[1] = setup("player", "Kid1", "Walk", "up_2", gp.tileSize, gp.tileSize);
         w_up[2] = setup("player", "Kid1", "Walk", "up_3", gp.tileSize, gp.tileSize);
