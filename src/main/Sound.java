@@ -16,7 +16,7 @@ public class Sound {
     public Sound() {
         try {
             System.out.println("Initializing sound URLs...");
-            soundURL[0] = getClass().getResource("sounds/intro.wav");
+            //soundURL[0] = getClass().getResource("sounds/intro.wav");
             soundURL[1] = getClass().getResource("sounds/coin.wav");
             soundURL[2] = getClass().getResource("sounds/hitmonster.wav");
             soundURL[3] = getClass().getResource("sounds/receivedamage.wav");

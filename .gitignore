@@ -27,3 +27,6 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Sounds to optimize storage
+/src/main/sounds/winner.wav
