@@ -66,7 +66,6 @@ public class Sound {
             clip.setFramePosition(0);
             clip.start();
             System.out.println("Clip started.");
-            // Adăugăm o verificare în buclă pentru a aștepta până când clipul începe redarea
             int tries = 0;
             while (!clip.isRunning() && tries < 10) {
                 try {
